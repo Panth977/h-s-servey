@@ -31,5 +31,8 @@
 		"typescript": "^4.7.4",
 		"vite": "^3.0.4"
 	},
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"@sveltejs/adapter-cloudflare": "^1.0.0-next.32"
+	}
 }

@@ -1,8 +1,8 @@
 <script lang="ts">
-  import Drawer from "svelte-drawer-component";
+  import Modal from "../../../lib/Modal.svelte";
 
-  const teams: { [teamID: string]: { name: string, player: { [playerID: string]: string } } } = {
-    "d5v4s": {
+  const teams: { [teamID: string]: { name: string; player: { [playerID: string]: string } } } = {
+    d5v4s: {
       name: "Man. City",
       player: {
         ad8: "Player1",
@@ -23,7 +23,7 @@
         asdda8d8: "Player3"
       }
     },
-    "da68d": {
+    da68d: {
       name: "What Eves.",
       player: {
         ad8: "Player1",
@@ -44,7 +44,7 @@
         asdda8d8: "Player3"
       }
     },
-    "da5v4": {
+    da5v4: {
       name: "What Eves.",
       player: {
         ad8: "Player1",
@@ -65,7 +65,7 @@
         asdda8d8: "Player3"
       }
     },
-    "ad93c": {
+    ad93c: {
       name: "What Eves.",
       player: {
         ad8: "Player1",
@@ -128,7 +128,7 @@
         asdda8d8: "Player3"
       }
     },
-    "a8dcd": {
+    a8dcd: {
       name: "Man. City",
       player: {
         ad8: "Player1",
@@ -339,42 +339,33 @@
       }
     }
   };
-  let selectedTeam: undefined | keyof typeof teams;
+  let selectedTeam: undefined | string;
 </script>
-<h1 class="text-5xl font-bold flex justify-center pt-10">Profile</h1>
+
+<h1 class="text-5xl font-bold text-center pt-10">Profile</h1>
 <div class="m-5 bg-gray-200">
-  <h2 class="text-3xl flex justify-center pt-10">Team</h2>
+  <h2 class="text-3xl text-center pt-10">Team</h2>
   {#each Object.keys(teams) as teamID}
-    <button on:click={() => selectedTeam = teamID}
-            class="block flex justify-start w-full p-3 bg-stone-400 mt-2">{teams[teamID].name}</button>
+    <button
+      on:click={() => (selectedTeam = teamID)}
+      class="text-start w-full p-3 bg-stone-400 mt-2"
+    >
+      {teams[teamID].name}
+    </button>
   {/each}
-  <Drawer open={selectedTeam !== undefined} placement="bottom" size="100%">
-    <div class="h-screen w-screen absolute z-40" on:click={()=>selectedTeam = undefined}>
+  <Modal close={() => (selectedTeam = undefined)} open={selectedTeam !== undefined} title="Players">
+    <div class="mt-2 space-y-2">
+      {#if (selectedTeam !== undefined)}
+        {#each Object.keys(teams[selectedTeam].player) as playerID}
+          <a
+            on:click={() => (selectedTeam = undefined)}
+            href={'/profile/player/' + playerID}
+            class="p-2 w-52 bg-gray-200  block cursor-pointer"
+          >{teams[selectedTeam].player[playerID]}</a
+          >
+        {/each}
+      {/if}
     </div>
-    <div class="flex justify-center">
-
-      <div class="bg-white rounded-3xl py-5 px-10 max-h-96 z-50 hide-scroll-bar overflow-auto mt-36 items-center">
-        <h1 class="text-2xl">Players</h1>
-        <div class="mt-2 space-y-2">
-          {#if (selectedTeam)}
-            {#each Object.keys(teams[selectedTeam].player) as playerID}
-              <a on:click={() => selectedTeam = undefined} href={"/profile/player/" + playerID}
-                 class="p-2 w-52 bg-gray-200  block cursor-pointer">{teams[selectedTeam].player[playerID]}</a>
-            {/each}
-          {/if}
-        </div>
-      </div>
-    </div>
-  </Drawer>
+  </Modal>
 </div>
-<style>
-    .hide-scroll-bar {
-        -ms-overflow-style: none; /* Internet Explorer 10+ */
-        scrollbar-width: none; /* Firefox */
-    }
 
-    .hide-scroll-bar::-webkit-scrollbar {
-        display: none; /* Safari and Chrome */
-    }
-
-</style>

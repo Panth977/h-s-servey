@@ -5,17 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4323b324-1883-42f1-a0b8-959282df6e2e" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/app.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/AdDialog.svelte" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routes/+layout.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/+layout.svelte" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routes/+page.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/+page.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/[slug]/+error.svelte" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/[slug]/+page.server.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/[slug]/+page.svelte" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/about/+page.svelte" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/settings/+page.svelte" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tailwind.config.cjs" beforeDir="false" afterPath="$PROJECT_DIR$/tailwind.config.cjs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/profile/player/+page.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/profile/player/+page.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/profile/team/+page.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/profile/team/+page.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/rank/+page.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/rank/+page.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/go-to-icon.svg" beforeDir="false" afterPath="$PROJECT_DIR$/static/go-to-icon.svg" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,7 +28,6 @@
         <option value="+layout" />
         <option value="[slug]/+page" />
         <option value="about/+page" />
-        <option value="TypeScript File" />
         <option value="+error" />
         <option value="settings" />
         <option value="settings/+page" />
@@ -47,6 +45,10 @@
         <option value="lib/Carousel" />
         <option value="lib/AdDialog" />
         <option value="select-player" />
+        <option value="Modal" />
+        <option value="BottomDrawer" />
+        <option value="TypeScript File" />
+        <option value="test/page+" />
       </list>
     </option>
   </component>
@@ -74,27 +76,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;code.cleanup.on.save&quot;: &quot;true&quot;,
-    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;D:\\huddle and score\\survey-site\\node_modules\\prettier&quot;,
-    &quot;rearrange.code.on.save&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;settings.javascript.linters.eslint&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;D:\\huddle and score\\survey-site\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "code.cleanup.on.save": "true",
+    "last_opened_file_path": "D:/huddle and score/survey-admin-site",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.standard": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.standard": "",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "prettierjs.PrettierConfiguration.Package": "D:\\huddle and score\\survey-site\\node_modules\\prettier",
+    "rearrange.code.on.save": "true",
+    "settings.editor.selected.configurable": "settings.javascript.linters.eslint",
+    "ts.external.directory.path": "D:\\huddle and score\\survey-site\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -106,7 +109,11 @@
       <workItem from="1661467899393" duration="1870000" />
       <workItem from="1661469802231" duration="26000" />
       <workItem from="1661469839318" duration="1689000" />
-      <workItem from="1661511344555" duration="41425000" />
+      <workItem from="1661511344555" duration="41546000" />
+      <workItem from="1661761328989" duration="10230000" />
+      <workItem from="1661795118246" duration="28000" />
+      <workItem from="1662136833928" duration="4672000" />
+      <workItem from="1662166632878" duration="2731000" />
     </task>
     <servers />
   </component>

@@ -18,9 +18,9 @@
     "66da88": "What Eves."
   };
 </script>
-<h1 class="text-5xl font-bold flex justify-center pt-10">Profile</h1>
-<div class="m-5 bg-gray-200">
-  <h2 class="text-3xl flex justify-center pt-10">Team</h2>
+<h1 class="text-5xl font-bold text-center mt-10">Profile</h1>
+<div class="m-5 bg-gray-200 pt-10">
+  <h2 class="text-3xl text-center">Team</h2>
   {#each Object.keys(teams) as teamID}
     <a href={"/profile/team/" + teamID} class="block p-3 bg-stone-400 mt-2">{teams[teamID]}</a>
   {/each}

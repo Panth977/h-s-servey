@@ -1,12 +1,14 @@
-<script>
+<script lang="ts">
   import "../app.css";
 </script>
 
 <nav class="bg-gray-200 h-16 z-50 sticky top-0 w-full">
-  <button onclick="history.back()"><img alt="back icon" class="aspect-square h-16" src="/back-icon.svg" /></button>
+  <button onclick="history.back()">
+    <img alt="back icon" class="aspect-square h-16" src="/back-icon.svg" />
+  </button>
 </nav>
 
-<div class="app min-h-[calc(100vh-8rem)]">
+<div class="lateral-margin app min-h-[calc(100vh-8rem)] pb-10">
   <slot />
 </div>
 
@@ -17,11 +19,7 @@
 </div>
 
 <style>
-    /*.app :global(.drawer .overlay) {*/
-    /*    @apply bg-red-50;*/
-    /*}*/
-
     .app :global(.drawer .panel) {
-        @apply bg-transparent;
+        background-color: transparent;
     }
 </style>

@@ -1,37 +1,40 @@
 <script lang="ts">
-  import { onDestroy, onMount } from "svelte";
-  import AdDialog from "../lib/AdDialog.svelte";
-  import Drawer from "svelte-drawer-component";
+  import { onMount } from "svelte";
   import { allPlayerStats } from "./rank/player/+page.svelte";
+  import Modal from "../lib/Modal.svelte";
+  import BottomDrawer from "../lib/BottomDrawer.svelte";
 
   let upcomingMatchDrawer = false;
   let newsDrawer = false;
+  let adModal: undefined | number;
   let i = 1;
   let interval;
-  onMount(function() {
-    if (interval) clearInterval(interval);
-    if (interval !== null) interval = setInterval(function() {
-      i %= ads.length;
-      document.getElementById(getAdId(i++)).scrollIntoView({ behavior: "smooth", block: "nearest" });
-    }, 5000);
-    addEventListener("scroll", function(event) {
-      if (window.scrollY > 200) {
-        if (interval) {
-          clearInterval(interval);
-          interval = null;
-        }
-      } else {
-        if (!interval) {
-          interval = setInterval(function() {
-            i %= ads.length;
-            document.getElementById(getAdId(i++)).scrollIntoView({ behavior: "smooth", block: "nearest" });
-          }, 5000);
-        }
+
+  function listenScroll() {
+    if (window.scrollY > 200) {
+      if (interval) {
+        clearInterval(interval);
+        interval = undefined;
       }
-    });
-  });
-  onDestroy(function() {
-    if (interval) clearInterval(interval);
+    } else {
+      if (!interval) {
+        interval = setInterval(function() {
+          i %= ads.length;
+          document
+            .getElementById(getAdId(i++))
+            ?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        }, 5000);
+      }
+    }
+  }
+
+  onMount(function() {
+    listenScroll();
+    addEventListener("scroll", listenScroll);
+    return function() {
+      if (interval) clearInterval(interval);
+      removeEventListener("scroll", listenScroll);
+    };
   });
 
   function getAdId(index: number) {
@@ -47,7 +50,11 @@
     0: { name: "MCI", poster: "/team-poster.png", goal: 2 },
     1: { name: "MUN", poster: "/team-poster.png", goal: 0 }
   };
-  const upcomingMatches: { 0: { name: string, poster: string }, 1: { name: string, poster: string }, time: string }[] = [
+  const upcomingMatches: {
+    0: { name: string; poster: string };
+    1: { name: string; poster: string };
+    time: string;
+  }[] = [
     {
       0: { name: "Liverpool", poster: "/team-poster.png" },
       1: { name: "Chelsea", poster: "/team-poster.png" },
@@ -67,7 +74,8 @@
       0: { name: "PSG", poster: "/team-poster.png" },
       1: { name: "Real Madrid", poster: "/team-poster.png" },
       time: "8:00 PM GMT"
-    }, {
+    },
+    {
       0: { name: "Liverpool", poster: "/team-poster.png" },
       1: { name: "Chelsea", poster: "/team-poster.png" },
       time: "4:00 PM GMT"
@@ -76,7 +84,8 @@
       0: { name: "PSG", poster: "/team-poster.png" },
       1: { name: "Real Madrid", poster: "/team-poster.png" },
       time: "8:00 PM GMT"
-    }, {
+    },
+    {
       0: { name: "Liverpool", poster: "/team-poster.png" },
       1: { name: "Chelsea", poster: "/team-poster.png" },
       time: "4:00 PM GMT"
@@ -85,7 +94,8 @@
       0: { name: "PSG", poster: "/team-poster.png" },
       1: { name: "Real Madrid", poster: "/team-poster.png" },
       time: "8:00 PM GMT"
-    }, {
+    },
+    {
       0: { name: "Liverpool", poster: "/team-poster.png" },
       1: { name: "Chelsea", poster: "/team-poster.png" },
       time: "4:00 PM GMT"
@@ -96,128 +106,158 @@
       time: "8:00 PM GMT"
     }
   ];
-  const news: { title: string, content: string, image: string }[] = [
+  const news: { title: string; content: string; image: string }[] = [
     {
       title: "Streak broke",
-      content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      content:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
       image: "/news-image-1.jpg"
     },
     {
       title: "Necessary times",
-      content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      content:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
       image: "/news-image-2.webp"
-    }, {
+    },
+    {
       title: "Streak broke",
-      content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      content:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
       image: "/news-image-1.jpg"
     },
     {
       title: "Necessary times",
-      content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      content:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
       image: "/news-image-2.webp"
-    }, {
+    },
+    {
       title: "Streak broke",
-      content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      content:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
       image: "/news-image-1.jpg"
     },
     {
       title: "Necessary times",
-      content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      content:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
       image: "/news-image-2.webp"
-    }, {
+    },
+    {
       title: "Streak broke",
-      content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      content:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
       image: "/news-image-1.jpg"
     },
     {
       title: "Necessary times",
-      content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      content:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
       image: "/news-image-2.webp"
     }
   ];
-  allPlayerStats;
 </script>
 
 <div class="p-5 z-50 bg-white sticky top-16 w-full">
-  <div class="bg-gray-700 rounded-xl h-14 justify-around flex items-center px-5 text-3xl text-white">
-    <span class="flex">
-      <img alt={liveScore[0].name}
-           class="p-1 mx-4 w-10 h-10 bg-white rounded-full ring-2 ring-white"
-           src={liveScore[0].poster} />
+  <div
+    class="bg-gray-700 rounded-xl h-14 justify-around flex items-center px-5 text-3xl text-white"
+  >
+		<span class="flex">
+			<img
+        alt={liveScore[0].name}
+        class="p-1 mx-4 w-10 h-10 bg-white rounded-full ring-2 ring-white"
+        src={liveScore[0].poster}
+      />
       {liveScore[0].name}
-    </span>
+		</span>
     <span class="pb-1">{liveScore[0].goal}-{liveScore[1].goal}</span>
     <span class="flex">
-      {liveScore[1].name}
-      <img alt={liveScore[1].name}
-           class="p-1 mx-4 w-10 h-10 bg-white rounded-full ring-2 ring-white"
-           src={liveScore[1].poster} />
-    </span>
+			{liveScore[1].name}
+      <img
+        alt={liveScore[1].name}
+        class="p-1 mx-4 w-10 h-10 bg-white rounded-full ring-2 ring-white"
+        src={liveScore[1].poster}
+      />
+		</span>
   </div>
 </div>
 <ul
   class="flex w-full snap-x snap-mandatory gap-6 overflow-x-auto overscroll-x-none pb-6 before:w-3 before:shrink-0 after:w-3 after:shrink-0 hide-scroll-bar"
 >
+  <Modal close={() => adModal = undefined} open={adModal !== undefined} title={ads[adModal]?.title}>
+    {#if (adModal !== undefined)}
+      <img alt={ads[adModal].title} class="mt-3 h-44 object-contain" src={ads[adModal].src}>
+      <div class="flex justify-end">
+        <a class="p-2 border-b text-2xl h-10 capitalize bg-stone-800" href={ads[adModal].url}
+           target="_blank">
+          <img alt="link" class="h-auto aspect-square w-5 ml-2" src="/go-to-icon.svg" />
+        </a>
+      </div>
+    {/if}
+  </Modal>
   {#each ads as { src, title, url }, index}
     <li id={getAdId(index)} class="shrink-0 snap-center">
-      <img on:click={async () => {
-        const res = await import("svelte-dialogs");
-        await res.dialogs.modal({content: AdDialog, props: {src, title, url}});
-      }}
-           src={src}
-           class="h-44 w-screen object-cover"
-           alt={title} />
+      <img
+        on:click={() => adModal = index}
+        {src}
+        class="h-44 ad-img object-cover"
+        alt={title}
+      />
     </li>
   {/each}
 </ul>
 <div class="mt-5 bg-gray-200 py-3 space-y-3">
   {#each upcomingMatches.slice(0, 2) as match}
     <div class="h-14 justify-around flex items-center">
-      <img alt={match[0].name}
-           class="p-1 mx-4 w-10 h-10 bg-white rounded-full ring-2 ring-white"
-           src={match[0].poster} />
+      <img
+        alt={match[0].name}
+        class="p-1 mx-4 w-10 h-10 bg-white rounded-full ring-2 ring-white"
+        src={match[0].poster}
+      />
       <span>
-      <span class="text-3xl block">
-        {match[0].name} - {match[1].name}
-      </span>
-      <span class="block flex justify-center">
-        {match.time}
-      </span>
-    </span>
-      <img alt={match[1].name}
-           class="p-1 mx-4 w-10 h-10 bg-white rounded-full ring-2 ring-white"
-           src={match[1].poster} />
+				<span class="text-3xl block">
+					{match[0].name} - {match[1].name}
+				</span>
+				<span class="flex justify-center">
+					{match.time}
+				</span>
+			</span>
+      <img
+        alt={match[1].name}
+        class="p-1 mx-4 w-10 h-10 bg-white rounded-full ring-2 ring-white"
+        src={match[1].poster}
+      />
     </div>
   {/each}
   <div class="flex justify-end px-5">
-    <Drawer open={upcomingMatchDrawer} placement="bottom" size="100%">
-      <div class="h-20 overflow-hidden fixed top-0 w-full" on:click={() => upcomingMatchDrawer = false}>
-      </div>
-      <div class="bg-stone-800 h-14 mt-20 text-white rounded-t-3xl text-3xl py-3 flex justify-center">
-        Fixtures
-      </div>
-      <div class="bg-white min-h-[calc(100vh-8.5rem)] space-y-5 p-5">
-        {#each upcomingMatches as match}
-          <div class="h-14 justify-around flex items-center">
-            <img alt={match[0].name}
-                 class="p-1 mx-4 w-10 h-10 bg-white rounded-full ring-2 ring-white"
-                 src={match[0].poster} />
-            <span>
-      <span class="text-3xl block">
-        {match[0].name} - {match[1].name}
-      </span>
-      <span class="block flex justify-center">
-        {match.time}
-      </span>
-    </span>
-            <img alt={match[1].name}
-                 class="p-1 mx-4 w-10 h-10 bg-white rounded-full ring-2 ring-white"
-                 src={match[1].poster} />
-          </div>
-        {/each}
-      </div>
-    </Drawer>
-    <button class="bg-stone-800 text-white p-1 rounded-full px-5" on:click={() => upcomingMatchDrawer = true}>
+    <BottomDrawer close={() => (upcomingMatchDrawer = false)} open={upcomingMatchDrawer} title="Fixtures">
+      {#each upcomingMatches as match}
+        <div class="h-14 justify-around flex items-center">
+          <img
+            alt={match[0].name}
+            class="p-1 mx-4 w-10 h-10 bg-white rounded-full ring-2 ring-white"
+            src={match[0].poster}
+          />
+          <span>
+								<span class="text-3xl block">
+									{match[0].name} - {match[1].name}
+								</span>
+								<span class="flex justify-center">
+									{match.time}
+								</span>
+							</span>
+          <img
+            alt={match[1].name}
+            class="p-1 mx-4 w-10 h-10 bg-white rounded-full ring-2 ring-white"
+            src={match[1].poster}
+          />
+        </div>
+      {/each}
+    </BottomDrawer>
+    <button
+      class="bg-stone-800 text-white p-1 rounded-full px-5"
+      on:click={() => (upcomingMatchDrawer = true)}
+    >
       See All
     </button>
   </div>
@@ -240,9 +280,11 @@
       {#each allPlayerStats.slice(0, 2) as playerStats, i}
         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
           <td class="py-4 px-6">{i + 1}</td>
-          <th class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-              scope="row">
-            <a href={"/profile/player/" + playerStats.playerID}>{playerStats.name}</a>
+          <th
+            class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+            scope="row"
+          >
+            <a href="/profile/player/{playerStats.playerID}">{playerStats.name}</a>
           </th>
           <td class="py-4 px-6">{playerStats.m}</td>
           <td class="py-4 px-6">{playerStats.g}</td>
@@ -255,9 +297,7 @@
     </table>
   </div>
   <div class="flex mt-3 justify-end px-5">
-    <a class="bg-stone-800 text-white p-1 rounded-full px-5" href="rank/player">
-      Full Table
-    </a>
+    <a class="bg-stone-800 text-white p-1 rounded-full px-5" href="rank/player"> Full Table </a>
   </div>
 </div>
 <div class="h-48 mt-5 bg-gray-200">
@@ -280,31 +320,26 @@
       </div>
       <img alt={news[1].title} class="object-contain h-20 pt-2 w-[20vw]" src={news[1].image} />
     </div>
-
   </div>
   <div class="flex mt-3 justify-end px-5">
-    <Drawer open={newsDrawer} placement="bottom" size="100%">
-      <div class="h-20 overflow-hidden fixed top-0 w-full" on:click={() => newsDrawer = false}>
-      </div>
-      <div class="bg-stone-800 h-14 mt-20 text-white rounded-t-3xl text-3xl py-3 flex justify-center">
-        News
-      </div>
-      <div class="bg-white min-h-[calc(100vh-8.5rem)] space-y-5 p-5">
-        {#each news as { title, content, image }}
-          <h2 class="text-xl font-bold">{title}</h2>
-          <img src={image} alt={title} />
-          <p class="lg">{content}</p>
-        {/each}
-      </div>
-    </Drawer>
-    <button class="bg-stone-800 text-white p-1 rounded-full px-5" on:click={() => newsDrawer = true}>
+    <BottomDrawer close="{() => (newsDrawer = false)}" open={newsDrawer} title="News">
+      {#each news as { title, content, image }}
+        <h2 class="text-xl font-bold">{title}</h2>
+        <img src={image} alt={title} />
+        <p class="lg">{content}</p>
+      {/each}
+    </BottomDrawer>
+    <button
+      class="bg-stone-800 text-white p-1 rounded-full px-5"
+      on:click={() => (newsDrawer = true)}
+    >
       See All
     </button>
   </div>
 </div>
 
 <!-- (latest-2-videos) video poster, text, bottom-drawer for see more -->
-<div class="h-10"></div>
+
 <style>
     .hide-scroll-bar {
         -ms-overflow-style: none; /* Internet Explorer 10+ */
@@ -314,5 +349,4 @@
     .hide-scroll-bar::-webkit-scrollbar {
         display: none; /* Safari and Chrome */
     }
-
 </style>

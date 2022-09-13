@@ -3,7 +3,7 @@
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 	import Back from '$lib/Icon/Back.svelte';
-	import Ads from '$lib/Ads.svelte';
+	import Ads from '$lib/Components/Ads.svelte';
 	import Video from '$lib/Video.svelte';
 	$: videoID = $page.params.videoID;
 

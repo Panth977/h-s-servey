@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Drawer from 'svelte-drawer-component';
-	import Back from './Icon/Back.svelte';
+	import Back from '../Icon/Back.svelte';
 
 	export let open: boolean;
 	export let close: () => void;

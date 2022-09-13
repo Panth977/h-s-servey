@@ -1,5 +1,5 @@
 <script lang="ts">
-	import AppDrawer from '$lib/AppDrawer.svelte';
+	import AppDrawer from '$lib/Components/AppDrawer.svelte';
 	import type { EventTeam } from '$lib/firebase/db';
 	import Back from '$lib/Icon/Back.svelte';
 	import { event } from '$lib/state';

@@ -1,9 +1,9 @@
 <script lang="ts">
 	import type { Video } from '$lib/firebase/db';
 	import { event } from '$lib/state';
-	import AppDrawer from './AppDrawer.svelte';
+	import AppDrawer from './Components/AppDrawer.svelte';
 	import VideoComponent from './Video.svelte';
-	import Skeleton from './Skeleton.svelte';
+	import Skeleton from './Components/Skeleton.svelte';
 	export let allVideos: Video[];
 	export let loading: boolean;
 	export let seeMore: VoidFunction | undefined = undefined;

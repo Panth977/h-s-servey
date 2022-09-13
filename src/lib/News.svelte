@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Ads from './Ads.svelte';
+	import Ads from './Components/Ads.svelte';
 	import type { News } from './firebase/db';
 	import { event } from './state';
 

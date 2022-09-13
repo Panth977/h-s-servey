@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { event, latestNewsListner, latestVideosListner } from '$lib/state';
-	import AppDrawer from '$lib/AppDrawer.svelte';
-	import Ads from '$lib/Ads.svelte';
+	import AppDrawer from '$lib/Components/AppDrawer.svelte';
+	import Ads from '$lib/Components/Ads.svelte';
 	import AllFixtures from '../lib/AllFixtures.svelte';
 	import LocationPin from '$lib/Icon/LocationPin.svelte';
 	import Logo from '$lib/Icon/Logo.svelte';

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Video } from '$lib/firebase/db';
 	import { event } from '$lib/state';
-	import BottomDrawer from './BottomDrawer.svelte';
+	import AppDrawer from './AppDrawer.svelte';
 	import VideoComponent from './Video.svelte';
 	import Skeleton from './Skeleton.svelte';
 	export let allVideos: Video[];
@@ -10,7 +10,7 @@
 	export let selectedVideo: Video | undefined = undefined;
 </script>
 
-<BottomDrawer
+<AppDrawer
 	placement="right"
 	open={selectedVideo !== undefined}
 	close={() => (selectedVideo = undefined)}
@@ -19,7 +19,7 @@
 	{#if selectedVideo}
 		<VideoComponent video={selectedVideo} />
 	{/if}
-</BottomDrawer>
+</AppDrawer>
 
 {#each allVideos as video}
 	<button

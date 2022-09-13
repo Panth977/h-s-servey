@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { News } from '$lib/firebase/db';
 	import { event } from '$lib/state';
-	import BottomDrawer from './BottomDrawer.svelte';
+	import AppDrawer from './AppDrawer.svelte';
 	import NewsComponent from './News.svelte';
 	import Skeleton from './Skeleton.svelte';
 	export let allNews: News[];
@@ -10,7 +10,7 @@
 	export let selectedNews: News | undefined = undefined;
 </script>
 
-<BottomDrawer
+<AppDrawer
 	placement="right"
 	open={selectedNews !== undefined}
 	close={() => (selectedNews = undefined)}
@@ -19,7 +19,7 @@
 	{#if selectedNews}
 		<NewsComponent news={selectedNews} />
 	{/if}
-</BottomDrawer>
+</AppDrawer>
 
 {#each allNews as news}
 	<button

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { event, latestNewsListner, latestVideosListner } from '$lib/state';
-	import BottomDrawer from '$lib/BottomDrawer.svelte';
+	import AppDrawer from '$lib/AppDrawer.svelte';
 	import Ads from '$lib/Ads.svelte';
 	import AllFixtures from '../lib/AllFixtures.svelte';
 	import LocationPin from '$lib/Icon/LocationPin.svelte';
@@ -61,13 +61,13 @@
 			{:else}
 				<div class="text-center py-5">No Upcoming Matches</div>
 			{/if}
-			<BottomDrawer
+			<AppDrawer
 				close={() => (upcomingMatchDrawer = false)}
 				open={upcomingMatchDrawer}
 				title="AllFixtures"
 			>
 				<AllFixtures fixtures={$event.fixtures} />
-			</BottomDrawer>
+			</AppDrawer>
 			<button
 				class="w-full text-base1 border-base1/50 border-t-2 mt-2"
 				style="font-weight: 500;"
@@ -181,7 +181,7 @@
 				<span>Latest News</span><Logo />
 			</h3>
 			<AllNews loading={$latestNews.loading} allNews={$latestNews.data.slice(0, 2)} />
-			<BottomDrawer close={() => (latestNewsDrawer = false)} open={latestNewsDrawer} title="News">
+			<AppDrawer close={() => (latestNewsDrawer = false)} open={latestNewsDrawer} title="News">
 				<AllNews
 					loading={$latestNews.loading}
 					allNews={$latestNews.data}
@@ -189,7 +189,7 @@
 						? latestNewsListner.seeMore
 						: undefined}
 				/>
-			</BottomDrawer>
+			</AppDrawer>
 			<button
 				class="w-full text-base1 border-base1/50 border-t-2 mt-2"
 				style="font-weight: 500;"
@@ -207,7 +207,7 @@
 				<span>Latest Videos</span><Logo />
 			</h3>
 			<AllVideos loading={$latestVideos.loading} allVideos={$latestVideos.data.slice(0, 2)} />
-			<BottomDrawer
+			<AppDrawer
 				close={() => (latestVideosDrawer = false)}
 				open={latestVideosDrawer}
 				title="Videos"
@@ -219,7 +219,7 @@
 						? latestVideosListner.seeMore
 						: undefined}
 				/>
-			</BottomDrawer>
+			</AppDrawer>
 			<button
 				class="w-full text-base1 border-base1/50 border-t-2 mt-2"
 				style="font-weight: 500;"

@@ -1,12 +1,12 @@
 <script lang="ts">
-	import BottomDrawer from '$lib/BottomDrawer.svelte';
+	import AppDrawer from '$lib/AppDrawer.svelte';
 	import type { EventTeam } from '$lib/firebase/db';
 	import Back from '$lib/Icon/Back.svelte';
 	import { event } from '$lib/state';
 	let selectedTeam: undefined | EventTeam = undefined;
 </script>
 
-<BottomDrawer
+<AppDrawer
 	open={selectedTeam !== undefined}
 	close={() => (selectedTeam = undefined)}
 	placement="right"
@@ -31,7 +31,7 @@
 			{/each}
 		{/if}
 	</div>
-</BottomDrawer>
+</AppDrawer>
 <div class="flex mt-1 justify-between mx-8">
 	<button on:click={() => history.back()}><Back /></button>
 	<span>Select Teams</span>

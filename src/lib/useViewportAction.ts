@@ -1,18 +1,14 @@
+import type { Action } from 'svelte/types/runtime/action';
 let intersectionObserver: IntersectionObserver;
 
-function ensureIntersectionObserver() {
-	if (intersectionObserver) return;
-
-	intersectionObserver = new IntersectionObserver((entries) => {
+const viewport: Action<HTMLElement, {}> = (element: Element) => {
+	intersectionObserver ??= new IntersectionObserver((entries) => {
 		entries.forEach((entry) => {
-			const eventName = entry.isIntersecting ? 'enterViewport' : 'exitViewport';
-			entry.target.dispatchEvent(new CustomEvent(eventName));
+			entry.target.dispatchEvent(
+				new CustomEvent(entry.isIntersecting ? 'enterViewport' : 'exitViewport')
+			);
 		});
 	});
-}
-
-export default function viewport(element: Element) {
-	ensureIntersectionObserver();
 
 	intersectionObserver.observe(element);
 
@@ -21,4 +17,5 @@ export default function viewport(element: Element) {
 			intersectionObserver.unobserve(element);
 		}
 	};
-}
+};
+export default viewport;

@@ -1,371 +1,52 @@
 <script lang="ts">
-  import Modal from "../../../lib/Modal.svelte";
-
-  const teams: { [teamID: string]: { name: string; player: { [playerID: string]: string } } } = {
-    d5v4s: {
-      name: "Man. City",
-      player: {
-        ad8: "Player1",
-        ad8d8: "Player3",
-        add8: "Player1",
-        afd8d8: "Player3",
-        afd8: "Player1",
-        ad8fd8: "Player3",
-        ada8: "Player1",
-        ada8d8: "Player3",
-        adas8: "Player1",
-        ad8sd8: "Player3",
-        adasd8: "Player1",
-        afd8asd8: "Player3",
-        afdd8: "Player1",
-        ad8fdd8: "Player3",
-        adad8: "Player1",
-        asdda8d8: "Player3"
-      }
-    },
-    da68d: {
-      name: "What Eves.",
-      player: {
-        ad8: "Player1",
-        ad8d8: "Player3",
-        add8: "Player1",
-        afd8d8: "Player3",
-        afd8: "Player1",
-        ad8fd8: "Player3",
-        ada8: "Player1",
-        ada8d8: "Player3",
-        adas8: "Player1",
-        ad8sd8: "Player3",
-        adasd8: "Player1",
-        afd8asd8: "Player3",
-        afdd8: "Player1",
-        ad8fdd8: "Player3",
-        adad8: "Player1",
-        asdda8d8: "Player3"
-      }
-    },
-    da5v4: {
-      name: "What Eves.",
-      player: {
-        ad8: "Player1",
-        ad8d8: "Player3",
-        add8: "Player1",
-        afd8d8: "Player3",
-        afd8: "Player1",
-        ad8fd8: "Player3",
-        ada8: "Player1",
-        ada8d8: "Player3",
-        adas8: "Player1",
-        ad8sd8: "Player3",
-        adasd8: "Player1",
-        afd8asd8: "Player3",
-        afdd8: "Player1",
-        ad8fdd8: "Player3",
-        adad8: "Player1",
-        asdda8d8: "Player3"
-      }
-    },
-    ad93c: {
-      name: "What Eves.",
-      player: {
-        ad8: "Player1",
-        ad8d8: "Player3",
-        add8: "Player1",
-        afd8d8: "Player3",
-        afd8: "Player1",
-        ad8fd8: "Player3",
-        ada8: "Player1",
-        ada8d8: "Player3",
-        adas8: "Player1",
-        ad8sd8: "Player3",
-        adasd8: "Player1",
-        afd8asd8: "Player3",
-        afdd8: "Player1",
-        ad8fdd8: "Player3",
-        adad8: "Player1",
-        asdda8d8: "Player3"
-      }
-    },
-    "68ad4": {
-      name: "Man. City",
-      player: {
-        ad8: "Player1",
-        ad8d8: "Player3",
-        add8: "Player1",
-        afd8d8: "Player3",
-        afd8: "Player1",
-        ad8fd8: "Player3",
-        ada8: "Player1",
-        ada8d8: "Player3",
-        adas8: "Player1",
-        ad8sd8: "Player3",
-        adasd8: "Player1",
-        afd8asd8: "Player3",
-        afdd8: "Player1",
-        ad8fdd8: "Player3",
-        adad8: "Player1",
-        asdda8d8: "Player3"
-      }
-    },
-    "6a84c": {
-      name: "What Eves.",
-      player: {
-        ad8: "Player1",
-        ad8d8: "Player3",
-        add8: "Player1",
-        afd8d8: "Player3",
-        afd8: "Player1",
-        ad8fd8: "Player3",
-        ada8: "Player1",
-        ada8d8: "Player3",
-        adas8: "Player1",
-        ad8sd8: "Player3",
-        adasd8: "Player1",
-        afd8asd8: "Player3",
-        afdd8: "Player1",
-        ad8fdd8: "Player3",
-        adad8: "Player1",
-        asdda8d8: "Player3"
-      }
-    },
-    a8dcd: {
-      name: "Man. City",
-      player: {
-        ad8: "Player1",
-        ad8d8: "Player3",
-        add8: "Player1",
-        afd8d8: "Player3",
-        afd8: "Player1",
-        ad8fd8: "Player3",
-        ada8: "Player1",
-        ada8d8: "Player3",
-        adas8: "Player1",
-        ad8sd8: "Player3",
-        adasd8: "Player1",
-        afd8asd8: "Player3",
-        afdd8: "Player1",
-        ad8fdd8: "Player3",
-        adad8: "Player1",
-        asdda8d8: "Player3"
-      }
-    },
-    "6da88": {
-      name: "What Eves.",
-      player: {
-        ad8: "Player1",
-        ad8d8: "Player3",
-        add8: "Player1",
-        afd8d8: "Player3",
-        afd8: "Player1",
-        ad8fd8: "Player3",
-        ada8: "Player1",
-        ada8d8: "Player3",
-        adas8: "Player1",
-        ad8sd8: "Player3",
-        adasd8: "Player1",
-        afd8asd8: "Player3",
-        afdd8: "Player1",
-        ad8fdd8: "Player3",
-        adad8: "Player1",
-        asdda8d8: "Player3"
-      }
-    },
-    "6d5v4s": {
-      name: "Man. City",
-      player: {
-        ad8: "Player1",
-        ad8d8: "Player3",
-        add8: "Player1",
-        afd8d8: "Player3",
-        afd8: "Player1",
-        ad8fd8: "Player3",
-        ada8: "Player1",
-        ada8d8: "Player3",
-        adas8: "Player1",
-        ad8sd8: "Player3",
-        adasd8: "Player1",
-        afd8asd8: "Player3",
-        afdd8: "Player1",
-        ad8fdd8: "Player3",
-        adad8: "Player1",
-        asdda8d8: "Player3"
-      }
-    },
-    "6da68d": {
-      name: "What Eves.",
-      player: {
-        ad8: "Player1",
-        ad8d8: "Player3",
-        add8: "Player1",
-        afd8d8: "Player3",
-        afd8: "Player1",
-        ad8fd8: "Player3",
-        ada8: "Player1",
-        ada8d8: "Player3",
-        adas8: "Player1",
-        ad8sd8: "Player3",
-        adasd8: "Player1",
-        afd8asd8: "Player3",
-        afdd8: "Player1",
-        ad8fdd8: "Player3",
-        adad8: "Player1",
-        asdda8d8: "Player3"
-      }
-    },
-    "6da5v4": {
-      name: "Man. City",
-      player: {
-        ad8: "Player1",
-        ad8d8: "Player3",
-        add8: "Player1",
-        afd8d8: "Player3",
-        afd8: "Player1",
-        ad8fd8: "Player3",
-        ada8: "Player1",
-        ada8d8: "Player3",
-        adas8: "Player1",
-        ad8sd8: "Player3",
-        adasd8: "Player1",
-        afd8asd8: "Player3",
-        afdd8: "Player1",
-        ad8fdd8: "Player3",
-        adad8: "Player1",
-        asdda8d8: "Player3"
-      }
-    },
-    "6ad93c": {
-      name: "What Eves.",
-      player: {
-        ad8: "Player1",
-        ad8d8: "Player3",
-        add8: "Player1",
-        afd8d8: "Player3",
-        afd8: "Player1",
-        ad8fd8: "Player3",
-        ada8: "Player1",
-        ada8d8: "Player3",
-        adas8: "Player1",
-        ad8sd8: "Player3",
-        adasd8: "Player1",
-        afd8asd8: "Player3",
-        afdd8: "Player1",
-        ad8fdd8: "Player3",
-        adad8: "Player1",
-        asdda8d8: "Player3"
-      }
-    },
-    "668ad4": {
-      name: "Man. City",
-      player: {
-        ad8: "Player1",
-        ad8d8: "Player3",
-        add8: "Player1",
-        afd8d8: "Player3",
-        afd8: "Player1",
-        ad8fd8: "Player3",
-        ada8: "Player1",
-        ada8d8: "Player3",
-        adas8: "Player1",
-        ad8sd8: "Player3",
-        adasd8: "Player1",
-        afd8asd8: "Player3",
-        afdd8: "Player1",
-        ad8fdd8: "Player3",
-        adad8: "Player1",
-        asdda8d8: "Player3"
-      }
-    },
-    "66a84c": {
-      name: "What Eves.",
-      player: {
-        ad8: "Player1",
-        ad8d8: "Player3",
-        add8: "Player1",
-        afd8d8: "Player3",
-        afd8: "Player1",
-        ad8fd8: "Player3",
-        ada8: "Player1",
-        ada8d8: "Player3",
-        adas8: "Player1",
-        ad8sd8: "Player3",
-        adasd8: "Player1",
-        afd8asd8: "Player3",
-        afdd8: "Player1",
-        ad8fdd8: "Player3",
-        adad8: "Player1",
-        asdda8d8: "Player3"
-      }
-    },
-    "6a8dcd": {
-      name: "Man. City",
-      player: {
-        ad8: "Player1",
-        ad8d8: "Player3",
-        add8: "Player1",
-        afd8d8: "Player3",
-        afd8: "Player1",
-        ad8fd8: "Player3",
-        ada8: "Player1",
-        ada8d8: "Player3",
-        adas8: "Player1",
-        ad8sd8: "Player3",
-        adasd8: "Player1",
-        afd8asd8: "Player3",
-        afdd8: "Player1",
-        ad8fdd8: "Player3",
-        adad8: "Player1",
-        asdda8d8: "Player3"
-      }
-    },
-    "66da88": {
-      name: "What Eves.",
-      player: {
-        ad8: "Player1",
-        ad8d8: "Player3",
-        add8: "Player1",
-        afd8d8: "Player3",
-        afd8: "Player1",
-        ad8fd8: "Player3",
-        ada8: "Player1",
-        ada8d8: "Player3",
-        adas8: "Player1",
-        ad8sd8: "Player3",
-        adasd8: "Player1",
-        afd8asd8: "Player3",
-        afdd8: "Player1",
-        ad8fdd8: "Player3",
-        adad8: "Player1",
-        asdda8d8: "Player3"
-      }
-    }
-  };
-  let selectedTeam: undefined | string;
+	import BottomDrawer from '$lib/BottomDrawer.svelte';
+	import type { EventTeam } from '$lib/firebase/db';
+	import Back from '$lib/Icon/Back.svelte';
+	import { event } from '$lib/state';
+	let selectedTeam: undefined | EventTeam = undefined;
 </script>
 
-<h1 class="text-5xl font-bold text-center pt-10">Profile</h1>
-<div class="m-5 bg-gray-200">
-  <h2 class="text-3xl text-center pt-10">Team</h2>
-  {#each Object.keys(teams) as teamID}
-    <button
-      on:click={() => (selectedTeam = teamID)}
-      class="text-start w-full p-3 bg-stone-400 mt-2"
-    >
-      {teams[teamID].name}
-    </button>
-  {/each}
-  <Modal close={() => (selectedTeam = undefined)} open={selectedTeam !== undefined} title="Players">
-    <div class="mt-2 space-y-2">
-      {#if (selectedTeam !== undefined)}
-        {#each Object.keys(teams[selectedTeam].player) as playerID}
-          <a
-            on:click={() => (selectedTeam = undefined)}
-            href={'/profile/player/' + playerID}
-            class="p-2 w-52 bg-gray-200  block cursor-pointer"
-          >{teams[selectedTeam].player[playerID]}</a
-          >
-        {/each}
-      {/if}
-    </div>
-  </Modal>
+<BottomDrawer
+	open={selectedTeam !== undefined}
+	close={() => (selectedTeam = undefined)}
+	placement="right"
+	title={selectedTeam?.name ?? ''}
+>
+	<div class="grid grid-cols-2 mx-4 gap-4">
+		{#if selectedTeam}
+			{#each selectedTeam.players as player}
+				<a
+					href="/profile/player/{player.id}"
+					class="w-full font-bold py-5 text-center rounded-lg aspect-square mt-5 flex justify-center items-center bg-base1lighter"
+				>
+					<div>
+						<img
+							class="w-[20vw] rounded-full sm:w-20 mx-auto"
+							src={player.displayImage}
+							alt={player.name}
+						/>
+						<span class="block mt-2 sm:mt-5 sm:text-xl capitalize">{player.name}</span>
+					</div>
+				</a>
+			{/each}
+		{/if}
+	</div>
+</BottomDrawer>
+<div class="flex mt-1 justify-between mx-8">
+	<button on:click={() => history.back()}><Back /></button>
+	<span>Select Teams</span>
+	<span />
 </div>
-
+<div class="grid grid-cols-2 mx-4 gap-4">
+	{#each $event.sortedTeams as team}
+		<button
+			on:click={() => (selectedTeam = team)}
+			class="w-full font-bold py-5 text-center rounded-lg aspect-square mt-5 flex justify-center items-center bg-base1lighter"
+		>
+			<div>
+				<img class="w-[20vw] sm:w-20 mx-auto" src={team.logo} alt={team.name} />
+				<span class="block mt-2 sm:mt-5 sm:text-xl capitalize">{team.name}</span>
+			</div>
+		</button>
+	{/each}
+</div>

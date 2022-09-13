@@ -1,3 +1,23 @@
-<h1 class="text-5xl font-bold flex justify-center pt-10">Rank</h1>
-<a class="ml-5 block bg-gray-200 rounded-xl p-3 mt-5 text-xl font-bold w-52" href="rank/team">Team</a>
-<a class="ml-5 block bg-gray-200 rounded-xl p-3 mt-5 text-xl font-bold w-52" href="rank/player">Player</a>
+<script>
+	import Back from '$lib/Icon/Back.svelte';
+</script>
+
+<div class="flex mt-1 justify-between mx-8">
+	<button on:click={() => history.back()}><Back /></button>
+	<span>Select Ranking</span>
+	<span />
+</div>
+<a
+	href="/rank/team"
+	class="w-[50%] font-bold text-3xl rounded-lg aspect-square mt-5 mx-[25%] text-start items-center flex justify-center bg-base1lighter"
+>
+	Team
+	<br />Ranking
+</a>
+<a
+	href="/rank/player"
+	class="flex justify-center w-[50%] font-bold text-3xl rounded-lg aspect-square mt-5 mx-[25%] text-start items-center bg-base1lighter"
+>
+	Player
+	<br />Ranking
+</a>

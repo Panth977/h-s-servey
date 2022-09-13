@@ -2,23 +2,67 @@
 @tailwind components;
 @tailwind utilities;
 
-.lateral-margin {
-    max-width: 700px;
-    margin-left: auto;
-    margin-right: auto;
+.bg-base1 {
+	@apply -text-base1;
 }
 
+.bg-base1light {
+	@apply -text-base1light;
+}
+.bg-base2 {
+	@apply -text-base2;
+}
+.bg-danger {
+	@apply -text-danger;
+}
+.bg-base1lighter {
+	@apply -text-base1lighter;
+}
 .ad-img {
-    width: 100vw;
+	width: 100vw;
+}
+.bg-base1 .card {
+	@apply mt-5 pb-5 bg-bg-card bg-no-repeat bg-scroll;
+	background-position: 16px bottom;
+	background-size: cover 77px;
+}
+.hide-scroll-bar {
+	-ms-overflow-style: none; /* Internet Explorer 10+ */
+	scrollbar-width: none; /* Firefox */
+}
+
+.hide-scroll-bar::-webkit-scrollbar {
+	display: none; /* Safari and Chrome */
+}
+
+.app {
+	@apply bg-base1 bg-bg-logo bg-no-repeat bg-scroll font-roboto min-h-screen pt-11 border-base1;
+	background-position: right top;
+	max-width: 700px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.app :global(.drawer .panel) {
+	background-color: transparent;
 }
 
 @media (min-width: 700px) {
-    .ad-img {
-        width: 700px;
-    }
+	.ad-img {
+		width: 700px;
+	}
 
-    .lateral-margin {
-        border-left-width: 1px;
-        border-right-width: 1px;
-    }
+	.app {
+		border-left-width: 1px;
+		border-right-width: 1px;
+	}
+}
+.header {
+	@apply font-bold text-2xl font-cairo h-8 mx-8;
+	font-style: normal;
+}
+.contrast {
+	@apply bg-bg-card bg-no-repeat bg-scroll;
+	background-position: 6px calc(100% + 58px);
+	background-size: cover 77px;
 }

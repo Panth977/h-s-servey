@@ -7,7 +7,7 @@
 </script>
 
 <Drawer open={open} placement="bottom" size="100%">
-  <div class="h-screen w-screen absolute z-40" on:click={close}></div>
+  <div class="h-screen w-full absolute z-40" on:click={close}></div>
   <div class="flex justify-center">
     <div
       class="bg-white rounded-3xl pb-5 px-10 max-h-96 z-50 hide-scroll-bar overflow-auto mt-36 items-center"

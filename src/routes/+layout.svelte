@@ -1,25 +1,50 @@
 <script lang="ts">
-  import "../app.css";
+	import '../app.css';
+	import { onMount } from 'svelte';
+	import { EventRef } from '$lib/firebase/db';
+	import { event, latestNewsListner, latestVideosListner } from '$lib/state';
+	import { onSnapshot } from 'firebase/firestore';
+	import Latest from '$lib/Icon/Latest.svelte';
+	import Ranking from '$lib/Icon/Ranking.svelte';
+	import Profile from '$lib/Icon/Profile.svelte';
+	import Photos from '$lib/Icon/Photos.svelte';
+
+	onMount(function () {
+		const eventSub = onSnapshot(EventRef, {
+			next(snapshot) {
+				event.set(snapshot.data()!);
+			}
+		});
+		latestNewsListner.seeMore();
+		latestVideosListner.seeMore();
+		return function () {
+			eventSub();
+			latestNewsListner.unSub?.();
+			latestVideosListner.unSub?.();
+		};
+	});
 </script>
 
-<nav class="bg-gray-200 h-16 z-50 sticky top-0 w-full">
-  <button onclick="history.back()">
-    <img alt="back icon" class="aspect-square h-16" src="/back-icon.svg" />
-  </button>
-</nav>
+<head>
+	<link href="https://fonts.googleapis.com/css?family=Cairo" rel="stylesheet" />
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
+</head>
 
-<div class="lateral-margin app min-h-[calc(100vh-8rem)] pb-10">
-  <slot />
+<div class="app min-h-screen">
+	<a class="header" href="/">Huddle & Score</a>
+	<div class="min-h-[calc(100vh-160px)]">
+		{#if $event}
+			<slot />
+		{:else}
+			Loading...
+		{/if}
+	</div>
+	<div
+		class="h-16 mt-5 bg-base2 bg-white border-t items-center flex justify-around sticky bottom-0 w-full"
+	>
+		<a href="/"><Latest /></a>
+		<a href="/rank"><Ranking /></a>
+		<a href="/profile"><Profile /></a>
+		<a href="https://www.google.com/" target="_blank"><Photos /></a>
+	</div>
 </div>
-
-<div class="h-16 bg-white border-t items-center flex justify-around sticky bottom-0 w-full">
-  <a href="/"><img alt="home icon" src="/home-icon.svg" /></a>
-  <a href="/rank"><img alt="rank icon" src="/rank-icon.svg" /></a>
-  <a href="/profile"><img alt="profile icon" src="/profile-icon.svg" /></a>
-</div>
-
-<style>
-    .app :global(.drawer .panel) {
-        background-color: transparent;
-    }
-</style>

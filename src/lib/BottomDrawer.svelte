@@ -1,21 +1,25 @@
 <script lang="ts">
-  import Drawer from "svelte-drawer-component";
+	import Drawer from 'svelte-drawer-component';
+	import Back from './Icon/Back.svelte';
 
-  export let open: boolean;
-  export let close: () => void;
-  export let title: string;
+	export let open: boolean;
+	export let close: () => void;
+	export let title: string;
+	export let placement: 'bottom' | 'left' | 'right' | 'top' = 'bottom';
 </script>
 
-<Drawer open={open} placement="bottom" size="100%">
-  <div class="h-20 overflow-hidden fixed top-0 w-full" on:click={close}></div>
-  <div
-    class="bg-stone-800 h-14 mt-20 text-white rounded-t-3xl text-3xl py-3 flex justify-center"
-  >
-    {title}
-  </div>
-  <div class="bg-white min-h-[calc(100vh-8.5rem)] space-y-5 p-5">
-    <div class="lateral-margin">
-      <slot />
-    </div>
-  </div>
+<Drawer {open} {placement} size="100%">
+	<div class="app">
+		<div class="header">Huddle & Score</div>
+		<div class="contrast pb-9 mt-1">
+			<div class="flex h-4 justify-between mx-8">
+				<button on:click={close}><Back /></button>
+				<span>{title}</span>
+				<span />
+			</div>
+		</div>
+		<div class="bg-base2 min-h-[calc(100vh-128px)] pt-1">
+			<slot />
+		</div>
+	</div>
 </Drawer>

@@ -3,16 +3,7 @@ import { writable, type Writable } from 'svelte/store';
 import type { Event } from './firebase/db';
 import { newsRef, videosRef, newsRelated, videoRelated, NewsColl, VideoColl } from './firebase/db';
 
-export const event = writable<Event>({
-	fixtures: [],
-	liveStream: undefined,
-	players: {},
-	sortedGoalkeepers: [],
-	sortedPlayers: [],
-	sortedTeams: [],
-	teams: {},
-	upcommingFixtures: []
-});
+export const event = writable<Event>();
 
 class LatestListner<T> {
 	#store: Writable<{

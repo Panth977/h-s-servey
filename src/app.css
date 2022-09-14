@@ -18,7 +18,7 @@
 .bg-base1lighter {
 	@apply -text-base1lighter;
 }
-.ad-img {
+.screen-width {
 	width: 100vw;
 }
 .bg-base1 .card {
@@ -48,8 +48,8 @@
 }
 
 @media (min-width: 700px) {
-	.ad-img {
-		width: 700px;
+	.screen-width {
+		width: 698px;
 	}
 
 	.app {

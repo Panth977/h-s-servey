@@ -40,7 +40,7 @@
 	</div>
 	<div class="h-16" />
 	<div
-		class="h-16 z-50 bg-base2 bg-white border-t items-center flex justify-around fixed bottom-0 w-full"
+		class="h-16 z-50 bg-base2 bg-white border-t items-center flex justify-around fixed bottom-0 screen-width"
 	>
 		<a href="/"><Latest /></a>
 		<a href="/rank"><Ranking /></a>

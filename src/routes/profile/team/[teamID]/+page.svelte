@@ -37,6 +37,6 @@
 	bind:this={content}
 	class="flex w-full snap-x snap-mandatory gap-6 overflow-x-auto overscroll-x-none hide-scroll-bar"
 >
-	<li class="ad-img object-cover relative shrink-0 snap-center"><Overview /></li>
-	<li class="ad-img object-cover relative shrink-0 snap-center"><Squad /></li>
+	<li class="screen-width object-cover relative shrink-0 snap-center"><Overview /></li>
+	<li class="screen-width object-cover relative shrink-0 snap-center"><Squad /></li>
 </ul>

@@ -6,7 +6,7 @@
 	});
 </script>
 
-<div class="h-[103px] border m-8">
+<div class="border m-8">
 	<ins
 		class="adsbygoogle"
 		style="display:block"

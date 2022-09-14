@@ -7,6 +7,7 @@
 </script>
 
 <AppDrawer
+	bg="base1"
 	open={selectedTeam !== undefined}
 	close={() => (selectedTeam = undefined)}
 	placement="right"
@@ -45,7 +46,7 @@
 			class="w-full font-bold py-5 text-center rounded-lg aspect-square mt-5 flex justify-center items-center bg-base1lighter"
 		>
 			<div>
-				<img class="w-[20vw] sm:w-20 mx-auto" src={team.logo} alt={team.name} />
+				<img class="w-[20vw] aspect-square sm:w-20 mx-auto" src={team.logo} alt={team.name} />
 				<span class="block mt-2 sm:mt-5 sm:text-xl capitalize">{team.name}</span>
 			</div>
 		</button>

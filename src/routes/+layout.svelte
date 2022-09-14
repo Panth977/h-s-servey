@@ -30,16 +30,17 @@
 	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
 </head>
 
-<div class="app min-h-screen">
-	<div class="min-h-[calc(100vh-128px)]">
+<div class="app">
+	<div class="pb-5">
 		{#if $event}
 			<slot />
 		{:else}
 			Loading...
 		{/if}
 	</div>
+	<div class="h-16" />
 	<div
-		class="h-16 mt-5 z-50 bg-base2 bg-white border-t items-center flex justify-around sticky bottom-0 w-full"
+		class="h-16 z-50 bg-base2 bg-white border-t items-center flex justify-around fixed bottom-0 w-full"
 	>
 		<a href="/"><Latest /></a>
 		<a href="/rank"><Ranking /></a>

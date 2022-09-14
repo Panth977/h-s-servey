@@ -11,6 +11,7 @@
 </script>
 
 <AppDrawer
+	bg="base1"
 	placement="right"
 	open={selectedNews !== undefined}
 	close={() => (selectedNews = undefined)}

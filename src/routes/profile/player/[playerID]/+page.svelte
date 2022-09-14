@@ -1,5 +1,4 @@
 <script>
-	import Back from '$lib/Icon/Back.svelte';
 	import { page } from '$app/stores';
 	import { event, selectiveNewsListner, selectiveVideoListner } from '$lib/state';
 	import Instagram from '$lib/Icon/Instagram.svelte';
@@ -11,14 +10,6 @@
 	import Ads from '$lib/Components/Ads.svelte';
 	$: playerID = $page.params.playerID;
 	$: player = $event.players[playerID];
-	onMount(function () {
-		selectiveNewsListner.connectTo = playerID;
-		selectiveVideoListner.connectTo = playerID;
-		return function () {
-			selectiveNewsListner.connectTo = undefined;
-			selectiveVideoListner.connectTo = undefined;
-		};
-	});
 
 	let latestNewsDrawer = false;
 	let latestVideosDrawer = false;
@@ -26,12 +17,6 @@
 	const latestVideos = selectiveVideoListner.store;
 </script>
 
-<a class="header" href="/">Huddle & Score</a>
-<div class="flex mt-1 justify-between mx-8">
-	<button on:click={() => history.back()}><Back /></button>
-	<span>Player Profile</span>
-	<span />
-</div>
 <div class="relative w-[320px] mx-auto">
 	<div
 		style="

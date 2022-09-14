@@ -40,7 +40,6 @@ class LatestListner<T> {
 		const listner = this;
 		this.#unSub = onSnapshot(query(this.#ref, limit(this.#askedFor)), {
 			next(snap) {
-				console.log(snap.docs.map((x) => x.data()));
 				listner.#currentlyListningTo = snap.docs.length;
 				listner.#store.set({
 					data: snap.docs.map((x) => x.data()),

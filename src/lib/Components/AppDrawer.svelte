@@ -6,20 +6,27 @@
 	export let close: () => void;
 	export let title: string;
 	export let placement: 'bottom' | 'left' | 'right' | 'top' = 'bottom';
+	export let bg: 'base1' | 'base2' = 'base2';
 </script>
 
 <Drawer {open} {placement} size="100%">
 	<div class="app">
 		<div class="header">Huddle & Score</div>
-		<div class="contrast pb-9 mt-1">
+		<div class:contrast={bg === 'base2'} class="pb-9 mt-1">
 			<div class="flex h-4 justify-between mx-8">
 				<button on:click={close}><Back /></button>
 				<span>{title}</span>
 				<span />
 			</div>
 		</div>
-		<div class="bg-base2 min-h-[calc(100vh-128px)] pt-1">
-			<slot />
-		</div>
+		{#if bg === 'base1'}
+			<div class="pb-5">
+				<slot />
+			</div>
+		{:else}
+			<div class="bg-base2 min-h-[calc(100vh-128px)] pt-1">
+				<slot />
+			</div>
+		{/if}
 	</div>
 </Drawer>

@@ -32,11 +32,7 @@
 
 <div class="app min-h-screen">
 	<div class="min-h-[calc(100vh-128px)]">
-		{#if $event}
-			<slot />
-		{:else}
-			Loading...
-		{/if}
+		<slot />
 	</div>
 	<div
 		class="h-16 mt-5 z-50 bg-base2 bg-white border-t items-center flex justify-around sticky bottom-0 w-full"

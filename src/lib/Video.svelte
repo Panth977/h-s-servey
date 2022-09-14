@@ -13,11 +13,11 @@
 	<p>
 		{#each video.content as content}
 			{#if content.type === 'team'}
-				<a href="profile/teams/{content.teamID}" class="underline">
+				<a href="/profile/team/{content.teamID}" class="underline">
 					#{$event.teams[content.teamID].name}
 				</a>
 			{:else if content.type === 'player'}
-				<a href="profile/players/{content.playerID}" class="underline">
+				<a href="/profile/player/{content.playerID}" class="underline">
 					@{$event.players[content.playerID].name}
 				</a>
 			{:else}

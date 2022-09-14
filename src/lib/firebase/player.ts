@@ -40,18 +40,18 @@ export function playerToString(player: Player) {
 		player.displayImage,
 		player.position,
 		player.instagramUsername,
-		player.matchesPlayed,
-		player.goals,
-		player.assists,
-		player.passes,
-		player.tackles,
-		player.dribbles,
-		player.shots,
-		player.yellowCard,
-		player.redCard,
-		player.goalConceived,
-		player.goalSaved,
-		player.handling
+		player.matchesPlayed ?? 0,
+		player.goals ?? 0,
+		player.assists ?? 0,
+		player.passes ?? 0,
+		player.tackles ?? 0,
+		player.dribbles ?? 0,
+		player.shots ?? 0,
+		player.yellowCard ?? 0,
+		player.redCard ?? 0,
+		player.goalConceived ?? 0,
+		player.goalSaved ?? 0,
+		player.handling ?? 0
 	]);
 }
 export function stringToPlayer(val: string): Player {

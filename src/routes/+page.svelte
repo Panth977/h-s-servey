@@ -18,6 +18,7 @@
 	const latestVideos = latestVideosListner.store;
 </script>
 
+<a class="header" href="/">Huddle & Score</a>
 <div class="px-8 -mt-1 items-center flex space-x-1">
 	<LocationPin />
 	<span>Ahmedabad</span>

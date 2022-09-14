@@ -9,7 +9,7 @@ export interface PlayerProfile<image = string> {
 	jerseyNum: string;
 	name: string;
 	displayImage: image;
-	position: string;
+	position: 'Forward' | 'Midfield' | 'Defence' | 'Goalkeeper';
 	instagramUsername: string;
 }
 
@@ -23,7 +23,6 @@ export interface PlayerStats<matchesPlayed = number> {
 	yellowCard: number;
 	redCard: number;
 	matchesPlayed: matchesPlayed;
-	/// position === "Goalkeeper"
 	goalConceived: number;
 	goalSaved: number;
 	handling: number;

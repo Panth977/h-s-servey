@@ -168,7 +168,7 @@ function parseEventDocument(doc: EventDocument): Event {
 				}
 			} as EventTeam);
 		})
-		.sort((a, b) => a.points - b.points);
+		.sort((a, b) => b.points - a.points);
 	let maxAttack = 1;
 	let maxPossession = 1;
 	let maxDefence = 1;
@@ -215,13 +215,13 @@ function parseEventDocument(doc: EventDocument): Event {
 				}
 			});
 		})
-		.sort((a, b) => a.goals * 1000 + a.assists - b.goals * 1000 - b.assists);
+		.sort((a, b) => b.goals * 1000 + b.assists - a.goals * 1000 - a.assists);
 	const sortedGoalkeepers = [...sortedPlayers]
 		.filter(function (x) {
 			x.team.players.push(x);
 			return x.isGoalkeeper;
 		})
-		.sort((a, b) => a.handling - b.handling);
+		.sort((a, b) => b.handling - a.handling);
 	let upcommingFixtures: EventFixture[];
 	return {
 		liveStream: doc.liveStream,

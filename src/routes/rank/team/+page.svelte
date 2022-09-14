@@ -3,6 +3,7 @@
 	import { event } from '$lib/state';
 </script>
 
+<a class="header" href="/">Huddle & Score</a>
 <div class="contrast pb-9 mt-1">
 	<div class="flex h-4 justify-between mx-8">
 		<button on:click={() => history.back()}><Back /></button>

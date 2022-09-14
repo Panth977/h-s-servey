@@ -32,6 +32,7 @@
 		{/if}
 	</div>
 </AppDrawer>
+<a class="header" href="/">Huddle & Score</a>
 <div class="flex mt-1 justify-between mx-8">
 	<button on:click={() => history.back()}><Back /></button>
 	<span>Select Teams</span>

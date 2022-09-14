@@ -16,6 +16,7 @@
 	});
 </script>
 
+<a class="header" href="/">Huddle & Score</a>
 <div class="contrast pb-9 mt-1">
 	<div class="flex justify-between mx-8">
 		<button on:click={() => history.back()}><Back /></button>

@@ -31,8 +31,7 @@
 </head>
 
 <div class="app min-h-screen">
-	<a class="header" href="/">Huddle & Score</a>
-	<div class="min-h-[calc(100vh-160px)]">
+	<div class="min-h-[calc(100vh-128px)]">
 		{#if $event}
 			<slot />
 		{:else}
@@ -40,7 +39,7 @@
 		{/if}
 	</div>
 	<div
-		class="h-16 mt-5 bg-base2 bg-white border-t items-center flex justify-around sticky bottom-0 w-full"
+		class="h-16 mt-5 z-50 bg-base2 bg-white border-t items-center flex justify-around sticky bottom-0 w-full"
 	>
 		<a href="/"><Latest /></a>
 		<a href="/rank"><Ranking /></a>

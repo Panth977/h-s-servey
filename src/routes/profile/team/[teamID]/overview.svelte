@@ -6,6 +6,7 @@
 	import AllVideos from '$lib/AllVideos.svelte';
 	import Ads from '$lib/Components/Ads.svelte';
 	import Logo from '$lib/Icon/Logo.svelte';
+	import { onMount } from 'svelte';
 
 	$: teamID = $page.params.teamID;
 	$: team = $event.teams[teamID];
@@ -14,6 +15,15 @@
 	let latestVideosDrawer = false;
 	const latestNews = selectiveNewsListner.store;
 	const latestVideos = selectiveVideoListner.store;
+
+	onMount(function () {
+		selectiveNewsListner.connectTo = teamID;
+		selectiveVideoListner.connectTo = teamID;
+		return function () {
+			selectiveNewsListner.connectTo = undefined;
+			selectiveVideoListner.connectTo = undefined;
+		};
+	});
 </script>
 
 <div>
@@ -96,6 +106,7 @@
 			<AllNews loading={$latestNews.loading} allNews={$latestNews.data.slice(0, 2)} />
 			<AppDrawer close={() => (latestNewsDrawer = false)} open={latestNewsDrawer} title="News">
 				<AllNews
+					onNavigateToOtherPage={() => (latestNewsDrawer = false)}
 					loading={$latestNews.loading}
 					allNews={$latestNews.data}
 					seeMore={$latestNews.askedFor === $latestNews.data.length
@@ -126,6 +137,7 @@
 				title="Videos"
 			>
 				<AllVideos
+					onNavigateToOtherPage={() => (latestVideosDrawer = false)}
 					loading={$latestVideos.loading}
 					allVideos={$latestVideos.data}
 					seeMore={$latestVideos.askedFor === $latestVideos.data.length

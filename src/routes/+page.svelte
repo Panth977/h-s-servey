@@ -184,6 +184,7 @@
 			<AllNews loading={$latestNews.loading} allNews={$latestNews.data.slice(0, 2)} />
 			<AppDrawer close={() => (latestNewsDrawer = false)} open={latestNewsDrawer} title="News">
 				<AllNews
+					onNavigateToOtherPage={() => (latestNewsDrawer = false)}
 					loading={$latestNews.loading}
 					allNews={$latestNews.data}
 					seeMore={$latestNews.askedFor === $latestNews.data.length
@@ -214,6 +215,7 @@
 				title="Videos"
 			>
 				<AllVideos
+					onNavigateToOtherPage={() => (latestVideosDrawer = false)}
 					loading={$latestVideos.loading}
 					allVideos={$latestVideos.data}
 					seeMore={$latestVideos.askedFor === $latestVideos.data.length

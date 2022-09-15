@@ -4,32 +4,36 @@
 	import { event } from './state';
 
 	export let video: Video;
+	export let onNavigateToOtherPage: VoidFunction;
 </script>
 
-<video src={video.video} controls={true} autoPlay={false} class="w-[calc(100%-64px)] mx-8 mt-5">
+<h2 class="mx-8 font-bold text-3xl sm:text-5xl">{video.title}</h2>
+<video src={video.video} controls={true} autoPlay={false} class="w-full px-8 mt-5">
 	<track kind="captions" />
 </video>
-<div class="px-2 mt-5">
-	<p>
-		{#each video.content as content}
-			{#if content.type === 'team'}
-				<a href="/profile/team/{content.teamID}" class="underline">
-					#{$event.teams[content.teamID].name}
-				</a>
-			{:else if content.type === 'player'}
-				<a href="/profile/player/{content.playerID}" class="underline">
-					@{$event.players[content.playerID].name}
-				</a>
-			{:else}
-				{#each content.text as text}
-					{#if text === null}
-						<br />
-					{:else}
-						<span>{text}</span>
-					{/if}
-				{/each}
-			{/if}
-		{/each}
-	</p>
-</div>
+<p class="mx-8 mt-5">
+	{#each video.content as content}
+		{#if content.type === 'team'}
+			<a on:click={onNavigateToOtherPage} href="/profile/team/{content.teamID}" class="underline">
+				#{$event.teams[content.teamID].name}
+			</a>
+		{:else if content.type === 'player'}
+			<a
+				on:click={onNavigateToOtherPage}
+				href="/profile/player/{content.playerID}"
+				class="underline"
+			>
+				@{$event.players[content.playerID].name}
+			</a>
+		{:else}
+			{#each content.text as text}
+				{#if text === null}
+					<br />
+				{:else}
+					<span>{text}</span>
+				{/if}
+			{/each}
+		{/if}
+	{/each}
+</p>
 <Ads />

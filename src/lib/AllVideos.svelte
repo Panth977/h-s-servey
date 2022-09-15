@@ -8,6 +8,7 @@
 	export let loading: boolean;
 	export let seeMore: VoidFunction | undefined = undefined;
 	export let selectedVideo: Video | undefined = undefined;
+	export let onNavigateToOtherPage: VoidFunction | undefined = undefined;
 </script>
 
 <AppDrawer
@@ -18,27 +19,39 @@
 	title="Latest Video"
 >
 	{#if selectedVideo}
-		<VideoComponent video={selectedVideo} />
+		<VideoComponent
+			onNavigateToOtherPage={() => {
+				selectedVideo = undefined;
+				onNavigateToOtherPage?.();
+			}}
+			video={selectedVideo}
+		/>
 	{/if}
 </AppDrawer>
 
 {#each allVideos as video}
 	<button
 		on:click={() => (selectedVideo = video)}
-		class="pt-3 mx-8 h-20 overflow-hidden flex items-start"
+		class="pt-3 px-8 h-20 overflow-hidden flex items-start w-full"
 	>
-		<video src={video.video} controls={false} autoPlay={false} class="object-cover w-24 h-20 pt-2">
+		<video
+			src={video.video}
+			controls={false}
+			autoPlay={false}
+			class="object-cover w-[30%] h-20 pt-2"
+		>
 			<track kind="captions" />
 		</video>
-		<div class="px-2">
-			<p>
+		<div class="ml-2 text-start text-base1">
+			<h4 class="text-sm font-[400]">{video.title}</h4>
+			<p class="font-bold">
 				{#each video.content as content}
 					{#if content.type === 'team'}
-						<span class="text-base1">
+						<span class="underline">
 							#{$event.teams[content.teamID].name}
 						</span>
 					{:else if content.type === 'player'}
-						<span class="text-base1">
+						<span class="underline">
 							@{$event.players[content.playerID].name}
 						</span>
 					{:else}

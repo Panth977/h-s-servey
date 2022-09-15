@@ -83,6 +83,9 @@ class SelectiveListner<T> {
 		if (newVal === this.#connectTo) return;
 		this.#unSub?.();
 		this.#unSub = undefined;
+		this.#store.set({ askedFor: 0, data: [], loading: false });
+		this.#askedFor = 0;
+		this.#currentlyListningTo = 0;
 		if ((this.#connectTo = newVal)) this.seeMore();
 	}
 	get store() {
@@ -103,11 +106,6 @@ class SelectiveListner<T> {
 					loading: false,
 					askedFor: listner.#askedFor
 				});
-			},
-			complete() {
-				listner.#store.set({ askedFor: 0, data: [], loading: false });
-				listner.#askedFor = 0;
-				listner.#currentlyListningTo = 0;
 			}
 		});
 	}
@@ -132,18 +130,17 @@ class DocListner<T> {
 	set id(newID: string | undefined) {
 		if (this.#id === newID) return;
 		this.#unSub?.();
+		this.#store.set(undefined);
 		if ((this.#id = newID)) {
 			const listner = this;
 			this.#unSub = onSnapshot(doc(this.#ref, this.#id), {
 				next(snap) {
 					listner.#store.set(snap.exists() ? snap.data() : null);
-				},
-				complete() {
-					listner.#store.set(undefined);
 				}
 			});
 		} else {
 			this.#unSub = undefined;
+			this.#store.set(undefined);
 		}
 	}
 	get store() {

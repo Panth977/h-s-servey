@@ -11,9 +11,10 @@ export interface PlayerProfile<image = string> {
 	displayImage: image;
 	position: 'Forward' | 'Midfield' | 'Defence' | 'Goalkeeper';
 	instagramUsername: string;
+	place: string;
 }
 
-export interface PlayerStats<matchesPlayed = number> {
+export interface PlayerStats {
 	goals: number; // APD, 40
 	assists: number; // APD, 20
 	passes: number; // APD, .2
@@ -22,7 +23,7 @@ export interface PlayerStats<matchesPlayed = number> {
 	shots: number; // A, 6
 	yellowCard: number;
 	redCard: number;
-	matchesPlayed: matchesPlayed;
+	matchesPlayed: number;
 	goalConceived: number;
 	goalSaved: number;
 	handling: number;
@@ -30,7 +31,7 @@ export interface PlayerStats<matchesPlayed = number> {
 
 export interface Player<image = string, matchesPlayed = number>
 	extends PlayerProfile<image>,
-		PlayerStats<matchesPlayed> {}
+		PlayerStats {}
 
 export function playerToString(player: Player) {
 	return JSON.stringify([
@@ -40,6 +41,7 @@ export function playerToString(player: Player) {
 		player.displayImage,
 		player.position,
 		player.instagramUsername,
+		player.place,
 		player.matchesPlayed ?? 0,
 		player.goals ?? 0,
 		player.assists ?? 0,
@@ -51,7 +53,7 @@ export function playerToString(player: Player) {
 		player.redCard ?? 0,
 		player.goalConceived ?? 0,
 		player.goalSaved ?? 0,
-		player.handling ?? 0
+		player.handling ?? 0,
 	]);
 }
 export function stringToPlayer(val: string): Player {
@@ -62,6 +64,7 @@ export function stringToPlayer(val: string): Player {
 		displayImage,
 		position,
 		instagramUsername,
+		place,
 		matchesPlayed,
 		goals,
 		assists,
@@ -73,7 +76,7 @@ export function stringToPlayer(val: string): Player {
 		redCard,
 		goalConceived,
 		goalSaved,
-		handling
+		handling,
 	] = JSON.parse(val);
 	return {
 		teamID,
@@ -82,6 +85,7 @@ export function stringToPlayer(val: string): Player {
 		displayImage,
 		position,
 		instagramUsername,
+		place,
 		matchesPlayed,
 		goals,
 		assists,
@@ -93,12 +97,12 @@ export function stringToPlayer(val: string): Player {
 		redCard,
 		goalConceived,
 		goalSaved,
-		handling
+		handling,
 	};
 }
 export function setPlayer(playerID: undefined, data: PlayerProfile<File>): Promise<string>;
 export function setPlayer(playerID: string, data: PlayerProfile<File | string>): Promise<string>;
-export function setPlayer(playerID: string, data: PlayerStats<1 | 0 | -1>): Promise<string>;
+export function setPlayer(playerID: string, data: PlayerStats): Promise<string>;
 export function setPlayer(playerID: string, data: null): Promise<string>;
 export async function setPlayer(
 	playerID: undefined | string,
@@ -129,21 +133,11 @@ export async function setPlayer(
 			const player = stringToPlayer(event.get('players.' + playerID));
 			if (!player) return;
 			if (data && 'matchesPlayed' in data) {
-				if (data.matchesPlayed == 0) {
-					data.matchesPlayed = player.matchesPlayed;
-				} else {
-					data.goals += player.goals;
-					data.assists += player.assists;
-					data.passes += player.passes;
-					data.tackles += player.tackles;
-					data.dribbles += player.dribbles;
-					data.shots += player.shots;
-					data.yellowCard += player.yellowCard;
-					data.redCard += player.redCard;
-					data.matchesPlayed += player.matchesPlayed;
-					data.goalConceived += player.goalConceived;
-					data.goalSaved += player.goalSaved;
-					data.handling += player.handling;
+				let key: keyof typeof data;
+				for (key in data) {
+					if (Object.prototype.hasOwnProperty.call(data, key)) {
+						data[key] += player[key];
+					}
 				}
 				data = { ...player, ...data };
 			}

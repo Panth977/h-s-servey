@@ -17,6 +17,7 @@
 		{#if selectedTeam}
 			{#each selectedTeam.players as player}
 				<a
+					on:click={() => (selectedTeam = undefined)}
 					href="/profile/player/{player.id}"
 					class="w-full font-bold py-5 text-center rounded-lg aspect-square mt-5 flex justify-center items-center bg-base1lighter"
 				>

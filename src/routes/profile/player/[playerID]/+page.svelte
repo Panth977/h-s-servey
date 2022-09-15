@@ -11,6 +11,15 @@
 	$: playerID = $page.params.playerID;
 	$: player = $event.players[playerID];
 
+	onMount(function () {
+		selectiveNewsListner.connectTo = playerID;
+		selectiveVideoListner.connectTo = playerID;
+		return function () {
+			selectiveNewsListner.connectTo = undefined;
+			selectiveVideoListner.connectTo = undefined;
+		};
+	});
+
 	let latestNewsDrawer = false;
 	let latestVideosDrawer = false;
 	const latestNews = selectiveNewsListner.store;
@@ -116,6 +125,7 @@
 			<AllNews loading={$latestNews.loading} allNews={$latestNews.data.slice(0, 2)} />
 			<AppDrawer close={() => (latestNewsDrawer = false)} open={latestNewsDrawer} title="News">
 				<AllNews
+					onNavigateToOtherPage={() => (latestNewsDrawer = false)}
 					loading={$latestNews.loading}
 					allNews={$latestNews.data}
 					seeMore={$latestNews.askedFor === $latestNews.data.length
@@ -146,6 +156,7 @@
 				title="Videos"
 			>
 				<AllVideos
+					onNavigateToOtherPage={() => (latestVideosDrawer = false)}
 					loading={$latestVideos.loading}
 					allVideos={$latestVideos.data}
 					seeMore={$latestVideos.askedFor === $latestVideos.data.length

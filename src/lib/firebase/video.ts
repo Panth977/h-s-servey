@@ -9,6 +9,7 @@ const { str } = getFirebase();
 export const videoColl = collection(eventRef, 'Video/');
 
 export interface VideoProps<video = string> {
+	title: string;
 	video: video;
 	caption: string;
 	connectionIDs: string[]; // teamID || playerID

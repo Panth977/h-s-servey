@@ -1,19 +1,9 @@
 <script>
 	import Back from '$lib/Icon/Back.svelte';
 	import { page } from '$app/stores';
-	import { event, selectiveNewsListner, selectiveVideoListner } from '$lib/state';
-	import { onMount } from 'svelte';
+	import { event } from '$lib/state';
 	$: playerID = $page.params.playerID;
 	$: player = $event.players[playerID];
-
-	onMount(function () {
-		selectiveNewsListner.connectTo = playerID;
-		selectiveVideoListner.connectTo = playerID;
-		return function () {
-			selectiveNewsListner.connectTo = undefined;
-			selectiveVideoListner.connectTo = undefined;
-		};
-	});
 </script>
 
 <div class="bg-base1 -mt-11 pt-11 min-h-screen">

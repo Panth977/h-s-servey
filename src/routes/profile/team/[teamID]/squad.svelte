@@ -28,7 +28,7 @@
 				<img src={player.displayImage} alt={player.name} class="rounded-full bg-base2 h-16" />
 				<div class="ml-3">
 					<div class="font-bold">{player.name}</div>
-					<div class="mt-1">Ahmedabad 🇮🇳</div>
+					<div class="mt-1">{player.place}</div>
 				</div>
 			</a>
 		{/each}

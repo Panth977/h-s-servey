@@ -8,6 +8,7 @@ const { str } = getFirebase();
 export const newsColl = collection(eventRef, 'News/');
 
 export interface NewsProps<image = string> {
+	title: string;
 	image: image;
 	caption: string;
 	connectionIDs: string[]; // teamID || playerID

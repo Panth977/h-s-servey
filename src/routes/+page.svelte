@@ -20,7 +20,7 @@
 	$: topTeams = $event.sortedTeams.slice(0, 3);
 </script>
 
-<a class="header" style="margin-bottom: 0;" href="/">Huddle & Score</a>
+<a class="header" style="padding-bottom: 0;" href="/">Huddle & Score</a>
 <div class="page-padding -mt-1 items-center flex space-x-1">
 	<LocationPin />
 	<span>Ahmedabad</span>

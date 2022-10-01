@@ -21,18 +21,18 @@
 		{#if viewMore}
 			{#if viewMore.herf}
 				<a
-					class="block text-center w-full text-base1 border-base1/50 border-t mt-2 font-medium"
+					class="page-padding flex justify-end w-full text-base1 border-base1/50 border-t mt-2 font-medium"
 					href={viewMore.herf}
 					on:click={viewMore.onClick}
 				>
-					{viewMore.placeholder}
+					{viewMore.placeholder} <span class="ml-2">→</span>
 				</a>
 			{:else}
 				<button
-					class="w-full text-base1 border-base1/50 border-t mt-2 font-medium"
+					class="page-padding flex justify-end w-full text-base1 border-base1/50 border-t mt-2 font-medium"
 					on:click={viewMore.onClick}
 				>
-					{viewMore.placeholder}
+					{viewMore.placeholder} <span class="ml-2">→</span>
 				</button>
 			{/if}
 		{/if}

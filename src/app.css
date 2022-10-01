@@ -59,7 +59,7 @@
 	}
 }
 .header {
-	@apply text-2xl font-cairo h-8 page-margin block mb-3;
+	@apply text-2xl font-cairo page-margin block pb-2;
 	font-style: normal;
 	font-weight: 700;
 }

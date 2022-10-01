@@ -5,10 +5,10 @@
 	import { onMount } from 'svelte';
 	import AllNews from '$lib/AllNews.svelte';
 	import AppDrawer from '$lib/Components/AppDrawer.svelte';
-	import Logo from '$lib/Icon/Logo.svelte';
 	import AllVideos from '$lib/AllVideos.svelte';
 	import Ads from '$lib/Components/Ads.svelte';
 	import Card from '$lib/Components/Card.svelte';
+	import Seo from '$lib/Components/Seo.svelte';
 	$: playerID = $page.params.playerID;
 	$: player = $event.players[playerID];
 
@@ -39,6 +39,11 @@
 	}, [] as { title: string; val: number }[][]);
 </script>
 
+<Seo
+	discription="{player.position} in {player.team.name}, (with score of {player.score})"
+	poster={player.displayImage}
+	title={player.name}
+/>
 <div class="relative w-[320px] mx-auto">
 	<div
 		style="

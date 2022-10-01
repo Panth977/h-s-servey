@@ -4,8 +4,6 @@
 	import AllNews from '$lib/AllNews.svelte';
 	import AppDrawer from '$lib/Components/AppDrawer.svelte';
 	import AllVideos from '$lib/AllVideos.svelte';
-	import Ads from '$lib/Components/Ads.svelte';
-	import Logo from '$lib/Icon/Logo.svelte';
 	import { onMount } from 'svelte';
 	import Card from '$lib/Components/Card.svelte';
 

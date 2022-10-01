@@ -1,14 +1,11 @@
 <script>
-	import Back from '$lib/Icon/Back.svelte';
+	import Header from '$lib/Components/Header.svelte';
+	import Seo from '$lib/Components/Seo.svelte';
 	import { event } from '$lib/state';
 </script>
 
-<a class="header" href="/">Huddle & Score</a>
-<div class="flex mt-1 justify-between page-margin">
-	<button on:click={() => history.back()}><Back /></button>
-	<span>Teams</span>
-	<span />
-</div>
+<Seo />
+<Header tralingLogo title="Teams" />
 <div class="grid grid-cols-2 mx-4 gap-4">
 	{#each $event.sortedTeams as team}
 		<a

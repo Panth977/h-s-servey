@@ -23,7 +23,7 @@
 <a class="header" style="padding-bottom: 0;" href="/">Huddle & Score</a>
 <div class="page-padding -mt-1 items-center flex space-x-1">
 	<LocationPin />
-	<span>Ahmedabad</span>
+	<span class="text-sm">Ahmedabad</span>
 </div>
 {#if currentFixture}
 	<div class="flex bg-base2 mt-5 page-padding">
@@ -64,7 +64,7 @@
 		<AppDrawer
 			close={() => (upcomingMatchDrawer = false)}
 			open={upcomingMatchDrawer}
-			title="AllFixtures"
+			title="Fixtures"
 		>
 			<AllFixtures fixtures={$event.fixtures} />
 		</AppDrawer>

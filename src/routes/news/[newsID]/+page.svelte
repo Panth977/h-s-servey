@@ -1,34 +1,15 @@
 <script lang="ts">
-	import { newsListner, event } from '$lib/state';
+	import type { PageData } from './$types';
 	import { page } from '$app/stores';
-	import { onMount } from 'svelte';
-	import Back from '$lib/Icon/Back.svelte';
-	import Ads from '$lib/Components/Ads.svelte';
 	import News from '$lib/News.svelte';
+	import Header from '$lib/Components/Header.svelte';
+	import Seo from '$lib/Components/Seo.svelte';
 	$: newsID = $page.params.newsID;
-
-	const newsStore = newsListner.store;
-	$: news = newsListner.id === newsID ? $newsStore : null;
-
-	onMount(() => {
-		newsListner.id = newsID;
-		return () => (newsListner.id = undefined);
-	});
+	export let data: PageData;
 </script>
 
-<a class="header" href="/">Huddle & Score</a>
-<div class="contrast pb-9 mt-1">
-	<div class="flex justify-between page-margin">
-		<button on:click={() => history.back()}><Back /></button>
-		<span>Latest News</span>
-		<span />
-	</div>
-	{#if news === undefined}
-		Loading...
-	{:else if news === null}
-		Page 404
-	{:else}
-		<News {news} />
-	{/if}
+<Seo discription={data.caption} poster={data.image} title={data.title} />
+<Header title="Latest News" share={{ path: `/news/${newsID}`, title: data?.title }} />
+<div class="pb-9 mt-1">
+	<News news={data} />
 </div>
-<Ads />

@@ -10,7 +10,7 @@
 	<div class="bg-base2 py-3">
 		{#if title}
 			<h3
-				class="text-2xl text-base1 page-padding font-bold flex justify-between {titleDiv
+				class="text-lg text-base1 page-padding font-semibold flex justify-between {titleDiv
 					? 'border-b'
 					: ''}"
 			>

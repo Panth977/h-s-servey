@@ -4,6 +4,7 @@
 	import AppDrawer from './Components/AppDrawer.svelte';
 	import NewsComponent from './News.svelte';
 	import Skeleton from './Components/Skeleton.svelte';
+
 	export let allNews: News[];
 	export let loading: boolean;
 	export let seeMore: VoidFunction | undefined = undefined;
@@ -17,6 +18,7 @@
 	open={selectedNews !== undefined}
 	close={() => (selectedNews = undefined)}
 	title="Latest News"
+	share={{ path: `/news/${selectedNews?.id}`, title: selectedNews?.title }}
 >
 	{#if selectedNews}
 		<NewsComponent
@@ -34,10 +36,10 @@
 		class="pt-3 page-padding h-20 overflow-hidden flex items-start w-full"
 		on:click={() => (selectedNews = news)}
 	>
-		<img alt={news.id} class="object-cover w-[30%] h-20 pt-2" src={news.image} />
+		<img alt={news.id} class="object-cover w-[30%] pt-2" src={news.image} />
 		<div class="ml-2 text-start text-base1">
-			<h4 class="text-sm font-normal">{news.title}</h4>
-			<p class="font-bold">
+			<h4 class="text-xs italic font-semibold">{news.title}</h4>
+			<p class="font-light">
 				{#each news.content as content}
 					{#if content.type === 'team'}
 						<span class="underline">
@@ -48,13 +50,7 @@
 							@{$event.players[content.playerID].name}
 						</span>
 					{:else}
-						{#each content.text as text}
-							{#if text === null}
-								<br />
-							{:else}
-								<span>{text}</span>
-							{/if}
-						{/each}
+						{content.text.map((x) => x || ' ').join('')}
 					{/if}
 				{/each}
 			</p>

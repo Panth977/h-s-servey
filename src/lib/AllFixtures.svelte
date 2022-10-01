@@ -22,15 +22,17 @@
 	<div class="bg-base1light text-sm mt-3 page-padding py-1">{fixtures.date}</div>
 	{#each fixtures.fixtures as fixture}
 		<div class="text-accent1 text-lg justify-around flex items-center">
-			<span>{fixture.team1.acronym}</span>
+			<span class="w-10">{fixture.team1.acronym}</span>
 			<img src={fixture.team1.logo} alt={fixture.team1.name} class="w-9 h-10" />
 			{#if fixture.time.localeCompare(now) > 0}
-				<span class="border text-xs p-1">{fixture.displayTime}</span>
+				<span class="border text-center text-xs p-1 w-[25%]">{fixture.displayTime}</span>
 			{:else}
-				<span> {fixture.scores?.team1 ?? 0} - {fixture.scores?.team2 ?? 0} </span>
+				<span class="w-[25%] text-center">
+					{fixture.scores?.team1 ?? 0} - {fixture.scores?.team2 ?? 0}
+				</span>
 			{/if}
 			<img src={fixture.team1.logo} alt={fixture.team2.name} class="w-9 h-10" />
-			<span class="text-accent1">{fixture.team2.acronym}</span>
+			<span class="w-10">{fixture.team2.acronym}</span>
 		</div>
 	{/each}
 {/each}

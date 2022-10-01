@@ -1,11 +1,13 @@
 <script lang="ts">
 	import AppDrawer from '$lib/Components/AppDrawer.svelte';
+	import Header from '$lib/Components/Header.svelte';
+	import Seo from '$lib/Components/Seo.svelte';
 	import type { EventTeam } from '$lib/firebase/db';
-	import Back from '$lib/Icon/Back.svelte';
 	import { event } from '$lib/state';
 	let selectedTeam: undefined | EventTeam = undefined;
 </script>
 
+<Seo />
 <AppDrawer
 	bg="base1"
 	open={selectedTeam !== undefined}
@@ -34,12 +36,7 @@
 		{/if}
 	</div>
 </AppDrawer>
-<a class="header" href="/">Huddle & Score</a>
-<div class="flex mt-1 justify-between page-margin">
-	<button on:click={() => history.back()}><Back /></button>
-	<span>Select Teams</span>
-	<span />
-</div>
+<Header tralingLogo title="Select Teams" />
 <div class="grid grid-cols-2 mx-4 gap-4">
 	{#each $event.sortedTeams as team}
 		<button

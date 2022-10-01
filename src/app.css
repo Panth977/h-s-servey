@@ -3,20 +3,20 @@
 @tailwind utilities;
 
 .bg-base1 {
-	@apply -text-base1;
+	@apply -text-base1 -fill-base1;
 }
 
 .bg-base1light {
-	@apply -text-base1light;
+	@apply -text-base1light -fill-base1light;
 }
 .bg-base2 {
-	@apply -text-base2;
+	@apply -text-base2 -fill-base2;
 }
 .bg-danger {
-	@apply -text-danger;
+	@apply -text-danger -fill-danger;
 }
 .bg-base1lighter {
-	@apply -text-base1lighter;
+	@apply -text-base1lighter -fill-base1lighter;
 }
 .screen-width {
 	width: 100vw;
@@ -59,9 +59,7 @@
 	}
 }
 .header {
-	@apply text-2xl font-cairo page-margin block pb-2;
-	font-style: normal;
-	font-weight: 700;
+	@apply text-2xl font-bold font-cairo page-margin block pb-2;
 }
 .page-margin {
 	@apply mx-2;

@@ -1,34 +1,16 @@
 <script lang="ts">
-	import { videoListner, event } from '$lib/state';
+	import type { PageData } from './$types';
 	import { page } from '$app/stores';
-	import { onMount } from 'svelte';
-	import Back from '$lib/Icon/Back.svelte';
-	import Ads from '$lib/Components/Ads.svelte';
 	import Video from '$lib/Video.svelte';
+	import Header from '$lib/Components/Header.svelte';
+	import Seo from '$lib/Components/Seo.svelte';
 	$: videoID = $page.params.videoID;
 
-	const videoStore = videoListner.store;
-	$: video = videoListner.id === videoID ? $videoStore : null;
-
-	onMount(() => {
-		videoListner.id = videoID;
-		return () => (videoListner.id = undefined);
-	});
+	export let data: PageData;
 </script>
 
-<a class="header" href="/">Huddle & Score</a>
-<div class="contrast pb-9 mt-1">
-	<div class="flex justify-between page-margin">
-		<button on:click={() => history.back()}><Back /></button>
-		<span>Latest Video</span>
-		<span />
-	</div>
-	{#if video === undefined}
-		Loading...
-	{:else if video === null}
-		Page 404
-	{:else}
-		<Video {video} />
-	{/if}
+<Seo discription={data.caption} poster={data.video} title={data.title} />
+<Header title="Latest Video" share={{ path: `/videos/${videoID}`, title: data?.title }} />
+<div class="pb-9 mt-1">
+	<Video video={data} />
 </div>
-<Ads />

@@ -10,7 +10,9 @@
 	import Ranking from '$lib/Icon/Ranking.svelte';
 	import Profile from '$lib/Icon/Profile.svelte';
 	import Photos from '$lib/Icon/Photos.svelte';
-	let authLoading = true;
+	import type { PageData } from './$types';
+	export let data: PageData;
+	event.update((x) => x || data);
 
 	onMount(function () {
 		const eventSub = onSnapshot(EventRef, {
@@ -20,9 +22,7 @@
 		});
 		latestNewsListner.seeMore();
 		latestVideosListner.seeMore();
-		signInAnonymously(getFirebase().auth)
-			.then(console.log, console.error)
-			.finally(() => (authLoading = false));
+		signInAnonymously(getFirebase().auth).then(console.log, console.error);
 		return function () {
 			eventSub();
 			latestNewsListner.unSub?.();
@@ -33,11 +33,7 @@
 
 <div class="app">
 	<div class="pb-5">
-		{#if $event && !authLoading}
-			<slot />
-		{:else}
-			Loading...
-		{/if}
+		<slot />
 	</div>
 	<div class="h-16" />
 	<div

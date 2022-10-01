@@ -1,7 +1,13 @@
 <script lang="ts">
+	import Seo from '$lib/Components/Seo.svelte';
+	import { page } from '$app/stores';
+	import { event } from '$lib/state';
 	import { onMount } from 'svelte';
 	import Overview from './overview.svelte';
 	import Squad from './squad.svelte';
+
+	$: teamID = $page.params.teamID;
+	$: team = $event.teams[teamID];
 
 	let xPos = 0;
 	let content: HTMLElement;
@@ -17,6 +23,11 @@
 	});
 </script>
 
+<Seo
+	discription="Team Chemistry of {team.teamChemistry}%, (with score of {team.score})"
+	poster={team.logo}
+	title={team.name}
+/>
 <div class="relative flex text-base1 w-64 text-center mt-5 rounded-lg bg-base1light mx-auto">
 	<div class="absolute bg-base2 rounded-lg h-full w-32" style="left: {xPos * 100}%;" />
 	<button

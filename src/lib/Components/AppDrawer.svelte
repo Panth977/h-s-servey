@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Share, { type ShareInfo } from '$lib/Icon/Share.svelte';
 	import Drawer from 'svelte-drawer-component';
 	import Back from '../Icon/Back.svelte';
 
@@ -7,16 +8,21 @@
 	export let title: string;
 	export let placement: 'bottom' | 'left' | 'right' | 'top' = 'bottom';
 	export let bg: 'base1' | 'base2' = 'base2';
+	export let share: ShareInfo | undefined = undefined;
 </script>
 
 <Drawer {open} {placement} size="100%">
 	<div class="app">
 		<div class="header">Huddle & Score</div>
 		<div class:contrast={bg === 'base2'} class="pb-9 mt-1">
-			<div class="flex h-4 justify-between page-margin">
+			<div class="flex h-4 text-lg items-center justify-between page-margin">
 				<button on:click={close}><Back /></button>
 				<span>{title}</span>
-				<span />
+				<span>
+					{#if share}
+						<Share {share} />
+					{/if}
+				</span>
 			</div>
 		</div>
 		{#if bg === 'base1'}

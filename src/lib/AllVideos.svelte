@@ -17,6 +17,7 @@
 	open={selectedVideo !== undefined}
 	close={() => (selectedVideo = undefined)}
 	title="Latest Video"
+	share={{ path: `/videos/${selectedVideo?.id}`, title: selectedVideo?.title }}
 >
 	{#if selectedVideo}
 		<VideoComponent
@@ -34,17 +35,12 @@
 		on:click={() => (selectedVideo = video)}
 		class="pt-3 page-padding h-20 overflow-hidden flex items-start w-full"
 	>
-		<video
-			src={video.video}
-			controls={false}
-			autoPlay={false}
-			class="object-cover w-[30%] h-20 pt-2"
-		>
+		<video src={video.video} controls={false} autoPlay={false} class="object-cover w-[30%] pt-2">
 			<track kind="captions" />
 		</video>
 		<div class="ml-2 text-start text-base1">
-			<h4 class="text-sm font-normal">{video.title}</h4>
-			<p class="font-bold">
+			<h4 class="text-xs italic font-semibold">{video.title}</h4>
+			<p class="font-light">
 				{#each video.content as content}
 					{#if content.type === 'team'}
 						<span class="underline">
@@ -55,13 +51,7 @@
 							@{$event.players[content.playerID].name}
 						</span>
 					{:else}
-						{#each content.text as text}
-							{#if text === null}
-								<br />
-							{:else}
-								<span>{text}</span>
-							{/if}
-						{/each}
+						{content.text.map((x) => x || ' ').join('')}
 					{/if}
 				{/each}
 			</p>

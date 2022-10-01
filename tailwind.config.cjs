@@ -24,7 +24,6 @@ module.exports = {
 				'bg-card': 'url(/attachments.svg)'
 			},
 			fontFamily: {
-				roboto: ['Roboto', 'sans-serif'],
 				cairo: ['Cairo', 'sans-serif']
 			}
 		}

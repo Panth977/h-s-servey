@@ -19,7 +19,7 @@
 </script>
 
 {#each showMaxDays ? combineFixtures.splice(0, showMaxDays) : combineFixtures as fixtures}
-	<div class="bg-base1light text-sm mt-3 px-8 py-1">{fixtures.date}</div>
+	<div class="bg-base1light text-sm mt-3 page-padding py-1">{fixtures.date}</div>
 	{#each fixtures.fixtures as fixture}
 		<div class="text-accent1 text-lg justify-around flex items-center">
 			<span>{fixture.team1.acronym}</span>

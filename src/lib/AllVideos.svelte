@@ -32,7 +32,7 @@
 {#each allVideos as video}
 	<button
 		on:click={() => (selectedVideo = video)}
-		class="pt-3 px-8 h-20 overflow-hidden flex items-start w-full"
+		class="pt-3 page-padding h-20 overflow-hidden flex items-start w-full"
 	>
 		<video
 			src={video.video}
@@ -43,7 +43,7 @@
 			<track kind="captions" />
 		</video>
 		<div class="ml-2 text-start text-base1">
-			<h4 class="text-sm font-[400]">{video.title}</h4>
+			<h4 class="text-sm font-normal">{video.title}</h4>
 			<p class="font-bold">
 				{#each video.content as content}
 					{#if content.type === 'team'}

@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { page } from '$app/stores';
 	import { event, selectiveNewsListner, selectiveVideoListner } from '$lib/state';
 	import Instagram from '$lib/Icon/Instagram.svelte';
@@ -8,6 +8,7 @@
 	import Logo from '$lib/Icon/Logo.svelte';
 	import AllVideos from '$lib/AllVideos.svelte';
 	import Ads from '$lib/Components/Ads.svelte';
+	import Card from '$lib/Components/Card.svelte';
 	$: playerID = $page.params.playerID;
 	$: player = $event.players[playerID];
 
@@ -24,6 +25,18 @@
 	let latestVideosDrawer = false;
 	const latestNews = selectiveNewsListner.store;
 	const latestVideos = selectiveVideoListner.store;
+
+	$: stats = [
+		{ title: 'Matches Played', val: player.matchesPlayed },
+		{ title: 'Goals Scored', val: player.goals },
+		{ title: 'Assists', val: player.assists },
+		{ title: 'Yellow Card', val: player.yellowCard },
+		{ title: 'Red Card', val: player.redCard }
+	].reduce(function (p, c, i) {
+		if (i % 2) p[p.length - 1].push(c);
+		else p.push([c]);
+		return p;
+	}, [] as { title: string; val: number }[][]);
 </script>
 
 <div class="relative w-[320px] mx-auto">
@@ -56,7 +69,6 @@
 	<div
 		class="relative z-10 overflow-hidden bg-scroll bg-no-repeat w-full"
 		style="
-                aspect-ratio: 322.77 / 350;
                 background-image: url({player.displayImage});
                 background-size: contain;
                 height: 300px;
@@ -71,22 +83,22 @@
 		/>
 	</div>
 </div>
-<div class="mx-8 flex justify-between">
+<div class="page-margin overflow-hidden flex justify-between">
 	<div>
 		<h2 class="font-bold text-5xl">{player.name}</h2>
-		<a href="/profile/team/{player.teamID}" class="font-thin whitespace-nowrap text-xl"
-			>{player.team.name}</a
-		>
+		<a href="/profile/team/{player.teamID}" class="font-thin whitespace-nowrap text-xl">
+			{player.team.name}
+		</a>
 	</div>
-	<a href="/profile/team/{player.teamID}">
+	<a href="/profile/team/{player.teamID}" class="-translate-x-5">
 		<img src={player.team.logo} alt={player.team.name} class="w-24 ml-5" />
 	</a>
 </div>
-<h2 class="text-xl mt-5 mx-8">Overview</h2>
-<div class="grid grid-cols-3 mt-5 mx-8 gap-3">
+<h2 class="text-xl mt-5 page-margin">Overview</h2>
+<div class="grid grid-cols-3 mt-5 page-margin gap-3">
 	{#each [{ title: 'Attack', val: player.attack }, { title: 'Possession', val: player.possession }, { title: 'Defence', val: player.defence }] as { title, val }}
 		<div class="rounded-xl bg-base1light p-3">
-			<span class="font-[500] text-xs block text-base1">{title}</span>
+			<span class="font-medium text-xs block text-base1">{title}</span>
 			<span class="font-bold text-4xl text-base1">
 				{Number.isNaN(val) ? '--' : val < 10 ? '0' + val.toFixed(0) : val.toFixed(0)}
 			</span>
@@ -102,76 +114,54 @@
 	<span>Follow on Instagram</span>
 	<span class="ml-2"><Instagram /></span>
 </a>
-<div class="card mt-3">
-	<div class="bg-base2 py-5">
-		<div class="grid grid-cols-2 mx-8 gap-5">
-			{#each [{ title: 'Matches Played', val: player.matchesPlayed }, { title: 'Goals Scored', val: player.goals }, { title: 'Matches Played', val: player.matchesPlayed }, { title: 'Goals Scored', val: player.goals }] as { title, val }}
+<Card>
+	{#each stats as data}
+		<div class="flex justify-around mt-2">
+			{#each data as stat}
 				<div class="rounded-xl bg-base1 text-center w-36 h-24 p-3">
-					<span class="font-[500] text-xs block">{title}</span>
+					<span class="font-medium text-xs block">{stat.title}</span>
 					<span class="font-bold block mt-3 text-4xl">
-						{Number.isNaN(val) ? '--' : val.toFixed(0)}
+						{Number.isNaN(stat.val) ? '--' : stat.val.toFixed(0)}
 					</span>
 				</div>
 			{/each}
 		</div>
-	</div>
-</div>
+	{/each}
+</Card>
 {#if $latestNews.data.length}
-	<div class="card">
-		<div class="bg-base2 py-3">
-			<h3 class="text-2xl text-base1 px-8 font-bold flex justify-between">
-				<span>Latest News</span><Logo />
-			</h3>
-			<AllNews loading={$latestNews.loading} allNews={$latestNews.data.slice(0, 2)} />
-			<AppDrawer close={() => (latestNewsDrawer = false)} open={latestNewsDrawer} title="News">
-				<AllNews
-					onNavigateToOtherPage={() => (latestNewsDrawer = false)}
-					loading={$latestNews.loading}
-					allNews={$latestNews.data}
-					seeMore={$latestNews.askedFor === $latestNews.data.length
-						? selectiveNewsListner.seeMore
-						: undefined}
-				/>
-			</AppDrawer>
-			<button
-				class="w-full text-base1 border-base1/50 border-t-2 mt-2"
-				style="font-weight: 500;"
-				on:click={() => (latestNewsDrawer = true)}
-			>
-				View All
-			</button>
-		</div>
-	</div>
+	<Card
+		title="Latest News"
+		viewMore={{ placeholder: 'All News', onClick: () => (latestNewsDrawer = true) }}
+	>
+		<AllNews loading={$latestNews.loading} allNews={$latestNews.data.slice(0, 2)} />
+		<AppDrawer close={() => (latestNewsDrawer = false)} open={latestNewsDrawer} title="News">
+			<AllNews
+				onNavigateToOtherPage={() => (latestNewsDrawer = false)}
+				loading={$latestNews.loading}
+				allNews={$latestNews.data}
+				seeMore={$latestNews.askedFor === $latestNews.data.length
+					? selectiveNewsListner.seeMore
+					: undefined}
+			/>
+		</AppDrawer>
+	</Card>
 {/if}
 {#if $latestVideos.data.length}
-	<div class="card">
-		<div class="bg-base2 py-3">
-			<h3 class="text-2xl text-base1 px-8 font-bold flex justify-between">
-				<span>Latest Videos</span><Logo />
-			</h3>
-			<AllVideos loading={$latestVideos.loading} allVideos={$latestVideos.data.slice(0, 2)} />
-			<AppDrawer
-				close={() => (latestVideosDrawer = false)}
-				open={latestVideosDrawer}
-				title="Videos"
-			>
-				<AllVideos
-					onNavigateToOtherPage={() => (latestVideosDrawer = false)}
-					loading={$latestVideos.loading}
-					allVideos={$latestVideos.data}
-					seeMore={$latestVideos.askedFor === $latestVideos.data.length
-						? selectiveVideoListner.seeMore
-						: undefined}
-				/>
-			</AppDrawer>
-			<button
-				class="w-full text-base1 border-base1/50 border-t-2 mt-2"
-				style="font-weight: 500;"
-				on:click={() => (latestVideosDrawer = true)}
-			>
-				View All
-			</button>
-		</div>
-	</div>
+	<Card
+		viewMore={{ placeholder: 'All Videos', onClick: () => (latestVideosDrawer = true) }}
+		title="Latest Videos"
+	>
+		<AllVideos loading={$latestVideos.loading} allVideos={$latestVideos.data.slice(0, 2)} />
+		<AppDrawer close={() => (latestVideosDrawer = false)} open={latestVideosDrawer} title="Videos">
+			<AllVideos
+				onNavigateToOtherPage={() => (latestVideosDrawer = false)}
+				loading={$latestVideos.loading}
+				allVideos={$latestVideos.data}
+				seeMore={$latestVideos.askedFor === $latestVideos.data.length
+					? selectiveVideoListner.seeMore
+					: undefined}
+			/>
+		</AppDrawer>
+	</Card>
 {/if}
 <Ads />

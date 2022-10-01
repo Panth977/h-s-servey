@@ -17,7 +17,7 @@
 	});
 </script>
 
-<div class="relative text-base1 font-thin w-64 text-center mt-5 rounded-lg bg-base1light mx-auto">
+<div class="relative flex text-base1 w-64 text-center mt-5 rounded-lg bg-base1light mx-auto">
 	<div class="absolute bg-base2 rounded-lg h-full w-32" style="left: {xPos * 100}%;" />
 	<button
 		on:click={() => content.scrollTo({ behavior: 'smooth', left: 0 })}

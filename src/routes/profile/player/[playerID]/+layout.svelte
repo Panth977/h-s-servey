@@ -8,7 +8,7 @@
 
 <div class="bg-base1 -mt-11 pt-11 min-h-screen">
 	<a class="header" href="/">Huddle & Score</a>
-	<div class="flex mt-1 justify-between mx-8">
+	<div class="flex mt-1 justify-between page-margin">
 		<button on:click={() => history.back()}><Back /></button>
 		<span>Player Profile</span>
 		<span />

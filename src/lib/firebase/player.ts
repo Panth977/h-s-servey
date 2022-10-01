@@ -2,7 +2,7 @@ import { runTransaction, deleteField } from '@firebase/firestore';
 import { getFirebase } from './firebase';
 import { getDownloadURL, ref, uploadBytes, deleteObject } from '@firebase/storage';
 import { eventID, eventRef } from './event';
-const { db, str } = getFirebase();
+const { db, storager } = getFirebase();
 
 export interface PlayerProfile<image = string> {
 	teamID: string;
@@ -53,7 +53,7 @@ export function playerToString(player: Player) {
 		player.redCard ?? 0,
 		player.goalConceived ?? 0,
 		player.goalSaved ?? 0,
-		player.handling ?? 0,
+		player.handling ?? 0
 	]);
 }
 export function stringToPlayer(val: string): Player {
@@ -76,7 +76,7 @@ export function stringToPlayer(val: string): Player {
 		redCard,
 		goalConceived,
 		goalSaved,
-		handling,
+		handling
 	] = JSON.parse(val);
 	return {
 		teamID,
@@ -97,7 +97,7 @@ export function stringToPlayer(val: string): Player {
 		redCard,
 		goalConceived,
 		goalSaved,
-		handling,
+		handling
 	};
 }
 export function setPlayer(playerID: undefined, data: PlayerProfile<File>): Promise<string>;
@@ -140,9 +140,11 @@ export async function setPlayer(
 					}
 				}
 				data = { ...player, ...data };
+			} else {
+				data = { ...player, ...data };
 			}
 		}
-		const image = ref(str, 'Event/' + eventID + '/Players/' + playerID);
+		const image = ref(storager, 'Event/' + eventID + '/Players/' + playerID);
 		if (data === null) {
 			await deleteObject(image);
 		} else if ('displayImage' in data) {

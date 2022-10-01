@@ -7,6 +7,7 @@
 	import Ads from '$lib/Components/Ads.svelte';
 	import Logo from '$lib/Icon/Logo.svelte';
 	import { onMount } from 'svelte';
+	import Card from '$lib/Components/Card.svelte';
 
 	$: teamID = $page.params.teamID;
 	$: team = $event.teams[teamID];
@@ -24,6 +25,20 @@
 			selectiveVideoListner.connectTo = undefined;
 		};
 	});
+
+	$: stats = [
+		{ title: 'Matches Played', val: team.matchesPlayed },
+		{ title: 'Goals Scored', val: team.goalScored },
+		{ title: 'Wins', val: team.won },
+		{ title: 'Losses', val: team.loss },
+		{ title: 'Goals Conceived', val: team.goalConceived },
+		{ title: 'Goal Difference', val: team.goalDifference },
+		{ title: 'Points', val: team.points }
+	].reduce(function (p, c, i) {
+		if (i % 2) p[p.length - 1].push(c);
+		else p.push([c]);
+		return p;
+	}, [] as { title: string; val: number }[][]);
 </script>
 
 <div>
@@ -53,11 +68,11 @@
 		</div>
 		<img src={team.logo} alt={team.name} class="mx-auto pt-32 relative z-10 w-[50%]" />
 	</div>
-	<h2 class="text-xl mt-5 mx-8">Overview</h2>
-	<div class="grid grid-cols-3 mt-5 mx-8 gap-3">
+	<h2 class="text-xl mt-5 page-margin">Overview</h2>
+	<div class="grid grid-cols-3 mt-5 page-margin gap-3">
 		{#each [{ title: 'Attack', val: team.attack }, { title: 'Possession', val: team.possession }, { title: 'Defence', val: team.defence }] as { title, val }}
 			<div class="rounded-xl bg-base1light p-3">
-				<span class="font-[500] text-xs block text-base1">{title}</span>
+				<span class="font-medium text-xs block text-base1">{title}</span>
 				<span class="font-bold text-4xl text-base1">
 					{Number.isNaN(val) ? '--' : val < 10 ? '0' + val.toFixed(0) : val.toFixed(0)}
 				</span>
@@ -65,94 +80,61 @@
 		{/each}
 	</div>
 
-	<h2 class="text-xl mt-5 mx-8 font-bold">Team Chemistry</h2>
-	<div class="mt-1 mx-8 flex items-center">
+	<h2 class="text-xl mt-5 page-margin font-bold">Team Chemistry</h2>
+	<div class="mt-1 page-margin flex items-center">
 		<div class="bg-base2 h-1 w-[35%] rounded-full">
 			<div class="bg-danger h-1 rounded-full" style="width: {team.teamChemistry}%;" />
 		</div>
 		<span class="ml-2">{team.teamChemistry}%</span>
 	</div>
 </div>
-<div class="card mt-3">
-	<div class="bg-base2 py-5">
-		<div class="grid grid-cols-2 mx-8 gap-5">
-			{#each [{ title: 'Matches Played', val: team.matchesPlayed }, { title: 'Goals Scored', val: team.goalScored }, { title: 'Wins', val: team.won }, { title: 'Looses', val: team.loss }, { title: 'Goals Conceived', val: team.goalConceived }, { title: 'Goals Differences', val: team.goalDifference }] as { title, val }}
+<Card>
+	{#each stats as data}
+		<div class="flex justify-around mt-2">
+			{#each data as stat}
 				<div class="rounded-xl bg-base1 text-center w-36 h-24 p-3">
-					<span class="font-[500] text-xs block">{title}</span>
+					<span class="font-medium text-xs block">{stat.title}</span>
 					<span class="font-bold block mt-3 text-4xl">
-						{Number.isNaN(val) ? '--' : val.toFixed(0)}
+						{Number.isNaN(stat.val) ? '--' : stat.val.toFixed(0)}
 					</span>
 				</div>
 			{/each}
 		</div>
-		<div class="rounded-xl mt-5 mx-auto bg-base1 text-center w-36 h-24 p-3">
-			<span class="font-[500] text-xs block">Points</span>
-			<span class="font-bold block mt-3 text-4xl">
-				{Number.isNaN(team.points)
-					? '--'
-					: team.points < 10
-					? '0' + team.points.toFixed(0)
-					: team.points.toFixed(0)}
-			</span>
-		</div>
-	</div>
-</div>
+	{/each}
+</Card>
 {#if $latestNews.data.length}
-	<div class="card">
-		<div class="bg-base2 py-3">
-			<h3 class="text-2xl text-base1 px-8 font-bold flex justify-between">
-				<span>Latest News</span><Logo />
-			</h3>
-			<AllNews loading={$latestNews.loading} allNews={$latestNews.data.slice(0, 2)} />
-			<AppDrawer close={() => (latestNewsDrawer = false)} open={latestNewsDrawer} title="News">
-				<AllNews
-					onNavigateToOtherPage={() => (latestNewsDrawer = false)}
-					loading={$latestNews.loading}
-					allNews={$latestNews.data}
-					seeMore={$latestNews.askedFor === $latestNews.data.length
-						? selectiveNewsListner.seeMore
-						: undefined}
-				/>
-			</AppDrawer>
-			<button
-				class="w-full text-base1 border-base1/50 border-t-2 mt-2"
-				style="font-weight: 500;"
-				on:click={() => (latestNewsDrawer = true)}
-			>
-				View All
-			</button>
-		</div>
-	</div>
+	<Card
+		title="Latest News"
+		viewMore={{ placeholder: 'All News', onClick: () => (latestNewsDrawer = true) }}
+	>
+		<AllNews loading={$latestNews.loading} allNews={$latestNews.data.slice(0, 2)} />
+		<AppDrawer close={() => (latestNewsDrawer = false)} open={latestNewsDrawer} title="News">
+			<AllNews
+				onNavigateToOtherPage={() => (latestNewsDrawer = false)}
+				loading={$latestNews.loading}
+				allNews={$latestNews.data}
+				seeMore={$latestNews.askedFor === $latestNews.data.length
+					? selectiveNewsListner.seeMore
+					: undefined}
+			/>
+		</AppDrawer>
+	</Card>
 {/if}
 {#if $latestVideos.data.length}
-	<div class="card">
-		<div class="bg-base2 py-3">
-			<h3 class="text-2xl text-base1 px-8 font-bold flex justify-between">
-				<span>Latest Videos</span><Logo />
-			</h3>
-			<AllVideos loading={$latestVideos.loading} allVideos={$latestVideos.data.slice(0, 2)} />
-			<AppDrawer
-				close={() => (latestVideosDrawer = false)}
-				open={latestVideosDrawer}
-				title="Videos"
-			>
-				<AllVideos
-					onNavigateToOtherPage={() => (latestVideosDrawer = false)}
-					loading={$latestVideos.loading}
-					allVideos={$latestVideos.data}
-					seeMore={$latestVideos.askedFor === $latestVideos.data.length
-						? selectiveVideoListner.seeMore
-						: undefined}
-				/>
-			</AppDrawer>
-			<button
-				class="w-full text-base1 border-base1/50 border-t-2 mt-2"
-				style="font-weight: 500;"
-				on:click={() => (latestVideosDrawer = true)}
-			>
-				View All
-			</button>
-		</div>
-	</div>
+	<Card
+		viewMore={{ placeholder: 'All Videos', onClick: () => (latestVideosDrawer = true) }}
+		title="Latest Videos"
+	>
+		<AllVideos loading={$latestVideos.loading} allVideos={$latestVideos.data.slice(0, 2)} />
+		<AppDrawer close={() => (latestVideosDrawer = false)} open={latestVideosDrawer} title="Videos">
+			<AllVideos
+				onNavigateToOtherPage={() => (latestVideosDrawer = false)}
+				loading={$latestVideos.loading}
+				allVideos={$latestVideos.data}
+				seeMore={$latestVideos.askedFor === $latestVideos.data.length
+					? selectiveVideoListner.seeMore
+					: undefined}
+			/>
+		</AppDrawer>
+	</Card>
 {/if}
-<Ads />

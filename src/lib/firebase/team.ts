@@ -3,7 +3,7 @@ import { getFirebase } from './firebase';
 import { deleteObject, getDownloadURL, ref, uploadBytes } from '@firebase/storage';
 import { eventID, eventRef } from './event';
 
-const { db, str } = getFirebase();
+const { db, storager } = getFirebase();
 
 export interface Team<logo = string> {
 	name: string;
@@ -33,7 +33,7 @@ export async function setTeam(teamID: undefined | string, data: Team<File | stri
 			teamID =
 				't-' + (Math.max(0, ...Object.keys(event.get('teams')).map((x) => -(-x.substring(2)))) + 1);
 		} else if (!event.get('teams.' + teamID)) return;
-		const logo = ref(str, 'Event/' + eventID + '/Teams/' + teamID);
+		const logo = ref(storager, 'Event/' + eventID + '/Teams/' + teamID);
 		if (data === null) {
 			await deleteObject(logo);
 		} else if (typeof data.logo !== 'string') {

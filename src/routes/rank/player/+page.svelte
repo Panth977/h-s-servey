@@ -5,7 +5,7 @@
 
 <a class="header" href="/">Huddle & Score</a>
 <div class="contrast pb-9 mt-1">
-	<div class="flex h-4 justify-between mx-8">
+	<div class="flex h-4 justify-between page-margin">
 		<button on:click={() => history.back()}><Back /></button>
 		<span>Player Rankings</span>
 		<span />
@@ -15,19 +15,19 @@
 	<div class="text-base1 hide-scroll-bar overflow-x-auto">
 		<table class="w-full text-sm text-left">
 			<thead class="text-xs">
-				<tr class="mx-8 x-7 bg-base1light">
-					<th class="py-2 font-thin pr-2 pl-8" scope="col">Pos</th>
-					<th class="py-2 font-thin pr-4" scope="col">Player</th>
-					<th class="py-2 font-thin pr-3" scope="col">M</th>
-					<th class="py-2 font-thin pr-3" scope="col">G</th>
-					<th class="py-2 font-thin pr-3" scope="col">A</th>
-					<th class="py-2 font-thin pr-3" scope="col">Y</th>
-					<th class="py-2 font-thin pr-8" scope="col">R</th>
+				<tr class="page-margin x-7 bg-base1light">
+					<th class="py-2 font-medium pr-2 pl-8" scope="col">Pos</th>
+					<th class="py-2 font-medium pr-4" scope="col">Player</th>
+					<th class="py-2 font-medium pr-3" scope="col">M</th>
+					<th class="py-2 font-medium pr-3" scope="col">G</th>
+					<th class="py-2 font-medium pr-3" scope="col">A</th>
+					<th class="py-2 font-medium pr-3" scope="col">Y</th>
+					<th class="py-2 font-medium pr-8" scope="col">R</th>
 				</tr>
 			</thead>
 			<tbody>
 				{#each $event.sortedPlayers as player, i}
-					<tr class="mx-8 border-b border-base1/50">
+					<tr class="page-margin border-b border-base1/50">
 						<td class="py-2 pr-2 pl-8">{i + 1}</td>
 						<th
 							class="py-2 pr-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"

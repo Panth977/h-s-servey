@@ -4,12 +4,12 @@
 	import { event } from './state';
 
 	export let news: News;
-	export let onNavigateToOtherPage: VoidFunction;
+	export let onNavigateToOtherPage: VoidFunction | undefined = undefined;
 </script>
 
-<h2 class="mx-8 font-bold text-3xl sm:text-5xl">{news.title}</h2>
-<img src={news.image} alt={news.id} class="w-full px-8 mt-5" />
-<p class="mx-8 mt-5">
+<h2 class="page-margin font-bold text-3xl sm:text-5xl">{news.title}</h2>
+<img src={news.image} alt={news.id} class="w-full page-padding mt-5" />
+<p class="page-margin mt-5">
 	{#each news.content as content}
 		{#if content.type === 'team'}
 			<a on:click={onNavigateToOtherPage} href="/profile/team/{content.teamID}" class="underline">

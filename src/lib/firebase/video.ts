@@ -4,7 +4,7 @@ import type { Timestamp } from '@firebase/firestore';
 import { deleteObject, getDownloadURL, ref, uploadBytes } from '@firebase/storage';
 import { getFirebase } from './firebase';
 
-const { str } = getFirebase();
+const { storager } = getFirebase();
 
 export const videoColl = collection(eventRef, 'Video/');
 
@@ -29,7 +29,7 @@ export async function setVideo(
 		videoID = randomStr();
 		(data as any).createdAt = serverTimestamp();
 	}
-	const image = ref(str, 'Event/' + eventID + '/Video/' + videoID);
+	const image = ref(storager, 'Event/' + eventID + '/Video/' + videoID);
 	const videoRef = doc(videoColl, videoID);
 	if (data !== null) {
 		if (typeof data.video !== 'string') {

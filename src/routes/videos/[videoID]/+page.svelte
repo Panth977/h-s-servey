@@ -18,7 +18,7 @@
 
 <a class="header" href="/">Huddle & Score</a>
 <div class="contrast pb-9 mt-1">
-	<div class="flex justify-between mx-8">
+	<div class="flex justify-between page-margin">
 		<button on:click={() => history.back()}><Back /></button>
 		<span>Latest Video</span>
 		<span />

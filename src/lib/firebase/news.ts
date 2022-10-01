@@ -3,7 +3,7 @@ import { collection, deleteDoc, doc, setDoc, serverTimestamp } from '@firebase/f
 import { deleteObject, getDownloadURL, ref, uploadBytes } from '@firebase/storage';
 import { getFirebase } from './firebase';
 import type { Timestamp } from 'firebase/firestore';
-const { str } = getFirebase();
+const { storager } = getFirebase();
 
 export const newsColl = collection(eventRef, 'News/');
 
@@ -25,7 +25,7 @@ export async function setNews(newsID: string | undefined, data: NewsProps<File |
 		newsID = randomStr();
 		(data as any).createdAt = serverTimestamp();
 	}
-	const image = ref(str, 'Event/' + eventID + '/News/' + newsID);
+	const image = ref(storager, 'Event/' + eventID + '/News/' + newsID);
 	const newsRef = doc(newsColl, newsID);
 	if (data !== null) {
 		if (typeof data.image !== 'string') {

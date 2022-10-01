@@ -13,7 +13,7 @@
 	<div class="app">
 		<div class="header">Huddle & Score</div>
 		<div class:contrast={bg === 'base2'} class="pb-9 mt-1">
-			<div class="flex h-4 justify-between mx-8">
+			<div class="flex h-4 justify-between page-margin">
 				<button on:click={close}><Back /></button>
 				<span>{title}</span>
 				<span />

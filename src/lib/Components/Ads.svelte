@@ -6,7 +6,7 @@
 	});
 </script>
 
-<div class="px-8 my-8">
+<div class="page-padding my-8">
 	<div class="border">
 		<ins
 			class="adsbygoogle"
@@ -18,3 +18,6 @@
 		/>
 	</div>
 </div> -->
+<div class="px-2 my-8">
+	<div class="border h-24">ADs</div>
+</div>

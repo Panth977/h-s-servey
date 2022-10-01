@@ -19,5 +19,5 @@ export function getFirebase() {
 		}
 		initializeFirestore(app, { ignoreUndefinedProperties: true });
 	}
-	return { db: getFirestore(), str: getStorage(), auth: getAuth() };
+	return { db: getFirestore(), storager: getStorage(), auth: getAuth() };
 }

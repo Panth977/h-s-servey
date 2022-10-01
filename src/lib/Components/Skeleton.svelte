@@ -19,7 +19,7 @@
 	height="75px"
 	aria-label={ariaLabel}
 	preserveAspectRatio="none"
-	class="mt-2 px-8"
+	class="mt-2 page-padding"
 >
 	<rect
 		fill="url(#{idGradient})"

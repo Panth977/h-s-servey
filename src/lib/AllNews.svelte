@@ -31,12 +31,12 @@
 
 {#each allNews as news}
 	<button
-		class="pt-3 px-8 h-20 overflow-hidden flex items-start w-full"
+		class="pt-3 page-padding h-20 overflow-hidden flex items-start w-full"
 		on:click={() => (selectedNews = news)}
 	>
 		<img alt={news.id} class="object-cover w-[30%] h-20 pt-2" src={news.image} />
 		<div class="ml-2 text-start text-base1">
-			<h4 class="text-sm font-[400]">{news.title}</h4>
+			<h4 class="text-sm font-normal">{news.title}</h4>
 			<p class="font-bold">
 				{#each news.content as content}
 					{#if content.type === 'team'}

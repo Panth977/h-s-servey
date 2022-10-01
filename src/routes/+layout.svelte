@@ -1,6 +1,8 @@
 <script lang="ts">
 	import '../app.css';
 	import { onMount } from 'svelte';
+	import { getFirebase } from '$lib/firebase/firebase';
+	import { signInAnonymously } from 'firebase/auth';
 	import { EventRef } from '$lib/firebase/db';
 	import { event, latestNewsListner, latestVideosListner } from '$lib/state';
 	import { onSnapshot } from 'firebase/firestore';
@@ -8,6 +10,7 @@
 	import Ranking from '$lib/Icon/Ranking.svelte';
 	import Profile from '$lib/Icon/Profile.svelte';
 	import Photos from '$lib/Icon/Photos.svelte';
+	let authLoading = true;
 
 	onMount(function () {
 		const eventSub = onSnapshot(EventRef, {
@@ -17,6 +20,9 @@
 		});
 		latestNewsListner.seeMore();
 		latestVideosListner.seeMore();
+		signInAnonymously(getFirebase().auth)
+			.then(console.log, console.error)
+			.finally(() => (authLoading = false));
 		return function () {
 			eventSub();
 			latestNewsListner.unSub?.();
@@ -25,14 +31,9 @@
 	});
 </script>
 
-<head>
-	<link href="https://fonts.googleapis.com/css?family=Cairo" rel="stylesheet" />
-	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
-</head>
-
 <div class="app">
 	<div class="pb-5">
-		{#if $event}
+		{#if $event && !authLoading}
 			<slot />
 		{:else}
 			Loading...
@@ -40,7 +41,7 @@
 	</div>
 	<div class="h-16" />
 	<div
-		class="h-16 z-50 bg-base2 bg-white border-t items-center flex justify-around fixed bottom-0 screen-width"
+		class="h-14 z-50 bg-base2 bg-white border-t items-center flex justify-around fixed bottom-0 screen-width"
 	>
 		<a href="/"><Latest /></a>
 		<a href="/rank"><Ranking /></a>

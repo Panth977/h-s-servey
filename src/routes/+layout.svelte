@@ -10,9 +10,27 @@
 	import Ranking from '$lib/Icon/Ranking.svelte';
 	import Profile from '$lib/Icon/Profile.svelte';
 	import Photos from '$lib/Icon/Photos.svelte';
-	import type { PageData } from './$types';
-	export let data: PageData;
-	event.update((x) => x || data);
+	// import type { PageData } from './$types';
+
+	// export let data: PageData;
+	// event.update((x) => x || data);
+	/** +layout.ts
+	import { EventRef, type Event } from '$lib/firebase/db';
+	import { getDoc } from 'firebase/firestore';
+	import type { LayoutLoad } from './$types';
+	import { error } from '@sveltejs/kit';
+
+	export const load: LayoutLoad<Event> = async () => {
+		try {
+			const res = await getDoc(EventRef);
+			const event = res.data();
+			if (!event) throw error(404, 'Not found');
+			return event;
+		} catch (e) {
+			throw error(404, 'Not found');
+		}
+	};
+	*/
 
 	onMount(function () {
 		const eventSub = onSnapshot(EventRef, {
@@ -32,11 +50,13 @@
 </script>
 
 <div class="app">
-	{#if $event}
-		<div class="pb-5">
+	<div class="pb-5">
+		{#if $event}
 			<slot />
-		</div>
-	{/if}
+		{:else}
+			Loading...
+		{/if}
+	</div>
 	<div class="h-16" />
 	<div
 		class="h-14 z-50 bg-base2 bg-white border-t items-center flex justify-around fixed bottom-0 screen-width"

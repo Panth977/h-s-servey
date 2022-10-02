@@ -10,10 +10,10 @@
 	import Ranking from '$lib/Icon/Ranking.svelte';
 	import Profile from '$lib/Icon/Profile.svelte';
 	import Photos from '$lib/Icon/Photos.svelte';
-	// import type { PageData } from './$types';
+	import type { PageData } from './$types';
 
-	// export let data: PageData;
-	// event.update((x) => x || data);
+	export let data: PageData;
+	event.update((x) => x || data);
 	/** +layout.ts
 	import { EventRef, type Event } from '$lib/firebase/db';
 	import { getDoc } from 'firebase/firestore';

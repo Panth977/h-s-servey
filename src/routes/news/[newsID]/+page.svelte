@@ -3,8 +3,8 @@
 	import News from '$lib/News.svelte';
 	import Header from '$lib/Components/Header.svelte';
 	import Seo from '$lib/Components/Seo.svelte';
-	// import type { PageData } from './$types';
-	// export let data: PageData;
+	import type { PageData } from './$types';
+	export let data: PageData;
 	/** +page.ts
  	import { NewsColl, type News } from '$lib/firebase/db';
 	import { doc, getDoc } from 'firebase/firestore';
@@ -23,13 +23,13 @@
 	};
 		
 	*/
-	import { NewsColl } from '$lib/firebase/db';
-	import { doc, getDoc } from 'firebase/firestore';
+	// import { NewsColl } from '$lib/firebase/db';
+	// import { doc, getDoc } from 'firebase/firestore';
 
 	$: newsID = $page.params.newsID;
 </script>
 
-{#await getDoc(doc(NewsColl, newsID)).then( (x) => x.data(), () => null )}
+<!-- {#await getDoc(doc(NewsColl, newsID)).then( (x) => x.data(), () => null )}
 	Loading...
 {:then data}
 	{#if data}
@@ -41,9 +41,9 @@
 	{:else}
 		Page 404: Not Found
 	{/if}
-{/await}
-<!-- <Seo discription={data.caption} poster={data.image} title={data.title} />
+{/await} -->
+<Seo discription={data.caption} poster={data.image} title={data.title} />
 <Header title="Latest News" share={{ path: `/news/${newsID}`, title: data?.title }} />
 <div class="pb-9 mt-1">
 	<News news={data} />
-</div> -->
+</div>

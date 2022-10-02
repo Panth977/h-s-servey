@@ -7,6 +7,7 @@
 	import AllNews from '$lib/AllNews.svelte';
 	import AllVideos from '$lib/AllVideos.svelte';
 	import Card from '$lib/Components/Card.svelte';
+	import Seo from '$lib/Components/Seo.svelte';
 
 	$: currentFixture =
 		$event.fixtures[$event.fixtures.length - $event.upcommingFixtures.length - 1] ??
@@ -20,6 +21,7 @@
 	$: topTeams = $event.sortedTeams.slice(0, 3);
 </script>
 
+<Seo />
 <a class="header" style="padding-bottom: 0;" href="/">Huddle & Score</a>
 <div class="page-padding -mt-1 items-center flex space-x-1">
 	<LocationPin />

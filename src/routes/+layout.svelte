@@ -47,6 +47,7 @@
 			latestVideosListner.unSub?.();
 		};
 	});
+	$: console.log($event);
 </script>
 
 <div class="app">

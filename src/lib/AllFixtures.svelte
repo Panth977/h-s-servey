@@ -31,7 +31,7 @@
 					{fixture.scores?.team1 ?? 0} - {fixture.scores?.team2 ?? 0}
 				</span>
 			{/if}
-			<img src={fixture.team1.logo} alt={fixture.team2.name} class="w-9 h-10" />
+			<img src={fixture.team2.logo} alt={fixture.team2.name} class="w-9 h-10" />
 			<span class="w-10">{fixture.team2.acronym}</span>
 		</div>
 	{/each}

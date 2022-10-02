@@ -1,9 +1,9 @@
 import { EventRef, type Event } from '$lib/firebase/db';
 import { getDoc } from 'firebase/firestore';
-import type { PageLoad } from './$types';
+import type { LayoutLoad } from './$types';
 import { error } from '@sveltejs/kit';
 
-export const load: PageLoad<Event> = async ({}) => {
+export const load: LayoutLoad<Event> = async () => {
 	try {
 		const res = await getDoc(EventRef);
 		const event = res.data();

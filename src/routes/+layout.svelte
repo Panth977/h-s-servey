@@ -32,9 +32,11 @@
 </script>
 
 <div class="app">
-	<div class="pb-5">
-		<slot />
-	</div>
+	{#if $event}
+		<div class="pb-5">
+			<slot />
+		</div>
+	{/if}
 	<div class="h-16" />
 	<div
 		class="h-14 z-50 bg-base2 bg-white border-t items-center flex justify-around fixed bottom-0 screen-width"

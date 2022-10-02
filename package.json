@@ -33,7 +33,8 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@sveltejs/adapter-cloudflare": "^1.0.0-next.32",
+		"@sveltejs/adapter-cloudflare": "^1.0.0-next.38",
+		"@sveltejs/adapter-cloudflare-workers": "^1.0.0-next.57",
 		"firebase": "^9.9.4",
 		"svelte-drawer-component": "^1.2.2"
 	}

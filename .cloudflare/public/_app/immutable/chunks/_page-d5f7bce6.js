@@ -1,0 +1,1 @@
+import{d as a,x as s,N as n}from"./db-06457d1e.js";import{e as t}from"./index-d6fabef0.js";const l=async({params:e})=>{try{const o=(await a(s(n,e.newsID))).data();if(!o)throw t(404,"Not found");return o}catch{throw t(404,"Not found")}},f=Object.freeze(Object.defineProperty({__proto__:null,load:l},Symbol.toStringTag,{value:"Module"}));export{f as _,l};

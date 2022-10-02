@@ -1,0 +1,10 @@
+name = "survey-site"
+account_id = "248e058297c0773a514f379179d80d26"
+
+main = "./.cloudflare/worker.js"
+site.bucket = "./.cloudflare/public"
+
+build.command = "npm run build"
+
+compatibility_date = "2022-10-02"
+workers_dev = true

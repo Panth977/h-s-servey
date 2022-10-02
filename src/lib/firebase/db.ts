@@ -1,4 +1,4 @@
-import type { Fixture } from './fixture';
+import type { Fixture, PlayerStats } from './fixture';
 import { setFixture, stringToFixture } from './fixture';
 import type { VideoDocument } from './video';
 import { setVideo, videoColl } from './video';
@@ -18,6 +18,8 @@ export interface EventFixture extends Fixture {
 	displayDate: string;
 	team1: Team;
 	team2: Team;
+	isUpcomming: boolean;
+	scores?: { team1: number; team2: number };
 }
 
 export interface EventTeam extends Team {
@@ -36,7 +38,7 @@ export interface EventTeam extends Team {
 	goalDifference: number;
 }
 
-export interface EventPlayer extends Player {
+export interface EventPlayer extends Player, PlayerStats {
 	id: string;
 	team: EventTeam;
 	_attack: number;
@@ -49,6 +51,7 @@ export interface EventPlayer extends Player {
 	score: number;
 	goalkeeperPoints: number;
 	isGoalkeeper: boolean;
+	matchesPlayed: number;
 }
 
 interface Event {
@@ -65,22 +68,40 @@ interface Event {
 function parseEventDocument(doc: EventDocument): Event {
 	const teams: { [teamID: string]: EventTeam } = {};
 	const players: { [playerID: string]: EventPlayer } = {};
+	const now = new Date(new Date().toString() + ' UTC').toISOString();
 	const fixtures: EventFixture[] = Object.entries(doc.fixtures)
 		.map(function (x): EventFixture {
 			const fixture = stringToFixture(x[1]);
-			let team1: EventTeam | undefined;
-			let team2: EventTeam | undefined;
 			const date = new Date(fixture.time);
+			const data: { [key in keyof EventFixture]?: EventFixture[key] } = {};
 			return {
 				...fixture,
 				id: x[0],
+				get isUpcomming() {
+					return (data.isUpcomming ??= this.time.localeCompare(now) > 0);
+				},
+				get scores() {
+					if (!('scores' in data)) {
+						if (!this._scores) data.scores = undefined;
+						else {
+							if (!this.stats) data.scores = this._scores;
+							else {
+								data.scores = { team1: 0, team2: 0 };
+								for (const [, stats] of Object.entries(this.stats)) {
+									data.scores[this.team1ID === stats.teamID ? 'team1' : 'team2'] += stats.goals;
+								}
+							}
+						}
+					}
+					return data.scores;
+				},
 				displayTime: date.toLocaleTimeString(),
 				displayDate: date.toLocaleDateString(),
 				get team1() {
-					return (team1 ??= teams[this.team1ID]);
+					return (data.team1 ??= teams[this.team1ID]);
 				},
 				get team2() {
-					return (team2 ??= teams[this.team2ID]);
+					return (data.team2 ??= teams[this.team2ID]);
 				}
 			};
 		})
@@ -177,20 +198,55 @@ function parseEventDocument(doc: EventDocument): Event {
 			const id = x[0];
 			const data: { [key in keyof EventPlayer]?: EventPlayer[key] } = {};
 			const player = stringToPlayer(x[1]);
-			const common = player.goals * 40 + player.assists * 20 + player.passes * 0.2;
-			const _attack = common + player.shots * 6;
-			const _possession = common + player.dribbles * 0.5;
-			const _defence = common + player.tackles * 4;
-			if (_attack > maxAttack) maxAttack = _attack;
-			if (_possession > maxPossession) maxPossession = _possession;
-			if (_defence > maxDefence) maxDefence = _defence;
+
+			function initFixtures() {
+				data.assists = 0;
+				data.dribbles = 0;
+				data.goalConceived = 0;
+				data.goals = 0;
+				data.goalSaved = 0;
+				data.handling = 0;
+				data.passes = 0;
+				data.redCard = 0;
+				data.shots = 0;
+				data.tackles = 0;
+				data.yellowCard = 0;
+				data.matchesPlayed = 0;
+				for (const fixture of fixtures) {
+					const stats = fixture.stats?.[id];
+					if (stats) {
+						data.assists += stats.assists;
+						data.dribbles += stats.dribbles;
+						data.goalConceived += stats.goalConceived;
+						data.goals += stats.goals;
+						data.goalSaved += stats.goalSaved;
+						data.handling += stats.handling;
+						data.passes += stats.passes;
+						data.redCard += stats.redCard;
+						data.shots += stats.shots;
+						data.tackles += stats.tackles;
+						data.yellowCard += stats.yellowCard;
+						data.matchesPlayed++;
+					}
+				}
+			}
+
 			return (players[id] = {
 				...player,
 				id,
 				team: teams[player.teamID],
-				_attack,
-				_defence,
-				_possession,
+				get _attack() {
+					return (data._attack ??=
+						this.goals * 40 + this.assists * 20 + this.passes * 0.2 + this.shots * 6);
+				},
+				get _defence() {
+					return (data._defence ??=
+						this.goals * 40 + this.assists * 20 + this.passes * 0.2 + this.dribbles * 0.5);
+				},
+				get _possession() {
+					return (data._possession ??=
+						this.goals * 40 + this.assists * 20 + this.passes * 0.2 + this.tackles * 4);
+				},
 				get isGoalkeeper() {
 					return (data.isGoalkeeper ??= this.position === 'Goalkeeper');
 				},
@@ -212,8 +268,62 @@ function parseEventDocument(doc: EventDocument): Event {
 				get goalkeeperPoints() {
 					return (data.goalkeeperPoints ??=
 						(this.conceiveRate + this.possession + this.handling) / 3);
+				},
+				get assists() {
+					if (!('assists' in data)) initFixtures();
+					return data.assists!;
+				},
+				get dribbles() {
+					if (!('dribbles' in data)) initFixtures();
+					return data.dribbles!;
+				},
+				get goalConceived() {
+					if (!('goalConceived' in data)) initFixtures();
+					return data.goalConceived!;
+				},
+				get goals() {
+					if (!('goals' in data)) initFixtures();
+					return data.goals!;
+				},
+				get goalSaved() {
+					if (!('goalSaved' in data)) initFixtures();
+					return data.goalSaved!;
+				},
+				get handling() {
+					if (!('handling' in data)) initFixtures();
+					return data.handling!;
+				},
+				get passes() {
+					if (!('passes' in data)) initFixtures();
+					return data.passes!;
+				},
+				get redCard() {
+					if (!('redCard' in data)) initFixtures();
+					return data.redCard!;
+				},
+				get shots() {
+					if (!('shots' in data)) initFixtures();
+					return data.shots!;
+				},
+				get tackles() {
+					if (!('tackles' in data)) initFixtures();
+					return data.tackles!;
+				},
+				get yellowCard() {
+					if (!('yellowCard' in data)) initFixtures();
+					return data.yellowCard!;
+				},
+				get matchesPlayed() {
+					if (!('matchesPlayed' in data)) initFixtures();
+					return data.matchesPlayed!;
 				}
 			});
+		})
+		.map((x) => {
+			if (x._attack > maxAttack) maxAttack = x._attack;
+			if (x._possession > maxPossession) maxPossession = x._possession;
+			if (x._defence > maxDefence) maxDefence = x._defence;
+			return x;
 		})
 		.sort((a, b) => b.goals * 1000 + b.assists - a.goals * 1000 - a.assists);
 	const sortedGoalkeepers = [...sortedPlayers]
@@ -232,10 +342,7 @@ function parseEventDocument(doc: EventDocument): Event {
 		sortedGoalkeepers,
 		sortedTeams,
 		get upcommingFixtures() {
-			if (!upcommingFixtures?.length) {
-				const now = new Date().toISOString();
-				upcommingFixtures = fixtures.filter((f) => f.time.localeCompare(now) > 0);
-			}
+			if (!upcommingFixtures?.length) upcommingFixtures = fixtures.filter((f) => f.isUpcomming);
 			return upcommingFixtures;
 		}
 	};

@@ -4,7 +4,7 @@ import { getDownloadURL, ref, uploadBytes, deleteObject } from '@firebase/storag
 import { eventID, eventRef } from './event';
 const { db, storager } = getFirebase();
 
-export interface PlayerProfile<image = string> {
+export interface Player<image = string> {
 	teamID: string;
 	jerseyNum: string;
 	name: string;
@@ -14,25 +14,6 @@ export interface PlayerProfile<image = string> {
 	place: string;
 }
 
-export interface PlayerStats {
-	goals: number; // APD, 40
-	assists: number; // APD, 20
-	passes: number; // APD, .2
-	tackles: number; // D, 4
-	dribbles: number; // P, .5
-	shots: number; // A, 6
-	yellowCard: number;
-	redCard: number;
-	matchesPlayed: number;
-	goalConceived: number;
-	goalSaved: number;
-	handling: number;
-}
-
-export interface Player<image = string, matchesPlayed = number>
-	extends PlayerProfile<image>,
-		PlayerStats {}
-
 export function playerToString(player: Player) {
 	return JSON.stringify([
 		player.teamID,
@@ -41,43 +22,12 @@ export function playerToString(player: Player) {
 		player.displayImage,
 		player.position,
 		player.instagramUsername,
-		player.place,
-		player.matchesPlayed ?? 0,
-		player.goals ?? 0,
-		player.assists ?? 0,
-		player.passes ?? 0,
-		player.tackles ?? 0,
-		player.dribbles ?? 0,
-		player.shots ?? 0,
-		player.yellowCard ?? 0,
-		player.redCard ?? 0,
-		player.goalConceived ?? 0,
-		player.goalSaved ?? 0,
-		player.handling ?? 0
+		player.place
 	]);
 }
 export function stringToPlayer(val: string): Player {
-	const [
-		teamID,
-		jerseyNum,
-		name,
-		displayImage,
-		position,
-		instagramUsername,
-		place,
-		matchesPlayed,
-		goals,
-		assists,
-		passes,
-		tackles,
-		dribbles,
-		shots,
-		yellowCard,
-		redCard,
-		goalConceived,
-		goalSaved,
-		handling
-	] = JSON.parse(val);
+	const [teamID, jerseyNum, name, displayImage, position, instagramUsername, place] =
+		JSON.parse(val);
 	return {
 		teamID,
 		jerseyNum,
@@ -85,29 +35,13 @@ export function stringToPlayer(val: string): Player {
 		displayImage,
 		position,
 		instagramUsername,
-		place,
-		matchesPlayed,
-		goals,
-		assists,
-		passes,
-		tackles,
-		dribbles,
-		shots,
-		yellowCard,
-		redCard,
-		goalConceived,
-		goalSaved,
-		handling
+		place
 	};
 }
-export function setPlayer(playerID: undefined, data: PlayerProfile<File>): Promise<string>;
-export function setPlayer(playerID: string, data: PlayerProfile<File | string>): Promise<string>;
-export function setPlayer(playerID: string, data: PlayerStats): Promise<string>;
+export function setPlayer(playerID: undefined, data: Player<File>): Promise<string>;
+export function setPlayer(playerID: string, data: Player<File | string>): Promise<string>;
 export function setPlayer(playerID: string, data: null): Promise<string>;
-export async function setPlayer(
-	playerID: undefined | string,
-	data: PlayerProfile<File | string> | PlayerStats | null
-) {
+export async function setPlayer(playerID: undefined | string, data: Player<File | string> | null) {
 	if (data) data = { ...data };
 	await runTransaction(db, async function (transaction) {
 		const event = await transaction.get(eventRef);
@@ -115,35 +49,7 @@ export async function setPlayer(
 			playerID =
 				'p-' +
 				(Math.max(0, ...Object.keys(event.get('players')).map((x) => -(-x.substring(2)))) + 1);
-			if (data) {
-				data = {
-					...data,
-					goals: 0,
-					assists: 0,
-					passes: 0,
-					tackles: 0,
-					dribbles: 0,
-					shots: 0,
-					yellowCard: 0,
-					redCard: 0,
-					matchesPlayed: 0
-				};
-			}
-		} else {
-			const player = stringToPlayer(event.get('players.' + playerID));
-			if (!player) return;
-			if (data && 'matchesPlayed' in data) {
-				let key: keyof typeof data;
-				for (key in data) {
-					if (Object.prototype.hasOwnProperty.call(data, key)) {
-						data[key] += player[key];
-					}
-				}
-				data = { ...player, ...data };
-			} else {
-				data = { ...player, ...data };
-			}
-		}
+		} else if (!event.get('players.' + playerID)) return;
 		const image = ref(storager, 'Event/' + eventID + '/Players/' + playerID);
 		if (data === null) {
 			await deleteObject(image);

@@ -15,7 +15,6 @@
 		return prv;
 	},
 	[]);
-	const now = new Date().toISOString();
 </script>
 
 {#each showMaxDays ? combineFixtures.splice(0, showMaxDays) : combineFixtures as fixtures}
@@ -24,7 +23,7 @@
 		<div class="text-accent1 text-lg justify-around flex items-center">
 			<span class="w-10">{fixture.team1.acronym}</span>
 			<img src={fixture.team1.logo} alt={fixture.team1.name} class="w-9 h-10" />
-			{#if fixture.time.localeCompare(now) > 0}
+			{#if fixture.isUpcomming}
 				<span class="border text-center text-xs p-1 w-[25%]">{fixture.displayTime}</span>
 			{:else}
 				<span class="w-[25%] text-center">

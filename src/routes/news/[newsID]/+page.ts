@@ -13,3 +13,4 @@ export const load: PageLoad<News> = async ({ params }) => {
 		throw error(404, 'Not found');
 	}
 };
+export const hydrate = true;

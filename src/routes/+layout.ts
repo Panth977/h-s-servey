@@ -23,3 +23,4 @@ export const load: LayoutLoad<{ event: Event; news: News[]; videos: Video[] }> =
 		throw error(500, 'Something Went Wrong');
 	}
 };
+export const hydrate = true;

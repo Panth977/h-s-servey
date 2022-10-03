@@ -13,3 +13,4 @@ export const load: PageLoad<Video> = async ({ params }) => {
 		throw error(404, 'Not found');
 	}
 };
+export const hydrate = true;

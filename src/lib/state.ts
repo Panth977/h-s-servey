@@ -46,6 +46,9 @@ class LatestListner<T> {
 					loading: false,
 					askedFor: listner.#askedFor
 				});
+			},
+			error(error) {
+				console.error(error);
 			}
 		});
 	}
@@ -106,6 +109,9 @@ class SelectiveListner<T> {
 					loading: false,
 					askedFor: listner.#askedFor
 				});
+			},
+			error(error) {
+				console.error(error);
 			}
 		});
 	}
@@ -113,43 +119,3 @@ class SelectiveListner<T> {
 
 export const selectiveNewsListner = new SelectiveListner(newsRelated);
 export const selectiveVideoListner = new SelectiveListner(videoRelated);
-
-class DocListner<T> {
-	#store: Writable<T | undefined | null>;
-	#ref: CollectionReference<T>;
-	#unSub?: VoidFunction;
-	#id?: string;
-
-	constructor(ref: CollectionReference<T>) {
-		this.#store = writable();
-		this.#ref = ref;
-	}
-	get id() {
-		return this.#id;
-	}
-	set id(newID: string | undefined) {
-		if (this.#id === newID) return;
-		this.#unSub?.();
-		this.#store.set(undefined);
-		if ((this.#id = newID)) {
-			const listner = this;
-			this.#unSub = onSnapshot(doc(this.#ref, this.#id), {
-				next(snap) {
-					listner.#store.set(snap.exists() ? snap.data() : null);
-				}
-			});
-		} else {
-			this.#unSub = undefined;
-			this.#store.set(undefined);
-		}
-	}
-	get store() {
-		return this.#store;
-	}
-	get unSub() {
-		return this.#unSub;
-	}
-}
-
-export const newsListner = new DocListner(NewsColl);
-export const videoListner = new DocListner(VideoColl);

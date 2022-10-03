@@ -52,6 +52,7 @@ export interface EventPlayer extends Player, PlayerStats {
 	goalkeeperPoints: number;
 	isGoalkeeper: boolean;
 	matchesPlayed: number;
+	stats: PlayerStats[];
 }
 
 interface Event {
@@ -201,6 +202,7 @@ function parseEventDocument(doc: EventDocument): Event {
 
 			function initFixtures() {
 				data.assists = 0;
+				data.stats = [];
 				data.dribbles = 0;
 				data.goalConceived = 0;
 				data.goals = 0;
@@ -227,6 +229,10 @@ function parseEventDocument(doc: EventDocument): Event {
 						data.tackles += stats.tackles;
 						data.yellowCard += stats.yellowCard;
 						data.matchesPlayed++;
+						data.stats.push({
+							...stats,
+							teamID: fixture.team1ID === stats.teamID ? fixture.team2ID : fixture.team1ID
+						});
 					}
 				}
 			}
@@ -268,6 +274,10 @@ function parseEventDocument(doc: EventDocument): Event {
 				get goalkeeperPoints() {
 					return (data.goalkeeperPoints ??=
 						(this.conceiveRate + this.possession + this.handling) / 3);
+				},
+				get stats() {
+					if (!('stats' in data)) initFixtures();
+					return data.stats!;
 				},
 				get assists() {
 					if (!('assists' in data)) initFixtures();

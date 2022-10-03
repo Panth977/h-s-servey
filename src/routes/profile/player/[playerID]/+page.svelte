@@ -9,6 +9,8 @@
 	import Ads from '$lib/Components/Ads.svelte';
 	import Card from '$lib/Components/Card.svelte';
 	import Seo from '$lib/Components/Seo.svelte';
+	import Chart from '$lib/Components/Chart.svelte';
+
 	$: playerID = $page.params.playerID;
 	$: player = $event.players[playerID];
 
@@ -110,7 +112,6 @@
 		</div>
 	{/each}
 </div>
-
 <a
 	href="https://www.instagram.com/{player.instagramUsername}/"
 	target="_blank"
@@ -119,6 +120,48 @@
 	<span>Follow on Instagram</span>
 	<span class="ml-2"><Instagram /></span>
 </a>
+{#if player.matchesPlayed}
+	<Chart
+		dataset={{
+			labels: player.isGoalkeeper
+				? ['Goals', 'Assists', 'Tackles', 'Dribbles', 'Shots', 'Passes', 'Handling']
+				: ['Goals', 'Assists', 'Tackles', 'Dribbles', 'Shots', 'Passes'],
+			data: [
+				...player.stats.map(function (stats, i) {
+					return {
+						label: i + 1 + ') ' + $event.teams[stats.teamID].acronym,
+						values: {
+							Goals: stats.goals,
+							Assists: stats.assists,
+							Tackles: stats.tackles,
+							Dribbles: stats.dribbles,
+							Shots: stats.shots,
+							Passes: stats.passes,
+							Handling: stats.handling
+						}
+					};
+				}),
+				...(player.stats.length > 1
+					? [
+							{
+								label: 'Avarage',
+								values: {
+									Goals: player.goals / player.matchesPlayed,
+									Assists: player.assists / player.matchesPlayed,
+									Tackles: player.tackles / player.matchesPlayed,
+									Dribbles: player.dribbles / player.matchesPlayed,
+									Shots: player.shots / player.matchesPlayed,
+									Passes: player.passes / player.matchesPlayed,
+									Handling: player.handling / player.matchesPlayed
+								}
+							}
+					  ]
+					: [])
+			]
+		}}
+	/>
+{/if}
+
 <Card>
 	{#each stats as data}
 		<div class="flex justify-around mt-2">

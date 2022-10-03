@@ -6,6 +6,7 @@
 	import AllVideos from '$lib/AllVideos.svelte';
 	import { onMount } from 'svelte';
 	import Card from '$lib/Components/Card.svelte';
+	// import Chart from '$lib/Components/Chart.svelte';
 
 	$: teamID = $page.params.teamID;
 	$: team = $event.teams[teamID];
@@ -86,6 +87,26 @@
 		<span class="ml-2">{team.teamChemistry}%</span>
 	</div>
 </div>
+<!-- {#if team.matchesPlayed}
+	<Chart
+		dataset={{
+			labels: ['Goals', 'Tackles', 'Dribbles', 'Shots', 'Passes'],
+			data: [
+							{
+								label: 'Avarage',
+								values: {
+									Goals: team.goalScored / team.matchesPlayed,
+									Tackles: team.g / team.matchesPlayed,
+									Dribbles: team.dribbles / team.matchesPlayed,
+									Shots: team.shots / team.matchesPlayed,
+									Passes: team.passes / team.matchesPlayed,
+									Handling: team.handling / team.matchesPlayed
+								}
+							}
+					  ]
+		}}
+	/>
+{/if} -->
 <Card>
 	{#each stats as data}
 		<div class="flex justify-around mt-2">

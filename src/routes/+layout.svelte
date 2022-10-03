@@ -11,14 +11,15 @@
 	import Profile from '$lib/Icon/Profile.svelte';
 	import Photos from '$lib/Icon/Photos.svelte';
 	import type { PageData } from './$types';
+	import { subscribeRoutes } from '$lib/Components/Header.svelte';
 
 	export let data: PageData;
-	console.log(data);
 	event.update((x) => x || data.event);
 	latestNewsListner.addIfNot(data.news);
 	latestVideosListner.addIfNot(data.videos);
 
 	onMount(function () {
+		subscribeRoutes();
 		const eventSub = onSnapshot(EventRef, {
 			next(snapshot) {
 				event.set(snapshot.data()!);

@@ -2,18 +2,20 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	let lastPagesViewed: string[] = [];
-	page.subscribe((x) => {
-		const path = x?.url?.pathname;
-		if (!path) return;
-		if (path === '/') {
-			lastPagesViewed = [];
-			return;
-		}
-		const lastPath = lastPagesViewed.pop();
-		if (path === lastPath) lastPagesViewed.push(path);
-		else if (lastPath) lastPagesViewed.push(lastPath, path);
-		else lastPagesViewed.push(path);
-	});
+	export function subscribeRoutes() {
+		page.subscribe((x) => {
+			const path = x?.url?.pathname;
+			if (!path) return;
+			if (path === '/') {
+				lastPagesViewed = [];
+				return;
+			}
+			const lastPath = lastPagesViewed.pop();
+			if (path === lastPath) lastPagesViewed.push(path);
+			else if (lastPath) lastPagesViewed.push(lastPath, path);
+			else lastPagesViewed.push(path);
+		});
+	}
 	function goBack() {
 		lastPagesViewed.pop();
 		const path = lastPagesViewed.pop();

@@ -19,6 +19,7 @@
 	latestVideosListner.addIfNot(data.videos);
 
 	onMount(function () {
+		alert('Welcome to Huddle and Score!');
 		subscribeRoutes();
 		const eventSub = onSnapshot(EventRef, {
 			next(snapshot) {

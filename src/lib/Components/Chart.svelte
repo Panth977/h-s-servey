@@ -35,7 +35,9 @@
 						r: {
 							grid: {
 								circular: true
-							}
+							},
+							min: 0,
+							suggestedMax: 10
 						}
 					},
 					elements: {

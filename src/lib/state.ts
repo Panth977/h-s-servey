@@ -1,4 +1,4 @@
-import { CollectionReference, doc, limit, onSnapshot, Query, query } from 'firebase/firestore';
+import { limit, onSnapshot, Query, query } from 'firebase/firestore';
 import { writable, type Writable } from 'svelte/store';
 import type { Event } from './firebase/db';
 import { newsRef, videosRef, newsRelated, videoRelated, NewsColl, VideoColl } from './firebase/db';
@@ -32,6 +32,12 @@ class LatestListner<T> {
 	get unSub() {
 		return this.#unSub;
 	}
+
+	addIfNot(data: T[]) {
+		if (!data.length) return;
+		this.#store.update((x) => (x.data.length ? x : { ...x, loading: false, data }));
+	}
+
 	seeMore() {
 		if (this.#askedFor !== this.#currentlyListningTo) return;
 		this.#askedFor += 5;

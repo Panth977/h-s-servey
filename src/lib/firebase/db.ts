@@ -146,7 +146,9 @@ function parseEventDocument(doc: EventDocument): Event {
 			return (teams[id] = {
 				id,
 				...stringToTeam(x[1]),
-				players: [],
+				get players() {
+					return (data.players ??= []);
+				},
 				get matchesPlayed() {
 					if (!('matchesPlayed' in data)) initFixtures();
 					return data.matchesPlayed;
@@ -240,7 +242,9 @@ function parseEventDocument(doc: EventDocument): Event {
 			return (players[id] = {
 				...player,
 				id,
-				team: teams[player.teamID],
+				get team() {
+					return (data.team ??= teams[player.teamID]);
+				},
 				get _attack() {
 					return (data._attack ??=
 						this.goals * 40 + this.assists * 20 + this.passes * 0.2 + this.shots * 6);

@@ -1,3 +1,26 @@
+<script lang="ts" context="module">
+	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
+	let lastPagesViewed: string[] = [];
+	page.subscribe((x) => {
+		const path = x?.url?.pathname;
+		if (!path) return;
+		if (path === '/') {
+			lastPagesViewed = [];
+			return;
+		}
+		const lastPath = lastPagesViewed.pop();
+		if (path === lastPath) lastPagesViewed.push(path);
+		else if (lastPath) lastPagesViewed.push(lastPath, path);
+		else lastPagesViewed.push(path);
+	});
+	function goBack() {
+		lastPagesViewed.pop();
+		const path = lastPagesViewed.pop();
+		goto(path ?? '/');
+	}
+</script>
+
 <script lang="ts">
 	import Back from '$lib/Icon/Back.svelte';
 	import Logo from '$lib/Icon/Logo.svelte';
@@ -5,8 +28,8 @@
 
 	export let tralingLogo = false;
 	export let title: string;
-	export let onBack = () => history.back();
 	export let share: ShareInfo | undefined = undefined;
+	export let onBack = goBack;
 </script>
 
 <div class="flex justify-between page-margin">
@@ -16,9 +39,9 @@
 	{/if}
 </div>
 <div class="flex mt-1 justify-between page-margin">
-	<button on:click={onBack}><Back /></button>
-	<span>{title}</span>
-	<span>
+	<button on:click={onBack} class="w-full"><Back /></button>
+	<span class="whitespace-nowrap">{title}</span>
+	<span class="w-full flex justify-end">
 		{#if share}
 			<Share {share} />
 		{/if}

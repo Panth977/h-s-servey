@@ -36,7 +36,9 @@
 		<div class="w-full text-xl items-center flex justify-around pb-4 pt-5 font-medium">
 			<span>{currentFixture.team1.acronym}</span>
 			<img src={currentFixture.team1.logo} alt={currentFixture.team1.name} class="w-9 h-10" />
-			<span> {currentFixture.scores?.team1 ?? 0} - {currentFixture.scores?.team2 ?? 0} </span>
+			<span class="whitespace-nowrap">
+				{currentFixture.scores?.team1 ?? 0} - {currentFixture.scores?.team2 ?? 0}
+			</span>
 			<img src={currentFixture.team2.logo} alt={currentFixture.team1.name} class="w-9 h-10" />
 			<span>{currentFixture.team2.acronym}</span>
 		</div>

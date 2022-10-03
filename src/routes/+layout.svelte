@@ -13,24 +13,10 @@
 	import type { PageData } from './$types';
 
 	export let data: PageData;
-	event.update((x) => x || data);
-	/** +layout.ts
-	import { EventRef, type Event } from '$lib/firebase/db';
-	import { getDoc } from 'firebase/firestore';
-	import type { LayoutLoad } from './$types';
-	import { error } from '@sveltejs/kit';
-
-	export const load: LayoutLoad<Event> = async () => {
-		try {
-			const res = await getDoc(EventRef);
-			const event = res.data();
-			if (!event) throw error(404, 'Not found');
-			return event;
-		} catch (e) {
-			throw error(404, 'Not found');
-		}
-	};
-	*/
+	console.log(data);
+	event.update((x) => x || data.event);
+	latestNewsListner.addIfNot(data.news);
+	latestVideosListner.addIfNot(data.videos);
 
 	onMount(function () {
 		const eventSub = onSnapshot(EventRef, {
@@ -47,7 +33,6 @@
 			latestVideosListner.unSub?.();
 		};
 	});
-	$: console.log($event);
 </script>
 
 <div class="app">

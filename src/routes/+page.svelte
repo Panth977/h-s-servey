@@ -1,23 +1,23 @@
 <script lang="ts">
-	import { parseEventDocument } from '$lib/firebase/db';
-	import { eventRef } from '$lib/firebase/event';
-	import { onSnapshot } from 'firebase/firestore';
+	import { doc, onSnapshot } from 'firebase/firestore';
 	import { onMount } from 'svelte';
 	import '../app.css';
-	console.log('home page entered');
-	onMount(function () {
-		console.count('app/layout');
-		const eventSub = onSnapshot(eventRef, {
-			next(snapshot) {
-				const data = snapshot.data();
-				try {
-					console.log(snapshot.data());
-					console.log(parseEventDocument(data as any));
-				} catch (err) {
-					console.error(err);
+	console.count('home');
+	onMount(async function () {
+		console.count('home');
+		const eventSub = onSnapshot(
+			doc(await import('$lib/firebase/firebase').then((x) => x.getFirebase().db), 'Event/001'),
+			{
+				next(snapshot) {
+					try {
+						console.log(snapshot.data());
+					} catch (err) {
+						console.error(err);
+					}
 				}
 			}
-		});
+		);
+		console.count('home');
 		return function () {
 			console.log('sub cancled');
 			eventSub();

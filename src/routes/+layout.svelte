@@ -1,5 +1,5 @@
 <script lang="ts">
-	import '../../app.css';
+	import '../app.css';
 	import { onMount } from 'svelte';
 	import { getFirebase } from '$lib/firebase/firebase';
 	import { signInAnonymously } from 'firebase/auth';
@@ -24,6 +24,7 @@
 		latestVideosListner.addIfNot(data.videos);
 	}
 	console.count('app/layout');
+	$: console.log('event', $event);
 	onMount(function () {
 		console.count('app/layout');
 		subscribeRoutes();

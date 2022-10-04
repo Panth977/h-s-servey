@@ -61,28 +61,6 @@
 			};
 		})
 	};
-	onMount(async function () {
-		console.count('home');
-		const eventSub = onSnapshot(
-			doc(await import('$lib/firebase/firebase').then((x) => x.getFirebase().db), 'Event/001'),
-			{
-				next(snapshot) {
-					try {
-						const data = snapshot.data();
-						console.log(data);
-						import('$lib/firebase/db').then((x) => console.log(x.parseEventDocument(data as any)));
-					} catch (err) {
-						console.error(err);
-					}
-				}
-			}
-		);
-		console.count('home');
-		return function () {
-			console.log('sub cancled');
-			eventSub();
-		};
-	});
 	let selectedType:
 		| 'bar'
 		| 'bubble'

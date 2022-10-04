@@ -66,10 +66,30 @@ interface Event {
 	sortedTeams: EventTeam[];
 }
 
+export function now() {
+	function in2dig(x: number, p = 0) {
+		x += p;
+		if (x < 10) return '0' + x;
+		return x;
+	}
+	const d = new Date();
+	return (
+		d.getFullYear() +
+		'-' +
+		in2dig(d.getMonth(), 1) +
+		'-' +
+		in2dig(d.getDate()) +
+		'T' +
+		in2dig(d.getHours()) +
+		':' +
+		in2dig(d.getMinutes())
+	);
+}
+
 export function parseEventDocument(doc: EventDocument): Event {
 	const teams: { [teamID: string]: EventTeam } = {};
 	const players: { [playerID: string]: EventPlayer } = {};
-	// const now = new Date(new Date().toString() + ' UTC').toISOString();
+	const _now = now();
 	const fixtures: EventFixture[] = Object.entries(doc.fixtures)
 		.map(function (x): EventFixture {
 			const fixture = stringToFixture(x[1]);
@@ -79,8 +99,7 @@ export function parseEventDocument(doc: EventDocument): Event {
 				...fixture,
 				id: x[0],
 				get isUpcomming() {
-					return (data.isUpcomming ??=
-						this.time.localeCompare(new Date(new Date().toString() + ' UTC').toISOString()) > 0);
+					return (data.isUpcomming ??= this.time.localeCompare(_now) > 0);
 				},
 				get scores() {
 					if (!('scores' in data)) {

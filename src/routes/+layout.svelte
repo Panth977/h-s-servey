@@ -13,20 +13,14 @@
 	import type { PageData } from './$types';
 	import { subscribeRoutes } from '$lib/Components/Header.svelte';
 
-	console.count('app/layout');
 	export let data: PageData;
-	console.count('app/layout');
 	console.log(data);
-	console.count('app/layout');
 	if (Object.keys(data).length) {
 		event.update((x) => x || data.event);
 		latestNewsListner.addIfNot(data.news);
 		latestVideosListner.addIfNot(data.videos);
 	}
-	console.count('app/layout');
-	$: console.log('event', $event);
 	onMount(function () {
-		console.count('app/layout');
 		subscribeRoutes();
 		const eventSub = onSnapshot(EventRef, {
 			next(snapshot) {
@@ -35,9 +29,7 @@
 		});
 		latestNewsListner.seeMore();
 		latestVideosListner.seeMore();
-		console.count('app/layout');
 		signInAnonymously(getFirebase().auth).then(console.log, console.error);
-		console.count('app/layout');
 		return function () {
 			eventSub();
 			latestNewsListner.unSub?.();

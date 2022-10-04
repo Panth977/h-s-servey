@@ -66,7 +66,7 @@ interface Event {
 	sortedTeams: EventTeam[];
 }
 
-function parseEventDocument(doc: EventDocument): Event {
+export function parseEventDocument(doc: EventDocument): Event {
 	const teams: { [teamID: string]: EventTeam } = {};
 	const players: { [playerID: string]: EventPlayer } = {};
 	const now = new Date(new Date().toString() + ' UTC').toISOString();

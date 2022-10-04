@@ -1,14 +1,21 @@
 <script lang="ts">
-	import { EventRef } from '$lib/firebase/db';
+	import { parseEventDocument } from '$lib/firebase/db';
+	import { eventRef } from '$lib/firebase/event';
 	import { onSnapshot } from 'firebase/firestore';
 	import { onMount } from 'svelte';
 	import '../app.css';
 	console.log('home page entered');
 	onMount(function () {
 		console.count('app/layout');
-		const eventSub = onSnapshot(EventRef, {
+		const eventSub = onSnapshot(eventRef, {
 			next(snapshot) {
-				console.log(snapshot.data());
+				const data = snapshot.data();
+				try {
+					console.log(snapshot.data());
+					console.log(parseEventDocument(data as any));
+				} catch (err) {
+					console.error(err);
+				}
 			}
 		});
 		return function () {

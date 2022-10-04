@@ -15,7 +15,7 @@
 </script>
 
 <svg
-	width="100vw"
+	width="100%"
 	height="75px"
 	aria-label={ariaLabel}
 	preserveAspectRatio="none"

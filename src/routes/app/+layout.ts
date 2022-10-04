@@ -20,7 +20,7 @@ export const load: LayoutLoad<{ event: Event; news: News[]; videos: Video[] }> =
 		console.log(ret);
 		return ret;
 	} catch (e) {
-		throw error(500, 'Something Went Wrong');
+		throw error(500, 'Something Went Wrong = ' + e);
 	}
 };
 export const hydrate = true;

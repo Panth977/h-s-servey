@@ -69,7 +69,7 @@ interface Event {
 export function parseEventDocument(doc: EventDocument): Event {
 	const teams: { [teamID: string]: EventTeam } = {};
 	const players: { [playerID: string]: EventPlayer } = {};
-	const now = new Date(new Date().toString() + ' UTC').toISOString();
+	// const now = new Date(new Date().toString() + ' UTC').toISOString();
 	const fixtures: EventFixture[] = Object.entries(doc.fixtures)
 		.map(function (x): EventFixture {
 			const fixture = stringToFixture(x[1]);
@@ -79,7 +79,8 @@ export function parseEventDocument(doc: EventDocument): Event {
 				...fixture,
 				id: x[0],
 				get isUpcomming() {
-					return (data.isUpcomming ??= this.time.localeCompare(now) > 0);
+					return (data.isUpcomming ??=
+						this.time.localeCompare(new Date(new Date().toString() + ' UTC').toISOString()) > 0);
 				},
 				get scores() {
 					if (!('scores' in data)) {

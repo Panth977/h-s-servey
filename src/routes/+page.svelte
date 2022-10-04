@@ -10,7 +10,9 @@
 			{
 				next(snapshot) {
 					try {
-						console.log(snapshot.data());
+						const data = snapshot.data();
+						console.log(data);
+						import('$lib/firebase/db').then((x) => console.log(x.parseEventDocument(data as any)));
 					} catch (err) {
 						console.error(err);
 					}

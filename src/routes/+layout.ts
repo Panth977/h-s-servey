@@ -1,12 +1,13 @@
-import { EventRef, newsRef, videosRef, type Event, type News, type Video } from '$lib/firebase/db';
+import { newsRef, videosRef, type News, type Video } from '$lib/firebase/db';
 import { getDoc, getDocs, limit, query } from 'firebase/firestore';
 import type { LayoutLoad } from './$types';
 import { error } from '@sveltejs/kit';
+import { eventRef } from '$lib/firebase/event';
 
-export const load: LayoutLoad<{ event: Event; news: News[]; videos: Video[] }> = async () => {
+export const load: LayoutLoad<{ event: any; news: News[]; videos: Video[] }> = async () => {
 	try {
 		const [res, newsRes, videoRes] = await Promise.all([
-			getDoc(EventRef),
+			getDoc(eventRef),
 			getDocs(query(newsRef, limit(5))),
 			getDocs(query(videosRef, limit(5)))
 		]);

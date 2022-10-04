@@ -3,7 +3,7 @@
 	import { onMount } from 'svelte';
 	import { getFirebase } from '$lib/firebase/firebase';
 	import { signInAnonymously } from 'firebase/auth';
-	import { EventRef } from '$lib/firebase/db';
+	import { EventRef, parseEventDocument } from '$lib/firebase/db';
 	import { event, latestNewsListner, latestVideosListner } from '$lib/state';
 	import { onSnapshot } from 'firebase/firestore';
 	import Latest from '$lib/Icon/Latest.svelte';
@@ -16,7 +16,7 @@
 	export let data: PageData;
 	console.log(data);
 	if (Object.keys(data).length) {
-		event.update((x) => x || data.event);
+		event.update((x) => x || parseEventDocument(data.event as any));
 		latestNewsListner.addIfNot(data.news);
 		latestVideosListner.addIfNot(data.videos);
 	}

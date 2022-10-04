@@ -14,12 +14,12 @@
 	import { subscribeRoutes } from '$lib/Components/Header.svelte';
 
 	export let data: PageData;
-	event.update((x) => x || data.event);
-	latestNewsListner.addIfNot(data.news);
-	latestVideosListner.addIfNot(data.videos);
-
+	if (Object.keys(data).length) {
+		event.update((x) => x || data.event);
+		latestNewsListner.addIfNot(data.news);
+		latestVideosListner.addIfNot(data.videos);
+	}
 	onMount(function () {
-		alert('Welcome to Huddle and Score!');
 		subscribeRoutes();
 		const eventSub = onSnapshot(EventRef, {
 			next(snapshot) {

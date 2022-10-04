@@ -7,6 +7,9 @@
 	import { Chart, registerables } from 'chart.js';
 	import { browser } from '$app/env';
 	import Card from '$lib/Components/Card.svelte';
+	import { onMount } from 'svelte';
+
+	onMount(() => alert('Welcome to Huddle and Score!'));
 
 	let ctx: HTMLCanvasElement;
 

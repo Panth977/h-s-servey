@@ -19,7 +19,6 @@ export interface EventFixture extends Fixture {
 	team1: Team;
 	team2: Team;
 	isUpcomming: boolean;
-	scores?: { team1: number; team2: number };
 }
 
 export interface EventTeam extends Team {
@@ -100,21 +99,6 @@ export function parseEventDocument(doc: EventDocument): Event {
 				id: x[0],
 				get isUpcomming() {
 					return (data.isUpcomming ??= this.time.localeCompare(_now) > 0);
-				},
-				get scores() {
-					if (!('scores' in data)) {
-						if (!this._scores) data.scores = undefined;
-						else {
-							if (!this.stats) data.scores = this._scores;
-							else {
-								data.scores = { team1: 0, team2: 0 };
-								for (const [, stats] of Object.entries(this.stats)) {
-									data.scores[this.team1ID === stats.teamID ? 'team1' : 'team2'] += stats.goals;
-								}
-							}
-						}
-					}
-					return data.scores;
 				},
 				displayTime: date.toLocaleTimeString(),
 				displayDate: date.toLocaleDateString(),

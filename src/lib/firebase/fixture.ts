@@ -23,7 +23,7 @@ export interface Fixture<score = number> {
 	team1ID: string;
 	team2ID: string;
 	time: string;
-	_scores?: { team1: score; team2: score };
+	scores?: { team1: score; team2: score };
 	stats?: { [playerID: string]: PlayerStats };
 }
 
@@ -32,8 +32,8 @@ export function fixtureToString(fixture: Fixture) {
 		fixture.team1ID,
 		fixture.team2ID,
 		fixture.time,
-		fixture._scores?.team1,
-		fixture._scores?.team2,
+		fixture.scores?.team1,
+		fixture.scores?.team2,
 		...Object.entries(fixture.stats ?? {}).map(
 			([
 				key,
@@ -76,7 +76,7 @@ export function stringToFixture(val: string): Fixture {
 		team1ID,
 		team2ID,
 		time,
-		_scores: team1 == undefined ? undefined : { team1, team2 },
+		scores: team1 == undefined ? undefined : { team1, team2 },
 		stats: stats.length
 			? (stats as any[]).reduce(
 					(
@@ -143,8 +143,8 @@ export async function setFixture(
 			const fixture = stringToFixture(event.get('fixtures.' + fixtureID));
 			if (!fixture) return;
 			if (data === 1 || data === 2) {
-				if (!fixture._scores) fixture._scores = { team1: 0, team2: 0 };
-				fixture._scores[data === 1 ? 'team1' : 'team2'] += inc as number;
+				if (!fixture.scores) fixture.scores = { team1: 0, team2: 0 };
+				fixture.scores[data === 1 ? 'team1' : 'team2'] += inc as number;
 			} else if (typeof data === 'string') {
 				if (typeof inc === 'object') {
 					if (inc !== null) (fixture.stats ??= {})[data] = inc;

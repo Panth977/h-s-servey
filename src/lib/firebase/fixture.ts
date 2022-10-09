@@ -4,8 +4,7 @@ import { getFirebase } from './firebase';
 
 const { db } = getFirebase();
 
-export interface PlayerStats {
-	teamID: string;
+export interface Stats {
 	goals: number; // APD, 40
 	assists: number; // APD, 20
 	passes: number; // APD, .2
@@ -17,6 +16,10 @@ export interface PlayerStats {
 	goalConceived: number;
 	goalSaved: number;
 	handling: number;
+}
+
+export interface PlayerStats extends Stats {
+	teamID: string;
 }
 
 export interface Fixture<score = number> {

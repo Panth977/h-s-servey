@@ -1,4 +1,4 @@
-import type { Fixture, PlayerStats } from './fixture';
+import type { Fixture, PlayerStats, Stats } from './fixture';
 import { setFixture, stringToFixture } from './fixture';
 import type { VideoDocument } from './video';
 import { setVideo, videoColl } from './video';
@@ -21,7 +21,7 @@ export interface EventFixture extends Fixture {
 	isUpcomming: boolean;
 }
 
-export interface EventTeam extends Team {
+export interface EventTeam extends Team, Stats {
 	id: string;
 	players: EventPlayer[];
 	matchesPlayed: number;
@@ -174,16 +174,24 @@ export function parseEventDocument(doc: EventDocument): Event {
 					return data.goalConceived;
 				},
 				get attack() {
-					return (data.attack ??=
-						this.players.reduce((p, c) => p + c.attack, 0) / this.players.length);
+					return (data.possession ??=
+						((this.goals + 0.25 * this.shots) * 100) /
+						Object.values(teams).reduce((x, a) => x + a.goals + 0.25 * a.shots, 0));
+					// return (data.attack ??=
+					// 	this.players.reduce((p, c) => p + c.attack, 0) / this.players.length);
 				},
 				get possession() {
 					return (data.possession ??=
-						this.players.reduce((p, c) => p + c.possession, 0) / this.players.length);
+						((this.passes + this.dribbles) * 100) /
+						Object.values(teams).reduce((x, a) => x + a.passes + a.dribbles, 0));
+					// return (data.possession ??=
+					// 	this.players.reduce((p, c) => p + c.possession, 0) / this.players.length);
 				},
 				get defence() {
 					return (data.defence ??=
-						this.players.reduce((p, c) => p + c.defence, 0) / this.players.length);
+						(this.tackles * 100) / Object.values(teams).reduce((x, a) => x + a.tackles, 0));
+					// return (data.defence ??=
+					// 	this.players.reduce((p, c) => p + c.defence, 0) / this.players.length);
 				},
 				get score() {
 					return (data.score ??= (this.attack + this.possession + this.defence) / 3);
@@ -193,6 +201,36 @@ export function parseEventDocument(doc: EventDocument): Event {
 				},
 				get goalDifference() {
 					return (data.goalDifference ??= this.goalScored - this.goalConceived);
+				},
+				get assists() {
+					return (data.assists ??= this.players.reduce((x, a) => x + a.assists, 0));
+				},
+				get dribbles() {
+					return (data.dribbles ??= this.players.reduce((x, a) => x + a.dribbles, 0));
+				},
+				get goals() {
+					return (data.goals ??= this.players.reduce((x, a) => x + a.goals, 0));
+				},
+				get goalSaved() {
+					return (data.goalSaved ??= this.players.reduce((x, a) => x + a.goalSaved, 0));
+				},
+				get handling() {
+					return (data.handling ??= this.players.reduce((x, a) => x + a.handling, 0));
+				},
+				get passes() {
+					return (data.passes ??= this.players.reduce((x, a) => x + a.passes, 0));
+				},
+				get redCard() {
+					return (data.redCard ??= this.players.reduce((x, a) => x + a.redCard, 0));
+				},
+				get shots() {
+					return (data.shots ??= this.players.reduce((x, a) => x + a.shots, 0));
+				},
+				get tackles() {
+					return (data.tackles ??= this.players.reduce((x, a) => x + a.tackles, 0));
+				},
+				get yellowCard() {
+					return (data.yellowCard ??= this.players.reduce((x, a) => x + a.yellowCard, 0));
 				}
 			} as EventTeam);
 		})
@@ -251,27 +289,35 @@ export function parseEventDocument(doc: EventDocument): Event {
 				},
 				get _attack() {
 					return (data._attack ??=
-						this.goals * 40 + this.assists * 20 + this.passes * 0.2 + this.shots * 6);
+						((this.goals + 0.25 * this.shots) * 100) / (this.team.goals + 0.25 * this.team.shots));
+					// return (data._attack ??=
+					// 	this.goals * 40 + this.assists * 20 + this.passes * 0.2 + this.shots * 6);
 				},
 				get _defence() {
-					return (data._defence ??=
-						this.goals * 40 + this.assists * 20 + this.passes * 0.2 + this.dribbles * 0.5);
+					return (data._defence ??= (this.tackles * 100) / this.team.tackles);
+					// return (data._defence ??=
+					// 	this.goals * 40 + this.assists * 20 + this.passes * 0.2 + this.dribbles * 0.5);
 				},
 				get _possession() {
 					return (data._possession ??=
-						this.goals * 40 + this.assists * 20 + this.passes * 0.2 + this.tackles * 4);
+						((this.passes + this.dribbles) * 100) / (this.team.passes + this.team.dribbles));
+					// return (data._possession ??=
+					// 	this.goals * 40 + this.assists * 20 + this.passes * 0.2 + this.tackles * 4);
 				},
 				get isGoalkeeper() {
 					return (data.isGoalkeeper ??= this.position === 'Goalkeeper');
 				},
 				get attack() {
-					return (data.attack ??= (99 * this._attack) / maxAttack);
+					return this._attack;
+					// return (data.attack ??= (99 * this._attack) / maxAttack);
 				},
 				get possession() {
-					return (data.possession ??= (99 * this._possession) / maxPossession);
+					return this._possession;
+					// return (data.possession ??= (99 * this._possession) / maxPossession);
 				},
 				get defence() {
-					return (data.defence ??= (99 * this._defence) / maxDefence);
+					return this._defence;
+					// return (data.defence ??= (99 * this._defence) / maxDefence);
 				},
 				get conceiveRate() {
 					return (data.defence ??= (100 * this.goalConceived) / this.goalSaved);
@@ -338,6 +384,10 @@ export function parseEventDocument(doc: EventDocument): Event {
 			});
 		})
 		.map((x) => {
+			x.team.players.push(x);
+			return x;
+		})
+		.map((x) => {
 			if (x._attack > maxAttack) maxAttack = x._attack;
 			if (x._possession > maxPossession) maxPossession = x._possession;
 			if (x._defence > maxDefence) maxDefence = x._defence;
@@ -345,10 +395,7 @@ export function parseEventDocument(doc: EventDocument): Event {
 		})
 		.sort((a, b) => b.goals * 1000 + b.assists - a.goals * 1000 - a.assists);
 	const sortedGoalkeepers = [...sortedPlayers]
-		.filter(function (x) {
-			x.team.players.push(x);
-			return x.isGoalkeeper;
-		})
+		.filter((x) => x.isGoalkeeper)
 		.sort((a, b) => b.handling - a.handling);
 	let upcommingFixtures: EventFixture[];
 	return {

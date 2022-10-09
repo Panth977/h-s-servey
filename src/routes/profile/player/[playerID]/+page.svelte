@@ -52,13 +52,12 @@
             position: absolute;
             width: 263px;
             height: 301px;
-            left: 11px;
-            top: 10px;
+            left: 10px;
+            top: -20px;
 
             font-style: normal;
-            font-weight: 900;
-            font-size: 219.28px;
-            line-height: 301px;
+            font-weight: 800;
+            font-size: 175px;
 
             background: linear-gradient(129.49deg, rgba(255, 255, 255, 0.28) 0.67%, rgba(0, 255, 28, 0.28) 54.08%, rgba(1, 51, 1, 0.28) 109.66%);
             -webkit-background-clip: text;
@@ -79,7 +78,7 @@
                 background-image: url({player.displayImage});
                 background-size: contain;
                 height: 300px;
-                background-position: 123px top;
+                background-position: 155px top;
             "
 	>
 		<div

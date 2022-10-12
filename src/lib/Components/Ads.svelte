@@ -19,5 +19,5 @@
 	</div>
 </div> -->
 <div class="px-2 my-8">
-	<div class="border h-24">ADs</div>
+	<img src="/Ad2.png" alt="ad" class="border w-full" />
 </div>

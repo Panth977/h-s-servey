@@ -1,7 +1,7 @@
-import { runTransaction, deleteField } from '@firebase/firestore';
+import { runTransaction, deleteField, doc } from '@firebase/firestore';
 import { getFirebase } from './firebase';
 import { deleteObject, getDownloadURL, ref, uploadBytes } from '@firebase/storage';
-import { eventID, eventRef } from './event';
+import { eventColl } from './event';
 
 const { db, storager } = getFirebase();
 
@@ -22,11 +22,20 @@ export function stringToTeam(val: string): Team {
 	return { teamChemistry, acronym, name, logo, color };
 }
 
-export function setTeam(teamID: undefined, data: Team<File>): Promise<string>;
-export function setTeam(teamID: string, data: Team<File | string>): Promise<string>;
-export function setTeam(teamID: string, data: null): Promise<string>;
-export async function setTeam(teamID: undefined | string, data: Team<File | string> | null) {
+export function setTeam(eventID: string, teamID: undefined, data: Team<File>): Promise<string>;
+export function setTeam(
+	eventID: string,
+	teamID: string,
+	data: Team<File | string>
+): Promise<string>;
+export function setTeam(eventID: string, teamID: string, data: null): Promise<string>;
+export async function setTeam(
+	eventID: string,
+	teamID: undefined | string,
+	data: Team<File | string> | null
+) {
 	if (data) data = { ...data };
+	const eventRef = doc(eventColl, eventID);
 	await runTransaction(db, async function (transaction) {
 		const event = await transaction.get(eventRef);
 		if (!teamID) {

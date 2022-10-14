@@ -19,7 +19,7 @@
 	</div>
 </div> -->
 <div class="px-2 my-8">
-	<a href="https://huddleandscore.com/speed-dating">
+	<a href="/speed-dating">
 		<img src="/Ad2.png" alt="ad" class="border w-full" />
 	</a>
 </div>

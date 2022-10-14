@@ -1,5 +1,5 @@
-import { runTransaction, deleteField } from '@firebase/firestore';
-import { eventRef } from './event';
+import { runTransaction, deleteField, doc } from '@firebase/firestore';
+import { eventColl } from './event';
 import { getFirebase } from './firebase';
 
 const { db } = getFirebase();
@@ -122,20 +122,28 @@ export function stringToFixture(val: string): Fixture {
 	};
 }
 
-export function setFixture(fixtureID: undefined, data: Fixture<0>): Promise<void>;
-export function setFixture(fixtureID: string, time: string): Promise<void>;
-export function setFixture(fixtureID: string, team: 1 | 2, inc: 1 | -1): Promise<void>;
+export function setFixture(eventID: string, fixtureID: undefined, data: Fixture<0>): Promise<void>;
+export function setFixture(eventID: string, fixtureID: string, time: string): Promise<void>;
 export function setFixture(
+	eventID: string,
+	fixtureID: string,
+	team: 1 | 2,
+	inc: 1 | -1
+): Promise<void>;
+export function setFixture(
+	eventID: string,
 	fixtureID: string,
 	playerID: string,
 	stats: PlayerStats | null
 ): Promise<void>;
-export function setFixture(fixtureID: string, data: null): Promise<void>;
+export function setFixture(eventID: string, fixtureID: string, data: null): Promise<void>;
 export async function setFixture(
+	eventID: string,
 	fixtureID: undefined | string,
 	data: Fixture | null | 1 | 2 | string,
 	inc?: number | PlayerStats | null
 ) {
+	const eventRef = doc(eventColl, eventID);
 	await runTransaction(db, async function (transaction) {
 		const event = await transaction.get(eventRef);
 		if (!fixtureID) {

@@ -1,7 +1,7 @@
-import { runTransaction, deleteField } from '@firebase/firestore';
+import { runTransaction, deleteField, doc } from '@firebase/firestore';
 import { getFirebase } from './firebase';
 import { getDownloadURL, ref, uploadBytes, deleteObject } from '@firebase/storage';
-import { eventID, eventRef } from './event';
+import { eventColl } from './event';
 const { db, storager } = getFirebase();
 
 export interface Player<image = string> {
@@ -38,11 +38,24 @@ export function stringToPlayer(val: string): Player {
 		place
 	};
 }
-export function setPlayer(playerID: undefined, data: Player<File>): Promise<string>;
-export function setPlayer(playerID: string, data: Player<File | string>): Promise<string>;
-export function setPlayer(playerID: string, data: null): Promise<string>;
-export async function setPlayer(playerID: undefined | string, data: Player<File | string> | null) {
+export function setPlayer(
+	eventID: string,
+	playerID: undefined,
+	data: Player<File>
+): Promise<string>;
+export function setPlayer(
+	eventID: string,
+	playerID: string,
+	data: Player<File | string>
+): Promise<string>;
+export function setPlayer(eventID: string, playerID: string, data: null): Promise<string>;
+export async function setPlayer(
+	eventID: string,
+	playerID: undefined | string,
+	data: Player<File | string> | null
+) {
 	if (data) data = { ...data };
+	const eventRef = doc(eventColl, eventID);
 	await runTransaction(db, async function (transaction) {
 		const event = await transaction.get(eventRef);
 		if (!playerID) {

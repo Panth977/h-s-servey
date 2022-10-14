@@ -4,8 +4,8 @@ import type { VideoDocument } from './video';
 import { setVideo, videoColl } from './video';
 import type { NewsDocument } from './news';
 import { newsColl, setNews } from './news';
-import type { EventDocument } from './event';
-import { eventRef, setLiveStream } from './event';
+import { now, type EventDocument } from './event';
+import { eventColl, setLiveStream } from './event';
 import type { Player } from './player';
 import { setPlayer, stringToPlayer } from './player';
 import type { Team } from './team';
@@ -63,26 +63,6 @@ interface Event {
 	sortedPlayers: EventPlayer[];
 	sortedGoalkeepers: EventPlayer[];
 	sortedTeams: EventTeam[];
-}
-
-export function now() {
-	function in2dig(x: number, p = 0) {
-		x += p;
-		if (x < 10) return '0' + x;
-		return x;
-	}
-	const d = new Date();
-	return (
-		d.getFullYear() +
-		'-' +
-		in2dig(d.getMonth(), 1) +
-		'-' +
-		in2dig(d.getDate()) +
-		'T' +
-		in2dig(d.getHours()) +
-		':' +
-		in2dig(d.getMinutes())
-	);
 }
 
 export function parseEventDocument(doc: EventDocument): Event {
@@ -413,7 +393,7 @@ export function parseEventDocument(doc: EventDocument): Event {
 	};
 }
 
-export const EventRef = eventRef.withConverter<Event>({
+export const EventColl = eventColl.withConverter<Event>({
 	fromFirestore(snapshot) {
 		return parseEventDocument(snapshot.data() as EventDocument);
 	},
@@ -425,25 +405,27 @@ interface Video extends VideoDocument {
 	id: string;
 	content: content;
 }
-export const VideoColl = videoColl.withConverter<Video>({
-	fromFirestore(snapshot) {
-		let content: content;
-		return {
-			...(snapshot.data() as VideoDocument),
-			id: snapshot.id,
-			get content() {
-				return (content ??= getContent(this.caption));
-			}
-		};
-	},
-	toFirestore() {
-		throw 'unimplemented';
-	}
-});
-export const videosRef = query(VideoColl, orderBy('createdAt', 'desc'));
+export const VideoColl = (eventID: string) =>
+	videoColl(eventID).withConverter<Video>({
+		fromFirestore(snapshot) {
+			let content: content;
+			return {
+				...(snapshot.data() as VideoDocument),
+				id: snapshot.id,
+				get content() {
+					return (content ??= getContent(this.caption));
+				}
+			};
+		},
+		toFirestore() {
+			throw 'unimplemented';
+		}
+	});
+export const videosRef = (eventID: string) =>
+	query(VideoColl(eventID), orderBy('createdAt', 'desc'));
 
-export function videoRelated(id: string) {
-	return query(videosRef, where('connectionIDs', 'array-contains', id));
+export function videoRelated(eventID: string, id: string) {
+	return query(videosRef(eventID), where('connectionIDs', 'array-contains', id));
 }
 
 type content = (
@@ -492,25 +474,26 @@ function getContent(str: string): content {
 	val.push({ type: 'text', text });
 	return val;
 }
-export const NewsColl = newsColl.withConverter<News>({
-	fromFirestore(snapshot) {
-		let content: content;
-		return {
-			...(snapshot.data() as NewsDocument),
-			id: snapshot.id,
-			get content() {
-				return (content ??= getContent(this.caption));
-			}
-		};
-	},
-	toFirestore() {
-		throw 'unimplemented';
-	}
-});
+export const NewsColl = (eventID: string) =>
+	newsColl(eventID).withConverter<News>({
+		fromFirestore(snapshot) {
+			let content: content;
+			return {
+				...(snapshot.data() as NewsDocument),
+				id: snapshot.id,
+				get content() {
+					return (content ??= getContent(this.caption));
+				}
+			};
+		},
+		toFirestore() {
+			throw 'unimplemented';
+		}
+	});
 
-export const newsRef = query(NewsColl, orderBy('createdAt', 'desc'));
-export function newsRelated(id: string) {
-	return query(newsRef, where('connectionIDs', 'array-contains', id));
+export const newsRef = (eventID: string) => query(NewsColl(eventID), orderBy('createdAt', 'desc'));
+export function newsRelated(eventID: string, id: string) {
+	return query(newsRef(eventID), where('connectionIDs', 'array-contains', id));
 }
 
 export type { Event, Video, News };

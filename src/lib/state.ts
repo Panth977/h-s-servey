@@ -1,9 +1,17 @@
 import { limit, onSnapshot, Query, query } from 'firebase/firestore';
 import { writable, type Writable } from 'svelte/store';
-import type { Event } from './firebase/db';
-import { newsRef, videosRef, newsRelated, videoRelated, NewsColl, VideoColl } from './firebase/db';
+import type { Event, News, Video } from './firebase/db';
+import type { Config } from './firebase/event';
+import { newsRef, videosRef, newsRelated, videoRelated } from './firebase/db';
+import { browser } from '$app/env';
 
-export const event = writable<Event>();
+const stateInstances: { [stateID: string]: any } = {};
+
+export const config = writable<Config>();
+
+export function eventStore(eventID: string): Writable<Event> {
+	return (stateInstances['event-' + eventID] ??= writable());
+}
 
 class LatestListner<T> {
 	#store: Writable<{
@@ -30,7 +38,13 @@ class LatestListner<T> {
 		return this.#store;
 	}
 	get unSub() {
-		return this.#unSub;
+		return () => {
+			this.#unSub?.();
+			this.#unSub = undefined;
+			this.#store.set({ askedFor: 0, data: [], loading: true });
+			this.#askedFor = 0;
+			this.#currentlyListningTo = 0;
+		};
 	}
 
 	addIfNot(data: T[]) {
@@ -60,9 +74,14 @@ class LatestListner<T> {
 	}
 }
 
-export const latestNewsListner = new LatestListner(newsRef);
-export const latestVideosListner = new LatestListner(videosRef);
-
+export function latestNewsListner(eventID: string): LatestListner<News> {
+	return (stateInstances['latestNewsListner-' + eventID] ??= new LatestListner(newsRef(eventID)));
+}
+export function latestVideosListner(eventID: string): LatestListner<Video> {
+	return (stateInstances['latestVideosListner-' + eventID] ??= new LatestListner(
+		videosRef(eventID)
+	));
+}
 class SelectiveListner<T> {
 	#store: Writable<{
 		data: T[];
@@ -123,5 +142,13 @@ class SelectiveListner<T> {
 	}
 }
 
-export const selectiveNewsListner = new SelectiveListner(newsRelated);
-export const selectiveVideoListner = new SelectiveListner(videoRelated);
+export function selectiveNewsListner(eventID: string): SelectiveListner<News> {
+	return (stateInstances['selectiveNewsListner-' + eventID] ??= new SelectiveListner((connectID) =>
+		newsRelated(eventID, connectID)
+	));
+}
+export function selectiveVideoListner(eventID: string): SelectiveListner<Video> {
+	return (stateInstances['selectiveVideoListner-' + eventID] ??= new SelectiveListner((connectID) =>
+		videoRelated(eventID, connectID)
+	));
+}

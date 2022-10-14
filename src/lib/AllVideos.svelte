@@ -1,9 +1,11 @@
 <script lang="ts">
 	import type { Video } from '$lib/firebase/db';
-	import { event } from '$lib/state';
 	import AppDrawer from './Components/AppDrawer.svelte';
 	import VideoComponent from './Video.svelte';
 	import Skeleton from './Components/Skeleton.svelte';
+	import { eventStore } from './state';
+	import { page } from '$app/stores';
+	$: event = eventStore($page.params.eventID);
 	export let allVideos: Video[];
 	export let loading: boolean;
 	export let seeMore: VoidFunction | undefined = undefined;

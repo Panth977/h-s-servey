@@ -1,7 +1,9 @@
 <script lang="ts">
 	import Ads from './Components/Ads.svelte';
 	import type { News } from './firebase/db';
-	import { event } from './state';
+	import { eventStore } from './state';
+	import { page } from '$app/stores';
+	$: event = eventStore($page.params.eventID);
 
 	export let news: News;
 	export let onNavigateToOtherPage: VoidFunction | undefined = undefined;
@@ -12,13 +14,17 @@
 <p class="page-margin mt-5">
 	{#each news.content as content}
 		{#if content.type === 'team'}
-			<a on:click={onNavigateToOtherPage} href="/profile/team/{content.teamID}" class="underline">
+			<a
+				on:click={onNavigateToOtherPage}
+				href="/event/{$page.params.eventID}/profile/team/{content.teamID}"
+				class="underline"
+			>
 				#{$event.teams[content.teamID].name}
 			</a>
 		{:else if content.type === 'player'}
 			<a
 				on:click={onNavigateToOtherPage}
-				href="/profile/player/{content.playerID}"
+				href="/event/{$page.params.eventID}/profile/player/{content.playerID}"
 				class="underline"
 			>
 				@{$event.players[content.playerID].name}

@@ -1,9 +1,11 @@
 <script lang="ts">
 	import type { News } from '$lib/firebase/db';
-	import { event } from '$lib/state';
 	import AppDrawer from './Components/AppDrawer.svelte';
 	import NewsComponent from './News.svelte';
 	import Skeleton from './Components/Skeleton.svelte';
+	import { eventStore } from './state';
+	import { page } from '$app/stores';
+	$: event = eventStore($page.params.eventID);
 
 	export let allNews: News[];
 	export let loading: boolean;

@@ -46,7 +46,7 @@
 			Loading...
 		{/if}
 	</div>
-	<div class="h-16" />
+	<div class="h-14" />
 	<div
 		class="h-14 z-50 bg-base2 bg-white border-t items-center flex justify-around fixed bottom-0 screen-width"
 	>

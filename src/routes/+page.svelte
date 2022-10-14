@@ -1,8 +1,10 @@
 <script lang="ts">
 	import Header from '$lib/Components/Header.svelte';
+	import Seo from '$lib/Components/Seo.svelte';
 	import { config } from '$lib/state';
 </script>
 
+<Seo />
 <Header tralingLogo />
 {#each $config.sortedEvent as event}
 	{#if !event.hidden}

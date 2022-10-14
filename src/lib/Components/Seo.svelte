@@ -1,10 +1,17 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	export let title = 'Huddle & Score';
+	import { config } from '$lib/state';
+	export let title =
+		$config.events[$page.params.eventID]?.title ??
+		$config.forms[$page.params.formID]?.title ??
+		'Huddle & Score';
 	export let discription =
 		'We are an all-in-one package deal for our customers. We offer bookings of turfs, for you and your friends. We also take care of your need to participate in tournaments and so, we offer bookings for both physical and online tournaments.';
 	export let url = $page.url.href;
-	export let poster: string = $page.url.origin + '/favicon.svg';
+	export let poster: string =
+		$config.events[$page.params.eventID]?.poster ??
+		$config.forms[$page.params.formID]?.poster ??
+		$page.url.origin + '/favicon.svg';
 </script>
 
 <svelte:head>

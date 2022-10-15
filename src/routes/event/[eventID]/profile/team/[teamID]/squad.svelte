@@ -25,7 +25,7 @@
 	{#if players.length}
 		{#each players as player}
 			<a
-				href="event/{$page.params.eventID}/profile/player/{player.id}"
+				href="/event/{$page.params.eventID}/profile/player/{player.id}"
 				class="flex mt-5 page-margin"
 			>
 				<img src={player.displayImage} alt={player.name} class="rounded-full bg-base2 h-16" />

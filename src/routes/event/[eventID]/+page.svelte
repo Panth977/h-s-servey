@@ -12,9 +12,7 @@
 
 	$: event = eventStore($page.params.eventID);
 
-	$: currentFixture =
-		$event.fixtures[$event.fixtures.length - $event.upcommingFixtures.length - 1] ??
-		$event.fixtures[0];
+	$: currentFixture = $event.fixtures.find((_, i, a) => a[i + 1]?.isUpcomming ?? true);
 	let upcomingMatchDrawer = false;
 	let latestNewsDrawer = false;
 	let latestVideosDrawer = false;

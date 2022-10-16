@@ -29,9 +29,7 @@
 			<div class="flex justify-center">
 				<Logo />
 			</div>
-			<h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
-				Sign in to your account
-			</h2>
+			<h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">Log In</h2>
 		</div>
 		<form on:submit|preventDefault={signIn} class="mt-8 space-y-6" action="#" method="POST">
 			<input type="hidden" name="remember" value="true" />
@@ -82,14 +80,6 @@
 						← Forgot password?
 					</a>
 				</div>
-				<div class="text-sm">
-					<a
-						href="#register"
-						class="font-medium underline text-base1 text-indigo-600 hover:text-indigo-500"
-					>
-						Register →
-					</a>
-				</div>
 			</div>
 			{#if error}
 				<div class="text-danger text-sm">
@@ -115,5 +105,28 @@
 				</button>
 			</div>
 		</form>
+		<div class="flex items-center justify-between">
+			<!-- <div class="flex items-center">
+				<input
+					id="remember-me"
+					name="remember-me"
+					type="checkbox"
+					class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+				/>
+				<label for="remember-me" class="ml-2 block text-sm text-gray-900">Remember me</label>
+			</div> -->
+
+			<div class="text-sm" />
+			<div class="text-sm text-right">
+				New to Huddle and Score?
+				<br />
+				<a
+					href="#register"
+					class="font-medium underline text-base1 text-indigo-600 hover:text-indigo-500"
+				>
+					Sign Up
+				</a>
+			</div>
+		</div>
 	</div>
 </div>

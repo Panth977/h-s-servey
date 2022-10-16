@@ -12,7 +12,7 @@
 
 <Seo />
 <Header tralingLogo title={form.title} />
-{#if form && form.consent}
+<!-- {#if form && form.consent}
 	<AppDrawer bg="base2" title="Consent" {open} close={() => (open = false)}>
 		<div class="page-margin">
 			{#each form.consent.split('\n') as parag}
@@ -25,14 +25,8 @@
 			{/each}
 		</div>
 	</AppDrawer>
-{/if}
-{#if $auth?.emailVerified !== true}
-	<Card>
-		<div class="page-margin mt-5 border text-danger font-bold py-2 px-3">
-			First log in from the above button <br /> And Make sure email is verified
-		</div>
-	</Card>
-{:else if form}
+{/if} -->
+{#if form}
 	<iframe class="w-full h-screen" title="{form.title} form" src={form.url}> Loading… </iframe>
 {:else}
 	<div class="page-margin mt-5">404: No Form Found</div>

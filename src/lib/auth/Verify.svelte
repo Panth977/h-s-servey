@@ -4,6 +4,7 @@
 	import { getFirebase } from '$lib/firebase/firebase';
 	import { auth } from '$lib/state';
 	import Send from '$lib/Icon/Send.svelte';
+	import { onMount } from 'svelte';
 
 	let loading = false;
 	let error: any;
@@ -24,6 +25,9 @@
 		}
 		loading = false;
 	}
+	onMount(function () {
+		verify();
+	});
 </script>
 
 <div class="flex items-center justify-center px-4 sm:px-6 lg:px-8">

@@ -31,9 +31,7 @@
 			<div class="flex justify-center">
 				<Logo />
 			</div>
-			<h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
-				Register your account
-			</h2>
+			<h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">Sign Up</h2>
 		</div>
 		<form on:submit|preventDefault={register} class="mt-8 space-y-6" action="#" method="POST">
 			<input type="hidden" name="remember" value="true" />
@@ -84,7 +82,7 @@
 			<div class="flex items-center justify-between">
 				<div class="text-sm">
 					<a href="#login" class="font-medium text-indigo-600 hover:text-indigo-500">
-						Already have an Account
+						← Already have an Account
 					</a>
 				</div>
 			</div>

@@ -2,7 +2,7 @@
 	import { eventStore, latestNewsListner, latestVideosListner } from '$lib/state';
 	import type { Event, News, Video } from '$lib/firebase/db';
 	import AppDrawer from '$lib/Components/AppDrawer.svelte';
-	import Json from './json.svelte';
+	import Json from '../../../../lib/Components/Json.svelte';
 	import Header from '$lib/Components/Header.svelte';
 	import { Chart, registerables } from 'chart.js';
 	import { browser } from '$app/env';

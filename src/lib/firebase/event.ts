@@ -28,6 +28,7 @@ interface FormInConfig {
 	url: string;
 	title: string;
 	poster: string;
+	consent: string;
 }
 
 export interface ConfigDocument {

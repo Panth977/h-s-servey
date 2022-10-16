@@ -26,7 +26,7 @@
 <script lang="ts">
 	import Back from '$lib/Icon/Back.svelte';
 	import Logo from '$lib/Icon/Logo.svelte';
-	import Share, { type ShareInfo } from '$lib/Icon/Share.svelte';
+	import Share, { type ShareInfo } from '$lib/Components/Share.svelte';
 
 	export let tralingLogo = false;
 	export let title: string | undefined = undefined;

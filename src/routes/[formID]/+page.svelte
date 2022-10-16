@@ -2,15 +2,38 @@
 	import Header from '$lib/Components/Header.svelte';
 
 	import Seo from '$lib/Components/Seo.svelte';
-	import { config } from '$lib/state';
+	import { auth, config } from '$lib/state';
 	import { page } from '$app/stores';
+	import Card from '$lib/Components/Card.svelte';
+	import AppDrawer from '$lib/Components/AppDrawer.svelte';
 	$: form = $config.forms[$page.params.formID];
+	let open = true;
 </script>
 
 <Seo />
+<Header tralingLogo title={form.title} />
 {#if form}
-	<Header tralingLogo title={form.title} />
+	<AppDrawer bg="base2" title="Consent" {open} close={() => (open = false)}>
+		<div class="page-margin">
+			{#each form.consent.split('\n') as parag}
+				{#if parag.trim()[0] === '→'}
+					<li class="ml-3 list-disc">{parag.trim().substring(1)}</li>
+				{:else}
+					<p class="ml-3 first-letter:text-xl">{parag.trim()}</p>
+				{/if}
+				<br />
+			{/each}
+		</div>
+	</AppDrawer>
+{/if}
+{#if $auth?.emailVerified !== true}
+	<Card>
+		<div class="page-margin mt-5 border text-danger font-bold py-2 px-3">
+			First log in from the above button <br /> And Make sure email is verified
+		</div>
+	</Card>
+{:else if form}
 	<iframe class="w-full h-screen" title="{form.title} form" src={form.url}> Loading… </iframe>
 {:else}
-	404: No Form Found
+	<div class="page-margin mt-5">404: No Form Found</div>
 {/if}

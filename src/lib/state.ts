@@ -4,9 +4,11 @@ import type { Event, News, Video } from './firebase/db';
 import type { Config } from './firebase/event';
 import { newsRef, videosRef, newsRelated, videoRelated } from './firebase/db';
 import { browser } from '$app/env';
+import type { User } from 'firebase/auth';
 
 const stateInstances: { [stateID: string]: any } = {};
 
+export const auth = writable<User | null | undefined>();
 export const config = writable<Config>();
 
 export function eventStore(eventID: string): Writable<Event> {

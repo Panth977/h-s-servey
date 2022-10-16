@@ -12,7 +12,7 @@
 
 <Seo />
 <Header tralingLogo title={form.title} />
-{#if form}
+{#if form && form.consent}
 	<AppDrawer bg="base2" title="Consent" {open} close={() => (open = false)}>
 		<div class="page-margin">
 			{#each form.consent.split('\n') as parag}

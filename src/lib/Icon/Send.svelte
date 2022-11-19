@@ -1,20 +1,6 @@
-<svg
-	xmlns="http://www.w3.org/2000/svg"
-	id="Layer_1"
-	data-name="Layer 1"
-	width="25px"
-	height="25px"
-	viewBox="0 0 122.56 122.88"
->
-	<defs>
-		<style>
-			.cls-1 {
-				fill-rule: evenodd;
-			}
-		</style>
-	</defs> <title>send</title>
+<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24">
+	<path d="m0 0h24v24h-24z" fill="none" />
 	<path
-		class="cls-1"
-		d="M2.33,44.58,117.33.37a3.63,3.63,0,0,1,5,4.56l-44,115.61h0a3.63,3.63,0,0,1-6.67.28L53.93,84.14,89.12,33.77,38.85,68.86,2.06,51.24a3.63,3.63,0,0,1,.27-6.66Z"
+		d="m17 8h2c1.105 0 2 .895 2 2v9c0 1.105-.895 2-2 2h-14c-1.105 0-2-.895-2-2v-9c0-1.105.895-2 2-2h2v2h-2v9h14v-9h-2zm-10.5-2.5 1.414 1.414 3.086-3.086v10.172h2v-10.172l3.086 3.086 1.414-1.414-5.5-5.5z"
 	/>
 </svg>

@@ -23,13 +23,10 @@
 		<div class="text-accent1 text-lg justify-around flex items-center">
 			<span class="w-10">{fixture.team1.acronym}</span>
 			<img src={fixture.team1.logo} alt={fixture.team1.name} class="w-9 h-10" />
-			{#if fixture.isUpcomming}
-				<span class="border text-center text-xs p-1 w-[25%]">{fixture.displayTime}</span>
-			{:else}
-				<span class="w-[25%] text-center">
-					{fixture.scores?.team1 ?? 0} - {fixture.scores?.team2 ?? 0}
-				</span>
-			{/if}
+			<span
+				class="border text-center text-xs p-1 w-[25%] {fixture.isUpcomming ? '' : 'line-through'}"
+				>{fixture.displayTime}</span
+			>
 			<img src={fixture.team2.logo} alt={fixture.team2.name} class="w-9 h-10" />
 			<span class="w-10">{fixture.team2.acronym}</span>
 		</div>

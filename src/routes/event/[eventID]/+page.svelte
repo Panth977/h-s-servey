@@ -9,11 +9,13 @@
 	import Card from '$lib/Components/Card.svelte';
 	import Seo from '$lib/Components/Seo.svelte';
 	import { page } from '$app/stores';
+	import AllScores from '$lib/AllScores.svelte';
 
 	$: event = eventStore($page.params.eventID);
 
 	$: currentFixture = $event.fixtures.find((_, i, a) => a[i + 1]?.isUpcomming ?? true);
 	let upcomingMatchDrawer = false;
+	let matchScoresDrawer = false;
 	let latestNewsDrawer = false;
 	let latestVideosDrawer = false;
 	const latestNews = latestNewsListner($page.params.eventID).store;
@@ -51,7 +53,7 @@
 {/if}
 {#if $event.liveStream}
 	<a class="text-center" href={$event.liveStream} target="_blank">
-		<div class="bg-danger mt-3 py-2 h-9">Watch live stream</div>
+		<div class="bg-danger mt-3 py-2 h-9">Watch Live Stream</div>
 	</a>
 {/if}
 <Ads />
@@ -62,9 +64,10 @@
 		title="All Fixtures"
 	>
 		{#if $event.upcommingFixtures.length}
-			<AllFixtures showMaxDays={1} fixtures={$event.upcommingFixtures.splice(0, 3)} />
+			<AllFixtures showMaxDays={1} fixtures={$event.upcommingFixtures.slice(0, 3)} />
 		{:else}
-			<div class="text-center py-5">No Upcoming Matches</div>
+			<AllFixtures showMaxDays={1} fixtures={$event.fixtures.slice($event.fixtures.length - 3)} />
+			<!-- <div class="text-center py-5">No Upcoming Matches</div> -->
 		{/if}
 		<AppDrawer
 			close={() => (upcomingMatchDrawer = false)}
@@ -72,6 +75,20 @@
 			title="Fixtures"
 		>
 			<AllFixtures fixtures={$event.fixtures} />
+		</AppDrawer>
+	</Card>
+	<Card
+		titleDiv={false}
+		viewMore={{ placeholder: 'All Scores', onClick: () => (matchScoresDrawer = true) }}
+		title="Scores"
+	>
+		{#if $event.fixtureScores.length}
+			<AllScores fixtures={$event.fixtureScores.slice(0, 3)} />
+		{:else}
+			<div class="text-center py-5">No Matches Played Yet.</div>
+		{/if}
+		<AppDrawer close={() => (matchScoresDrawer = false)} open={matchScoresDrawer} title="Fixtures">
+			<AllScores fixtures={$event.fixtureScores} />
 		</AppDrawer>
 	</Card>
 {/if}

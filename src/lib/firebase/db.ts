@@ -56,6 +56,7 @@ export interface EventPlayer extends Player, PlayerStats {
 
 interface Event {
 	upcommingFixtures: EventFixture[];
+	fixtureScores: EventFixture[];
 	liveStream: string | undefined;
 	fixtures: EventFixture[];
 	teams: { [teamID: string]: EventTeam };
@@ -378,6 +379,7 @@ export function parseEventDocument(doc: EventDocument): Event {
 		.filter((x) => x.isGoalkeeper)
 		.sort((a, b) => b.handling - a.handling);
 	let upcommingFixtures: EventFixture[];
+	let fixtureScores: EventFixture[];
 	return {
 		liveStream: doc.liveStream,
 		fixtures,
@@ -389,6 +391,10 @@ export function parseEventDocument(doc: EventDocument): Event {
 		get upcommingFixtures() {
 			if (!upcommingFixtures?.length) upcommingFixtures = fixtures.filter((f) => f.isUpcomming);
 			return upcommingFixtures;
+		},
+		get fixtureScores() {
+			if (!fixtureScores?.length) fixtureScores = fixtures.filter((f) => f.scores);
+			return fixtureScores;
 		}
 	};
 }

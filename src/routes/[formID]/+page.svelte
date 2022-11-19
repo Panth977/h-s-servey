@@ -2,12 +2,12 @@
 	import Header from '$lib/Components/Header.svelte';
 
 	import Seo from '$lib/Components/Seo.svelte';
-	import { auth, config } from '$lib/state';
+	import { config } from '$lib/state';
 	import { page } from '$app/stores';
-	import Card from '$lib/Components/Card.svelte';
-	import AppDrawer from '$lib/Components/AppDrawer.svelte';
+	// import Card from '$lib/Components/Card.svelte';
+	// import AppDrawer from '$lib/Components/AppDrawer.svelte';
 	$: form = $config.forms[$page.params.formID];
-	let open = true;
+	// let open = true;
 </script>
 
 <Seo />
@@ -26,6 +26,12 @@
 		</div>
 	</AppDrawer>
 {/if} -->
+<!-- {#if $auth?.isAnonymous ===}
+	<Card>
+		<div class="page-margin mt-5 border text-danger font-bold py-2 px-3">
+			First log in from the above button <br /> And Make sure email is verified
+		</div>
+	</Card> -->
 {#if form}
 	<iframe class="w-full h-screen" title="{form.title} form" src={form.url}> Loading… </iframe>
 {:else}

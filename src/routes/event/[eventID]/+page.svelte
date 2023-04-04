@@ -25,7 +25,7 @@
 </script>
 
 <Seo />
-<a class="header" style="padding-bottom: 0;" href="/">Huddle & Score</a>
+<a class="header" style="padding-bottom: 0;" href="/">Play Pro</a>
 <div class="page-padding -mt-1 items-center flex space-x-1">
 	<LocationPin />
 	<span class="text-sm">Ahmedabad</span>

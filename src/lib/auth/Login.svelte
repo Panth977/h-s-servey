@@ -118,7 +118,7 @@
 
 			<div class="text-sm" />
 			<div class="text-sm text-right">
-				New to Huddle and Score?
+				New to Play Pro?
 				<br />
 				<a
 					href="#register"

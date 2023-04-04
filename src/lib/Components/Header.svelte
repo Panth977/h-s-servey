@@ -40,7 +40,7 @@
 		style="margin-left: 0px; margin-right: 0px;"
 		href="/{$page.params.eventID ? 'event/' + $page.params.eventID : ''}"
 	>
-		Huddle & Score
+		Play Pro
 	</a>
 	{#if tralingLogo}
 		<Logo dark={false} />
